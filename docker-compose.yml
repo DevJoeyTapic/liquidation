@@ -1,0 +1,54 @@
+name: liquidation
+
+services:
+  web:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: liquidation
+    hostname: liquidation
+    ports:
+      - "8000:80"
+    volumes:
+      - ./app:/var/www/html
+    environment:
+      - TZ=Asia/Manila
+      - APACHE_RUN_USER=www-data
+      - APACHE_RUN_GROUP=www-data    
+    networks:
+      - app_network
+
+  db:
+    image: mysql:8.0
+    container_name: mysql
+    # restart: always
+    ports:
+      - "3306:3306" # Expose MySQL port
+    environment:
+      MYSQL_ROOT_PASSWORD: rootpassword
+      MYSQL_DATABASE: db01
+      MYSQL_USER: user
+      MYSQL_PASSWORD: userpassword
+    volumes:
+      - db_data:/var/lib/mysql
+    networks:
+      - app_network
+  
+  phpmyadmin:
+    image: phpmyadmin/phpmyadmin
+    container_name: phpmyadmin
+    restart: always
+    ports:
+      - "8081:80"
+    environment:
+      PMA_HOST: db
+      MYSQL_ROOT_PASSWORD: rootpassword
+    networks:
+      - app_network      
+
+volumes:
+  db_data:
+
+networks:
+  app_network:
+    driver: bridge
