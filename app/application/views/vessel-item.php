@@ -147,12 +147,13 @@
                                                 <th class="col-2">Variance</th>
                                                 <th class="col-2">Remarks</th>
                                                 <th class="col-2 text-center">Document Reference</th>
+                                                <th>Validate</th>
                                             </tr>
                                         </thead>
                                         <tbody>
                                             <tr>
                                                 <td class="itemName">Mooring/Unmooring</td>
-                                                <td>Just a description</td>
+                                                <td></td>
                                                 <td class="text-center rfpNo">6147</td>
                                                 <td class="rfpAmount">24000.00</td>
                                                 <td class="text-end">
@@ -163,58 +164,6 @@
                                                 <td class="remarks"><textarea class="form-control form-control-sm" rows="1" style="max-height: 150px"></textarea></td>
                                                 <td class="docRef"><input type="file" class="form-control form-control-sm" multiple></td>
                                                 <td class="text-center validate"><input type="checkbox" class="form-check-input rowCheckbox"></td>
-                                            </tr>
-                                            <tr>
-                                                <td>BF | Berthing Fee</td>
-                                                <td class="text-center">6146</td>
-                                                <td class="rfpAmount">9702.00</td>
-                                                <td class="text-end">
-                                                    <input type="text" class="form-control form-control-sm actualAmount">
-                                                    <button class="btn btn-sm text-primary multiple-btn" data-bs-toggle="modal" data-bs-target="#multipleEntryModal">Multiple Entry</button>
-                                                </td>
-                                                <td class="variance">0.00</td>
-                                                <td><textarea class="form-control form-control-sm" rows="1" style="max-height: 150px"></textarea></td>
-                                                <td><input type="file" class="form-control form-control-sm" multiple></td>
-                                                <td class="text-center"><input type="checkbox" class="form-check-input rowCheckbox"></td>
-                                            </tr>
-                                            <tr>
-                                                <td>HF | Harbour Fee</td>
-                                                <td class="text-center">6146</td>
-                                                <td class="rfpAmount">19646.55</td>
-                                                <td class="text-end">
-                                                    <input type="text" class="form-control form-control-sm actualAmount">
-                                                    <button class="btn btn-sm text-primary multiple-btn" data-bs-toggle="modal" data-bs-target="#multipleEntryModal">Multiple Entry</button>
-                                                </td>
-                                                <td class="variance">0.00</td>
-                                                <td><textarea class="form-control form-control-sm" rows="1" style="max-height: 150px"></textarea></td>
-                                                <td><input type="file" class="form-control form-control-sm" multiple></td>
-                                                <td class="text-center"><input type="checkbox" class="form-check-input rowCheckbox"></td>
-                                            </tr>
-                                            <tr>
-                                                <td>CS | Customs Stamp Fee</td>
-                                                <td class="text-center">6145</td>
-                                                <td class="rfpAmount">550.00</td>
-                                                <td class="text-end">
-                                                    <input type="text" class="form-control form-control-sm actualAmount">
-                                                    <button class="btn btn-sm text-primary multiple-btn" data-bs-toggle="modal" data-bs-target="#multipleEntryModal">Multiple Entry</button>
-                                                </td>
-                                                <td class="variance">0.00</td>
-                                                <td><textarea class="form-control form-control-sm" rows="1" style="max-height: 150px"></textarea></td>
-                                                <td><input type="file" class="form-control form-control-sm" multiple></td>
-                                                <td class="text-center"><input type="checkbox" class="form-check-input rowCheckbox"></td>
-                                            </tr>
-                                            <tr>
-                                                <td>Immigration Boarding Officer</td>
-                                                <td class="text-center">6145</td>
-                                                <td class="rfpAmount">5000.00</td>
-                                                <td class="text-end">
-                                                    <input type="text" class="form-control form-control-sm actualAmount">
-                                                    <button class="btn btn-sm text-primary multiple-btn" data-bs-toggle="modal" data-bs-target="#multipleEntryModal">Multiple Entry</button>
-                                                </td>
-                                                <td class="variance">0.00</td>
-                                                <td><textarea class="form-control form-control-sm" rows="1" style="max-height: 150px"></textarea></td>
-                                                <td><input type="file" class="form-control form-control-sm" multiple></td>
-                                                <td class="text-center"><input type="checkbox" class="form-check-input rowCheckbox"></td>
                                             </tr>
                                         </tbody>
                                     </table>
