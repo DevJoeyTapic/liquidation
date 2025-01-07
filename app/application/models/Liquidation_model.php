@@ -23,7 +23,7 @@ class Liquidation_model extends CI_Model {
         return null;
     }
     public function get_vessel_items($vessel, $voyage) {
-        $query = $this->db->get_where('agent_liquidations', ['vessel' => $vessel, 'voyage' => $voyage]);
+        $query = $this->db->get_where('vessel_items', ['vessel' => $vessel, 'voyage' => $voyage]);
         return $query->result();
     }
 }
