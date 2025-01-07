@@ -1,0 +1,49 @@
+html {
+  font-family: 'Poppins', sans-serif;
+}
+.navbar {
+  display: flex;
+  justify-content: space-between;
+  height: 3.5rem;
+  background-color: #3d83d5;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+
+}
+.header-logo {
+  height: 2.5rem;
+  padding-left: 1rem;
+}
+.profile {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding-right: 1.3rem;
+}
+.profile img {
+  height: 30px;
+}
+.dropdown-item:hover {
+  cursor: pointer;
+}
+.dropdown-header {
+  font-size: larger;
+}
+@media (max-width: 1399.98px) { 
+
+
+}
+@media (max-width: 1199.98px) { 
+
+
+}
+@media (max-width: 991.98px) { 
+
+}
+@media (max-width: 767.98px) { 
+
+  
+}
+@media (max-width: 575.98px) { 
+
+
+}

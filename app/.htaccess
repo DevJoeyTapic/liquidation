@@ -1,20 +1,24 @@
 <IfModule mod_rewrite.c>
     Options +FollowSymlinks -Indexes
     RewriteEngine On
-	
-    DirectoryIndex index.php
 
-    #Removes access to the resources folder, etc. by users.
-    #Additionally, this will allow you to hide index.php in the url.
-    RewriteCond $1 !^(index.php|resources|robots.txt)
+    # Remove index.php from the URL
+    RewriteCond %{REQUEST_URI} ^(.*)/index.php/(.*)$
+    RewriteRule ^(.*)/index.php/(.*)$ /$2 [R=301,L]
 
-    #Checks to see if the user is attempting to access a valid file,
-    #such as an image or css document, if this isn't true it sends the
-    #request to index.php
+    # If the requested file or directory exists, don't rewrite
     RewriteCond %{REQUEST_FILENAME} !-f
     RewriteCond %{REQUEST_FILENAME} !-d
+
+    # Rewrite the URL to go through index.php
     RewriteRule ^(.*)$ index.php/$1 [L,QSA]
+
+    # Make index.php the default directory file
+    DirectoryIndex index.php
 </IfModule>
+
+
+
 
 <IfModule !mod_rewrite.c>
     # If we don't have mod_rewrite installed, all 404's
