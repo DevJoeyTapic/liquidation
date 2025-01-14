@@ -34,7 +34,12 @@ class Login extends CI_Controller {
             $this->session->set_userdata('username', $user->username);
             $this->session->set_userdata('user_type', $user->user_type);
             $this->session->set_userdata('logged_in', true);
-            redirect('dashboard');
+
+            if ($user->user_type == 1) {
+                redirect('admin');
+                } else {
+                redirect('dashboard');
+            }
         } else {
             $this->session->set_flashdata('error', 'Invalid username or password');
             redirect('login');

@@ -18,6 +18,10 @@ class Dashboard extends CI_Controller {
         $user_type = $this->session->userdata('user_type');
 
         switch($user_type) {
+            case 1: // Admin
+                // $data['agent_liquidations'] = $this->Liquidation_model->get_agent_liquidations();
+                $this->load->view('dashboard');
+                break;
             case 2: // Agent
                 $data['agent_liquidations'] = $this->Liquidation_model->get_agent_liquidations();
                 $this->load->view('dashboard', $data);
