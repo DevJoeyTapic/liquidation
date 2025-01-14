@@ -45,7 +45,27 @@
                     </button>
                     
                     <ul class="dropdown-menu dropdown-menu-end">
-                        <li><h6 class="dropdown-header"><?= $this->session->userdata('username') ?: 'Guest'; ?> - <?= $this->session->userdata('user_type') == 2 ? 'Supercargo Agent' : ($this->session->userdata('user_type') == 3 ? 'Accounting' : 'Unknown'); ?></h6></li>
+                        <li>
+                            <h6 class="dropdown-header">
+                                <?= $this->session->userdata('username') ?: 'Guest'; ?> - 
+                                <?php 
+                                    switch ($this->session->userdata('user_type')) {
+                                        case 1:
+                                            echo 'Admin';
+                                            break;
+                                        case 2:
+                                            echo 'Supercargo Agent';
+                                            break;
+                                        case 3:
+                                            echo 'Accounting';
+                                            break;
+                                        default:
+                                            echo 'Unknown';
+                                            break;
+                                    }
+                                ?>
+                            </h6>
+                        </li>
                         <li><hr class="dropdown-divider"></li>
                         <li><button class="dropdown-item" type="button" data-bs-toggle="modal" data-bs-target="#changePasswordModal">Change Password</button></li>
                         <li><a class="dropdown-item" href="<?= site_url('login/logout'); ?>">Signout</a></li>
@@ -57,9 +77,14 @@
             <!-- ALERT FOR SUPERCARGO AGENT ONLY -->
             <?php if($this->session->userdata('user_type') == 2): ?>
                 <div class="alert alert-danger alert-dismissible fade show d-flex align-items-center" role="alert">
-                    <i class="fa-solid fa-exclamation-circle me-2"></i>
+                    <i class="fa-solid fa-exclamation-circle me-3"></i>
+                    <?php
+                        date_default_timezone_set('Asia/Singapore'); 
+                    ?>
                     <div>
                         <strong>Due Wallem: </strong> PHP 39,377.01
+                        <p class="small"><?php echo "As of " . date('F j, Y H:i A'); ?></p>
+
                     </div>
                     <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
                 </div>
@@ -68,11 +93,9 @@
             <div class="dashboard-logo">
                 <img src="<?= base_url('assets/images/wallem_no_bg.png'); ?>" alt="Wallem Logo">
             </div>
-
             <div class="search-section" id="dataTable_filter">
                 <input type="text" id="dataSearch" class="form-control form-control-sm search-bar" placeholder="Search keywords" autofocus>
             </div>
-            
             <div class="search-result cont d-flex flex-column">
                 <div class="data-table">
                     <!-- table view for accounting -->

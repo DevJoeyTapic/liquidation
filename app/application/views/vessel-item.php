@@ -79,7 +79,7 @@
                             </div>
                             <div class="col-9">
                                 <p class="label">VOYAGE</p>
-                                <p class="title"><?= isset($voyage) ? $voyage : ''; ?></p>
+                                <p class="title"><?= isset($vessel_items->vessel) ? $vessel_items->vessel : ''; ?></p>
                             </div>
                         </div>
                     </div>
@@ -90,7 +90,7 @@
                             </div>
                             <div class="col-10">
                                 <p class="label">PORT</p>
-                                <p class="title"><?= isset($port) ? $port : ''; ?></p>
+                                <p class="title"><?= isset($vessel_items->vessel) ? $vessel_items->vessel : ''; ?></p>
                             </div>
                         </div>
                     </div>
@@ -192,20 +192,19 @@
                                                 <th class="col-2">Variance</th>
                                                 <th class="col-2">Remarks</th>
                                                 <th class="col-2 text-center">Document Reference</th>
+                                                <th>Edit</th>
                                             </tr>
                                         </thead>
                                         <tbody>
                                             <tr>
                                                 <td class="itemName">Mooring/Unmooring</td>
+                                                <td>* * Description goes here * *</td>
                                                 <td class="text-center rfpNo">6147</td>
                                                 <td class="rfpAmount">24000.00</td>
-                                                <td class="text-end">
-                                                    <input type="text" class="form-control form-control-sm actualAmount">
-                                                    <button class="btn btn-sm text-primary multiple-btn" data-bs-toggle="modal" data-bs-target="#multipleEntryModal">Multiple Entry</button>
-                                                </td>
+                                                <td class="">24000.00</td>                                                </td>
                                                 <td class="variance">0.00</td>
-                                                <td class="remarks"><textarea class="form-control form-control-sm" rows="1" style="max-height: 150px"></textarea></td>
-                                                <td class="docRef"><input type="file" class="form-control form-control-sm" multiple></td>
+                                                <td class="remarks">* * Comments goes here * *</td>
+                                                <td class="docRef"><a href="#">somefiles.pdf</a></td>
                                                 <td class="text-center validate"><input type="checkbox" class="form-check-input rowCheckbox"></td>
                                             </tr>
                                         </tbody>
@@ -225,7 +224,7 @@
                                 </div>
                                 <div class="table-reponsive">
                                     <table class="table table-striped table-hover display" id="dataTable4">
-                                        <thead>
+                                    <thead>
                                             <tr>
                                                 <th class="col-3">Items</th>
                                                 <th>Description</th>
@@ -235,21 +234,20 @@
                                                 <th class="col-2">Variance</th>
                                                 <th class="col-2">Remarks</th>
                                                 <th class="col-2 text-center">Document Reference</th>
+                                                <th>Status</th>
                                             </tr>
                                         </thead>
                                         <tbody>
                                             <tr>
                                                 <td class="itemName">Mooring/Unmooring</td>
+                                                <td>* * Description goes here * *</td>
                                                 <td class="text-center rfpNo">6147</td>
                                                 <td class="rfpAmount">24000.00</td>
-                                                <td class="text-end">
-                                                    <input type="text" class="form-control form-control-sm actualAmount">
-                                                    <button class="btn btn-sm text-primary multiple-btn" data-bs-toggle="modal" data-bs-target="#multipleEntryModal">Multiple Entry</button>
-                                                </td>
+                                                <td class="">24000.00</td>                                                </td>
                                                 <td class="variance">0.00</td>
-                                                <td class="remarks"><textarea class="form-control form-control-sm" rows="1" style="max-height: 150px"></textarea></td>
-                                                <td class="docRef"><input type="file" class="form-control form-control-sm" multiple></td>
-                                                <td class="text-center validate"><input type="checkbox" class="form-check-input rowCheckbox"></td>
+                                                <td class="remarks">* * Comments goes here * *</td>
+                                                <td class="docRef"><a href="#">somefiles.pdf</a></td>
+                                                <td>Validated</td>
                                             </tr>
                                         </tbody>
                                     </table>
