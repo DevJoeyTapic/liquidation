@@ -11,18 +11,43 @@ $(document).ready(function () {
     });
     $("#totalAmount").text(total.toFixed(2));
     return total;
+    
   }
-
+  function updateTotal() {
+    let total = 0;
+    $(".new-amount").each(function () {
+      const value = parseFloat($(this).val()) || 0;
+      total += value;
+    });
+    $("#totalAmount").text(total.toFixed(2));
+    return total;
+    
+  }
+  
   $(document).on("input", ".new-amount", function () {
     updateTotal();
   });
+  $(document).on("input", ".description", function () {
+    
+  });
 
-  $(document).on("input", ".actualAmount", function () {
-    const expectedAmount = parseFloat(
-      $(this).closest("tr").find("td:nth-child(3)").text()
+  // function toggleSubmit() {
+  //   const rfpAmountElement = $(this).closest("tr").find("#rfpAmount");
+  //   const rfpAmount = rfpAmountElement.length ? parseFloat(rfpAmountElement.text()) : 0;
+  //   if (anyChecked) {
+  //     $("#submitLiquidation").removeClass("disabled").prop("disabled", false);
+  //   } else {
+  //     $("#submitLiquidation").addClass("disabled").prop("disabled", true);
+  //   }
+  // }
+
+  $(document).on("input", "#actualAmount", function () {
+    // Use closest to target the rfpAmount in the same row
+    const rfpAmount = parseFloat(
+      $(this).closest("tr").find(".rfpAmount").text().replace(/,/g, '') // Remove commas for float conversion
     );
     const actualAmount = parseFloat($(this).val()) || 0;
-    const variance = expectedAmount - actualAmount;
+    const variance = rfpAmount - actualAmount;
 
     $(this).closest("tr").find(".variance").text(variance.toFixed(2));
 
@@ -37,23 +62,24 @@ $(document).ready(function () {
       checkbox.prop("disabled", true); // Disable the checkbox
       $("#submitLiquidation").addClass("disabled").prop("disabled", true);
     }
-    toggleSubmit();
-  });
+});
+
 
   $(".add").on("click", function () {
     const newInput = $(`
       <div class="row d-flex justify-content-center align-items-center m-0 mt-2">
-        <div class="col">
-          <input type="text" class="form-control description" placeholder="Description">
-        </div>
-        <div class="col ps-0">
-          <div class="input-group ps-0">
-            <input type="text" class="form-control new-amount" placeholder="Enter Actual Amount">
-            <button class="btn btn-danger delete-btn" type="button"><i class="fa-solid fa-trash fa-xs"></i></button>
-          </div>
+      <div class="col">
+        <input type="text" class="form-control description" placeholder="Description">
+      </div>
+      <div class="col ps-0">
+        <div class="input-group ps-0">
+        <input type="text" class="form-control new-amount" placeholder="Enter Actual Amount">
+        <button class="btn btn-danger delete-btn" type="button"><i class="fa-solid fa-trash fa-xs"></i></button>
         </div>
       </div>
+      </div>
     `);
+
 
     newInput.find(".delete-btn").on("click", function () {
       newInput.remove();
@@ -67,10 +93,10 @@ $(document).ready(function () {
     row = $(this).closest("tr");
     $(".addedFields").empty();
     const itemName = row.find("td:first").text();
-    const rfpNo = row.find("td:nth-child(2)").text();
+    const rfpNo = row.find("td:nth-child(3)").text();
     const rfpAmt = parseFloat(
       row
-        .find("td:nth-child(3)")
+        .find("td:nth-child(4)")
         .text()
         .replace(/[^0-9.-]+/g, "")
     );
@@ -89,14 +115,12 @@ $(document).ready(function () {
 
     if (row) {
       row.find(".actualAmount").val(total.toFixed(2));
-
       const expectedAmount = parseFloat(
         row
           .find(".rfpAmount")
           .text()
           .replace(/[^0-9.-]+/g, "")
       );
-      console.log("Expected amount for active row:", expectedAmount);
       const variance = expectedAmount - total;
       row.find(".variance").text(variance.toFixed(2)); // Update variance in the row
     } else {
@@ -105,54 +129,133 @@ $(document).ready(function () {
   });
 
   $(".rowCheckbox").change(function () {
-    toggleSubmit();
   });
-  function toggleSubmit() {
-    let anyChecked = $(".rowCheckbox:checked").length > 0;
+  // function toggleSubmit() {
+  //   let anyChecked = $(".rowCheckbox:checked").length > 0;
 
-    // Toggle the button state based on the checkbox status
-    if (anyChecked) {
-      $("#submitLiquidation").removeClass("disabled").prop("disabled", false);
-    } else {
-      $("#submitLiquidation").addClass("disabled").prop("disabled", true);
-    }
-  }
+  //   // Toggle the button state based on the checkbox status
+  //   if (anyChecked) {
+  //     $("#submitLiquidation").removeClass("disabled").prop("disabled", false);
+  //   } else {
+  //     $("#submitLiquidation").addClass("disabled").prop("disabled", true);
+  //   }
+  // }
 
   $("#submitLiquidation").on("click", function () {
     const checkedRows = $("#dataTable2 .rowCheckbox:checked").closest("tr");
     if (checkedRows.length > 0) {
       checkedRows.each(function () {
         const itemName = $(this).find("td:nth-child(1)").text();
-        const rfpNo = $(this).find("td:nth-child(2)").text();
-        const rfpAmount = $(this).find("td:nth-child(3)").text();
-        const actualAmount = $(this).find("td:nth-child(4) input").val();
+        const description = $(this).find("td:nth-child(2)").text();
+        const rfpNo = $(this).find("td:nth-child(3)").text();
+        const rfpAmount = $(this).find("td:nth-child(4)").text();
+        const actualAmount = $(this).find("td:nth-child(5) input").val();
         const variance = $(this).find(".variance").text();
-        const remarks = $(this).find("td:nth-child(6) textarea").val();
+        const remarks = $(this).find(".remarks").val();
         const docref = $(this).find("td:nth-child(7)").text().trim() || "NONE";
-
         const displayDocRef = docref === "NONE" ? docref : "attachment.pdf";
 
         const newRow = `<tr>
                             <td>${itemName}</td>
+                            <td>${description}</td>
                             <td class="text-center">${rfpNo}</td>
                             <td>${rfpAmount}</td>
                             <td>${actualAmount}</td>
                             <td>${variance}</td>
                             <td >${remarks}</td>
                             <td class="text-center">${displayDocRef}</td>
-                            <td class="text-center">For Validation</td>
+                            <td class="text-center"><input type="checkbox" class="form-check-input rowCheckbox"></td>
                           </tr>`;
 
         $("#dataTable3 tbody").append(newRow);
       });
 
       checkedRows.remove();
-      toggleSubmitButton();
     }
   });
+  $("#removeBtn").on("click", function () {
+    const checkedRows = $("#dataTable3 .rowCheckbox:checked").closest("tr");
+    if (checkedRows.length > 0) {
+      checkedRows.each(function () {
+        const itemName = $(this).find("td:nth-child(1)").text();
+        const description = $(this).find("td:nth-child(2)").text();
+        const rfpNo = $(this).find("td:nth-child(3)").text();
+        const rfpAmount = $(this).find("td:nth-child(4)").text();
+        const actualAmount = $(this).find("td:nth-child(5) input").val();
+        const variance = $(this).find(".variance").text();
+        const remarks = $(this).find(".remarks").val();
+        const docref = $(this).find("td:nth-child(7)").text().trim() || "NONE";
+        const displayDocRef = docref === "NONE" ? docref : "attachment.pdf";
+
+        const newRow = `<tr>
+                            <td>${itemName}</td>
+                            <td>${description}</td>
+                            <td class="text-center">${rfpNo}</td>
+                            <td>${rfpAmount}</td>
+                            <td>
+                              <input type="text" class="form-control form-control-sm actualAmount" id="actualAmount" value="${actualAmount}">
+                              <button class="btn btn-sm text-primary multiple-btn" data-bs-toggle="modal" data-bs-target="#multipleEntryModal">Multiple Entry</button>
+                            </td>
+                            <td>${variance}</td>
+                            <td ><textarea class="form-control form-control-sm remarks" rows="1" style="max-height: 150px" value="${remarks}"></textarea></td>
+                            <td class="text-center"><input type="file" class="form-control form-control-sm" multiple></td>
+                            <td class="text-center"><input type="checkbox" class="form-check-input rowCheckbox"></td>
+                          </tr>`;
+
+        $("#dataTable2 tbody").append(newRow);
+      });
+
+      checkedRows.remove();
+    }
+  });
+
+  $("#addItem").on("click", function () {
+    const newItem = $("#newItem").val();
+    const newDescription = $("#newDescription").val();
+    const newRemarks = $("#newRemarks").val();
+    const newAmount = $("#newAmount").val();
+    const newItemRow = `<tr>
+                            <td>${newItem}</td>
+                            <td>${newDescription}</td>
+                            <td class="text-center"><span class="badge text-bg-primary">NEW ITEM</span></td>
+                            <td><span class="badge text-bg-primary">NEW ITEM</span></td>
+                            <td class="text-end">
+                              <input type="text" class="form-control form-control-sm actualAmount" id="actualAmount" value="${newAmount}">
+                              <button class="btn btn-sm text-primary multiple-btn" data-bs-toggle="modal" data-bs-target="#multipleEntryModal">Multiple Entry</button>
+                            </td>
+                            <td>0.0</td>
+                            <td ><textarea class="form-control form-control-sm remarks" rows="1" style="max-height: 150px" value="${newRemarks}"></textarea></td>
+                            <td class="text-center"><input type="file" class="form-control form-control-sm" multiple></td>
+                            <td class="text-center"><input type="checkbox" class="form-check-input rowCheckbox"></td>
+                          </tr>`;
+    $("#dataTable2 tbody").append(newItemRow);
+
+    // Clear input fields after adding the new item
+    $("#newItem").val('');
+    $("#newDescription").val('');
+    $("#newRemarks").val('');
+    $("#newAmount").val('');
+  });
+  if ($('#datatable3 tbody tr').length === 0) {
+    $('#checkAllRow').hide();
+  } else {
+    $('#checkAllRow').show();
+  }
+
 });
 
 // Ensure no conflicting scripts are causing redirection issues
 document.addEventListener('DOMContentLoaded', function() {
-    // Add any necessary initialization or event listeners here
+  $('#validateAll').on('change', function() {
+    if ($(this).is(':checked')) {
+      $('.form-check-input').each(function() {
+        $(this).prop('checked', true);
+      });
+    } else {
+      $('.form-check-input').each(function() {
+        $(this).prop('checked', false);
+      });
+    }
+  });
+  
 });

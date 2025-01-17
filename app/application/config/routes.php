@@ -7,7 +7,7 @@ $route['translate_uri_dashes'] = FALSE;
 
 $route['login'] = 'login';
 $route['login/authenticate'] = 'login/authenticate';
-$route['logout'] = 'logout';
+$route['logout'] = 'login/logout';
 $route['admin'] = 'admin';
 $route['dashboard'] = 'dashboard';
 $route['vesselitem/(:any)/(:any)'] = 'vesselitem/view/$1/$2';
