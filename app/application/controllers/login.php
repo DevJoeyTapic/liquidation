@@ -30,7 +30,7 @@ class Login extends CI_Controller {
         $user = $this->login_model->login($username, $password);
 
         if ($user) {
-            $this->session->set_userdata('user_id', $user->id);
+            $this->session->set_userdata('user_id', $user->user_id);
             $this->session->set_userdata('username', $user->username);
             $this->session->set_userdata('user_type', $user->user_type);
             $this->session->set_userdata('logged_in', true);

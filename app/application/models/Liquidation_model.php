@@ -6,12 +6,14 @@ class Liquidation_model extends CI_Model {
     }
 
     public function get_accounting_liquidations() {
-        $query = $this->db->get('accounting_liquidations');
+        $sql = "SELECT * FROM accounting_liquidations";
+        $query = $this->db->query($sql);
         return $query->result();
     }
 
     public function get_agent_liquidations() {
-        $query = $this->db->get('agent_liquidations');
+        $sql = "SELECT * FROM agent_liquidations";
+        $query = $this->db->query($sql);
         return $query->result();
     }
 
@@ -23,11 +25,15 @@ class Liquidation_model extends CI_Model {
         return null;
     }
     public function get_vessel_items($vessel, $voyage) {
-        $this->db->select('*');
-        $this->db->where('vessel', $vessel);
-        $this->db->where('voyage', $voyage);
-        $query = $this->db->get('agent_liquidations');
+        $sql = "SELECT * FROM agent_liquidations WHERE vessel = ? AND voyage = ?";
+        $query = $this->db->query($sql, array($vessel, $voyage));
         
+        return $query->result();
+    }
+    
+    public function get_liquidation_master($user_id) {
+        $sql = "SELECT * FROM liquidation_master WHERE user_id = ?";
+        $query = $this->db->query($sql, array($user_id));
         return $query->result();
     }
     

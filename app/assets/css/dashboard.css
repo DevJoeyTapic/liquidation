@@ -70,13 +70,16 @@ body {
 }
 .data-table {
   width: 100%;
-  overflow: hidden;
+  overflow: auto;
 }
 
 tbody tr {
   cursor: pointer;
 }
-
+.table {
+  width: 100%;
+  overflow: auto;
+}
 /*  */
 #onprocess.tab-pane, #hold.tab-pane {
   width: 100%;
@@ -148,6 +151,10 @@ tbody tr {
     width: 70%;
     padding-bottom: 1rem;
   }
+  .data-table {
+    width: 100%;
+    overflow: auto;
+  }
 
 }
 /* Small devices (landscape phones, less than 768px) */
@@ -164,8 +171,10 @@ tbody tr {
     border-right: none;
     border-bottom: 1px solid lightgray;
   }
-
-
+  .data-table {
+    width: 100%;
+    overflow: auto;
+  }
 
 }
 /* X-Small devices (portrait phones, less than 576px) */
@@ -194,9 +203,7 @@ tbody tr {
   .vessel-section {
     padding: 0 2rem;
   }
-  .data-table {
-    padding: 0;
-  }
+
   .nav-tabs {
     display: flex !important;
     justify-content: center;
@@ -211,5 +218,9 @@ tbody tr {
   }
   .dtTitle .title {
     font-size: 0.8rem;
+  }
+  .data-table {
+    width: 100%;
+    overflow: auto;
   }
 }
