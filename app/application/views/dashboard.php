@@ -76,17 +76,50 @@
         <div class="main-container bg-gradient">
             <!-- ALERT FOR SUPERCARGO AGENT ONLY -->
             <?php if($this->session->userdata('user_type') == 2): ?>
-                <div class="alert alert-danger alert-dismissible fade show d-flex align-items-center" role="alert">
-                    <i class="fa-solid fa-exclamation-circle me-3"></i>
-                    <?php
-                        date_default_timezone_set('Asia/Singapore'); 
-                    ?>
-                    <div>
-                        <strong>Due Wallem: </strong> PHP 39,377.01
-                        <p class="small"><?php echo "As of " . date('F j, Y H:i A'); ?></p>
-
+                <div class="accordion mb-3" id="breakdownAccordion">
+                    <div class="accordion-item">
+                        <h2 class="accordion-header">
+                            <button class="accordion-button text-danger" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                                <i class="fa-solid fa-exclamation-circle me-2"></i><strong>Due Wallem: &nbsp;</strong> 60,0000.00                       
+                            </button>
+                        </h2>
+                        <div id="collapseOne" class="accordion-collapse collapse show" data-bs-parent="#breakdownAccordion">
+                            <div class="accordion-body">
+                                <div class="d-flex justify-content-between align-items-end">
+                                    <h4><strong>Credit Breakdown:</strong></h4>
+                                    <p class="text-danger small"><strong>CURRENCY:</strong> PHP</p>
+                                </div>
+                                <table class="table table-hover">
+                                    <caption class="small">As of <span id="currentTime"></span></caption>
+                                    <thead>
+                                        <tr>
+                                            <th class="col-3">Vessel/Voyage</th>
+                                            <th class="col-1">Due Amount</th>
+                                            <th class="text-end col-8">Credited Amount</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr class="breakdown-row">
+                                            <td>Vessel Name V123</td>
+                                            <td>20,000.00</td>
+                                            <td class="text-end">20,000.00</td>
+                                        </tr>
+                                        <tr class="breakdown-row">
+                                            <td>Vessel Name V123</td>
+                                            <td>20,000.00</td>
+                                            <td class="text-end">20,000.00</td>
+                                        </tr>
+                                        <tr class="breakdown-row">
+                                            <td>Vessel Name V123</td>
+                                            <td>20,000.00</td>
+                                            <td class="text-end">20,000.00</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                                <h4 class="text-end bold">PHP 60,0000.00</h4>
+                            </div>
+                        </div>
                     </div>
-                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
                 </div>
             <?php endif; ?>
             
@@ -135,12 +168,15 @@
                             </thead>
                             <tbody>
                                 <?php foreach ($agent_liquidations as $liquidation): ?>
-                                    <tr onclick="window.location.href='<?= site_url('vesselitem/view/' . str_replace(' ', '', $liquidation->vessel) . '/' . urlencode($liquidation->voyage)); ?>'">
-                                        <td><?= $liquidation->vessel; ?></td>
-                                        <td><?= $liquidation->voyage; ?></td>
-                                        <td><?= $liquidation->port; ?></td>
-                                        <td><?= $liquidation->eta; ?></td>
-                                        <td><?= $liquidation->etd; ?></td>
+                                    
+                                    <tr onclick="window.location.href='<?= site_url('vesselitem/view' . '/' . $liquidation->id); ?>'"> 
+                                        
+                                            <td><?= $liquidation->vessel; ?></td>
+                                            <td><?= $liquidation->voyage; ?></td>
+                                            <td><?= $liquidation->port; ?></td>
+                                            <td><?= $liquidation->eta; ?></td>
+                                            <td><?= $liquidation->etd; ?></td>
+                                       
                                     </tr>
                                 <?php endforeach; ?>
                             </tbody>
@@ -160,18 +196,18 @@
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                    <form>
+                    <form id="changePasswordForm" action="<?= site_url('login/change_password'); ?>" method="post">
                         <div class="mb-3">
                             <label for="currentUserPassword" class="form-label">Current Password</label>
-                            <input type="password" class="form-control" id="currentUserPassword" required>
+                            <input type="password" class="form-control" id="old_password" required>
                         </div>
                         <div class="mb-3">
                             <label for="newUserPassword" class="form-label">New Password</label>
-                            <input type="password" class="form-control" id="newUserPassword" required>
+                            <input type="password" class="form-control" id="new_password" required>
                         </div>
                         <div class="mb-3">
                             <label for="confirmUserPassword" class="form-label">Confirm New Password</label>
-                            <input type="password" class="form-control" id="confirmUserPassword" required>
+                            <input type="password" class="form-control" id="confirm_password" required>
                         </div>
                     </form>
                 </div>
@@ -182,5 +218,14 @@
             </div>
         </div>
     </div>
+    <script>
+        function showTime() {
+            document.getElementById('currentTime').innerHTML = new Date().toUTCString();
+        }
+        showTime();
+        setInterval(function () {
+            showTime();
+        }, 1000);
+    </script>
 </body>
 </html>

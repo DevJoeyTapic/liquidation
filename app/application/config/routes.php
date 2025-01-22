@@ -10,6 +10,6 @@ $route['login/authenticate'] = 'login/authenticate';
 $route['logout'] = 'login/logout';
 $route['admin'] = 'admin';
 $route['dashboard'] = 'dashboard';
-$route['vesselitem/(:any)/(:any)'] = 'vesselitem/view/$1/$2';
+$route['vesselitem'] = 'vesselitem/view';
 $route['agentvessel'] = 'agentvessel';
 

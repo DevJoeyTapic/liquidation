@@ -1,48 +1,48 @@
 $(document).ready(function () {
-  $("#dataTable1").DataTable({
+  // Initialize DataTable for #dataTable1
+  var table1 = $("#dataTable1").DataTable({
     paging: true,
     searching: true,
     pageLength: 5,
   });
-
+  
+  // Custom search functionality for #dataTable1
   $(".dataTables_filter").addClass("d-none");
   $("#dataSearch").on("keyup", function () {
-    table.search(this.value).draw();
+    table1.search(this.value).draw();
   });
-});
 
-$(document).ready(function () {
-  $("#dataTable2").DataTable({
+  // Initialize DataTable for #dataTable2
+  var table2 = $("#dataTable2").DataTable({
     paging: true,
     searching: true,
     pageLength: 10,
   });
-});
 
-$(document).ready(function () {
-  $("#dataTable3").DataTable({
+  // Initialize DataTable for #dataTable3
+  var table3 = $("#dataTable3").DataTable({
     paging: true,
     searching: true,
     pageLength: 5,
   });
-});
 
-$(document).ready(function () {
-  $("#dataTable4").DataTable({
+  // Initialize DataTable for #dataTable4
+  var table4 = $("#dataTable4").DataTable({
     paging: true,
     searching: true,
     pageLength: 5,
   });
-});
 
-$(document).ready(function () {
-  $("#dataTable5").DataTable({
+  // Initialize DataTable for #dataTable5
+  var table5 = $("#dataTable5").DataTable({
     paging: true,
     searching: true,
     pageLength: 5,
   });
+
+  // Custom search functionality for #dataTable5
   $(".dataTables_filter").addClass("d-none");
   $("#dataSearch").on("keyup", function () {
-    table.search(this.value).draw();
+    table5.search(this.value).draw();
   });
 });
