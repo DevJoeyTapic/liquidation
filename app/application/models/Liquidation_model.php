@@ -24,9 +24,9 @@ class Liquidation_model extends CI_Model {
         }
         return null;
     }
-    public function get_vessel_items($vessel, $voyage) {
-        $sql = "SELECT * FROM agent_liquidations WHERE vessel = ? AND voyage = ?";
-        $query = $this->db->query($sql, array($vessel, $voyage));
+    public function get_vessel_items($id) {
+        $sql = "SELECT * FROM agent_liquidations WHERE id = ?";
+        $query = $this->db->query($sql, array($id));
         
         return $query->result();
     }
@@ -36,6 +36,22 @@ class Liquidation_model extends CI_Model {
         $query = $this->db->query($sql, array($user_id));
         return $query->result();
     }
+    
+    public function get_notes_master($epda_ref) {
+        if (empty($epda_ref)) {
+            return [];
+        }
+    
+        $sql = "SELECT * FROM notes_master WHERE epda_ref = ?";
+        $query = $this->db->query($sql, array($epda_ref));
+        
+        if ($query->num_rows() > 0) {
+            return $query->result();
+        } else {
+            return [];
+        }
+    }
+    
     
 }
 ?>

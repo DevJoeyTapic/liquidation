@@ -58,9 +58,80 @@
         </nav>
 
         <div class="main-container bg-gradient mt-5">
-           <div class="row">
-                <h3 class="p-0 m-0">Site Administration</h3>
-           </div>
+            <h3 class="my-3">Site Administrator</h3>
+            <div class="accordion" id="user-accordion">
+                <div class="accordion-item">
+                    <h2 class="accordion-header">
+                    <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                        <strong>User Management</strong>
+                    </button>
+                    </h2>
+                    <div id="collapseOne" class="accordion-collapse collapse show" data-bs-parent="#user-accordion">
+                    <div class="accordion-body">
+                        <div class="d-flex justify-content-end mb-3">
+                        <button type="button" class="btn btn-sm btn-primary" data-bs-toggle="modal" data-bs-target="#staticBackdrop">
+                            <i class="fa-solid fa-user pe-2"></i>New User
+                        </button>
+                        </div>
+                        <div class="d-flex justify-content-between align-items-center">
+                            <table class="table">
+                                <thead>
+                                    <tr>
+                                        <th>Username</th>
+                                        <th>Full Name</th>
+                                        <th>Email</th>
+                                        <th>Role</th>
+                                        <th></th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <?php $user_account = isset($user_account) ? $user_account : []; foreach ($user_account as $user): ?>
+                                        <tr>
+                                            <td><?= $user->username ?></td>
+                                            <td>WPSI MIS</td>
+                                            <td>mis@wallem.com.ph</td>
+                                            <td><?= $user->user_type ?></td>
+                                            <td>
+                                                <button class="btn btn-sm text-primary"><i class="fa-regular fa-pen-to-square"></i></button>
+                                                <button class="btn btn-sm text-danger"><i class="fa-solid fa-trash"></i></button>
+                                            </td>
+                                        </tr>
+                                    <?php endforeach; ?>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+<!-- Modal -->
+    <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5" id="staticBackdropLabel">Add New User</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form action="" method="post">
+                    <input type="text" class="form-control mb-3" name="username" placeholder="Username">
+                    <input type="text" class="form-control mb-3" placeholder="Full Name">
+                    <input type="email" class="form-control mb-3" placeholder="Email">
+                    <select class="form-select mb-3">
+                        <option selected disabled>Role</option>
+                        <option value="1">Admin</option>
+                        <option value="2">Agent</option>
+                        <option value="3">Accounting</option>
+                        <option value="4">TAD</option>
+                    </select>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary">Add</button>
+            </div>
+            </div>
         </div>
     </div>
 </body>

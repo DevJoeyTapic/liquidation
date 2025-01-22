@@ -72,10 +72,6 @@ body {
   width: 100%;
   overflow: auto;
 }
-
-tbody tr {
-  cursor: pointer;
-}
 .table {
   width: 100%;
   overflow: auto;
@@ -122,6 +118,207 @@ tbody tr {
   background-color: red!important;
   border-right: 1px solid lightgray;
 }
+
+/* Notes Window */
+/* Chat container style */
+.notes-window {
+  position: fixed;
+  right: 50px;
+  bottom: 0;
+  width: 30%;
+  max-height: 400px; /* Set max height */
+  background-color: #fff;
+  border-radius: 10px 10px 0 0;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  transform: translateY(100%);
+  transition: transform 0.3s ease-in-out;
+  display: flex;
+  flex-direction: column;
+}
+.notes-window::before {
+  content: '';
+  position: absolute;
+  left: -15px; 
+  top: 20px;    
+  border-style: solid;
+  border-width: 10px 15px 10px 0;
+  border-color: transparent #fff transparent transparent;
+}
+/* Floating chat toggle button */
+.chat-toggle-btn {
+  background-color: #3d83d5;
+  position: fixed;
+  right: 10px;
+  bottom: 20px;
+  padding: 15px;
+  font-size: 22px;
+  cursor: pointer;
+  z-index: 100;
+}
+
+/* When the chat is open */
+.notes-window.open {
+  padding-left: 0 !important;
+  transform: translateY(0);
+}
+
+/* Header styling */
+.notes-header {
+  background-color: #4285F4;  /* Google blue */
+  font-weight: bold;
+  border-radius: 10px 10px 0 0;
+  z-index: 1; 
+}
+
+/* Chat message styling */
+.chat-messages {
+  flex-grow: 1; /* Makes this section flexible to take remaining space */
+  padding-right: 10px; /* Avoid content touching the scrollbar */
+  display: flex;
+  flex-direction: column;
+  overflow: auto;
+  scrollbar-width: none; /* For Firefox */
+}
+.chat-messages .receiver, .chat-messages .sender {
+  margin-bottom: 15px; /* Adds space between message blocks */
+}
+.chat-messages::-webkit-scrollbar {
+  display: none; /* For Chrome, Safari, and Edge */
+}
+
+
+.imessage p {
+  border-radius: 1.15rem;
+  line-height: 1.25;
+  font-size: 0.9rem;
+  max-width: 75%;
+  padding: 0.5rem .875rem;
+  position: relative;
+  word-wrap: break-word;
+}
+
+.imessage p::before,
+.imessage p::after {
+  bottom: -0.1rem;
+  content: "";
+  height: 1rem;
+  position: absolute;
+}
+
+p.from-me {
+  align-self: flex-end;
+  background-color: #248bf5;
+  color: #fff; 
+}
+
+p.from-me::before {
+  border-bottom-left-radius: 0.8rem 0.7rem;
+  border-right: 1rem solid #248bf5;
+  right: -0.35rem;
+  transform: translate(0, -0.1rem);
+}
+
+p.from-me::after {
+  background-color: #fff;
+  border-bottom-left-radius: 0.5rem;
+  right: -40px;
+  transform:translate(-30px, -2px);
+  width: 10px;
+}
+
+p[class^="from-"] {
+  margin: 0.5rem 0;
+  width: fit-content;
+}
+
+p.from-me ~ p.from-me {
+  margin: 0.25rem 0 0;
+}
+
+p.from-me ~ p.from-me:not(:last-child) {
+  margin: 0.25rem 0 0;
+}
+
+p.from-me ~ p.from-me:last-child {
+  margin-bottom: 0.5rem;
+}
+
+p.from-them {
+  align-items: flex-start;
+  background-color: #e5e5ea;
+  color: #000;
+}
+
+p.from-them:before {
+  border-bottom-right-radius: 0.8rem 0.7rem;
+  border-left: 1rem solid #e5e5ea;
+  left: -0.35rem;
+  transform: translate(0, -0.1rem);
+}
+
+p.from-them::after {
+  background-color: #fff;
+  border-bottom-right-radius: 0.5rem;
+  left: 20px;
+  transform: translate(-30px, -2px);
+  width: 10px;
+}
+
+.no-tail::before {
+  display: none;
+}
+
+.margin-b_none {
+  margin-bottom: 0 !important;
+}
+
+.margin-b_one {
+  margin-bottom: 1rem !important;
+}
+
+.margin-t_one {
+  margin-top: 1rem !important;
+}
+/* .message {
+  background-color: #f1f1f1;
+  padding: 8px 12px;
+  border-radius: 20px;
+  word-wrap: break-word;
+} */
+
+/* Chat input area */
+.chat-input {
+  padding: 10px;
+  border: none;
+  border-top: 1px solid #ddd;
+  font-size: 14px;
+  position: sticky;
+  bottom: 0;
+  width: 100%;
+}
+
+
+.profile-notes {
+  display: flex;
+  justify-content: center;
+  align-items: flex-end;  
+  padding-right: 8px;
+}
+
+.profile-notes img {
+  margin-top: 30px;
+  margin-right: 5px;
+  height: 40px;
+}
+
+.profile-notes.right{
+  padding-left: 15px;
+}
+
+.small {
+  font-size: 0.7rem;
+}
+
 /* X-Large devices (large desktops, less than 1400px) */
 @media (max-width: 1399.98px) { 
   .search-bar {

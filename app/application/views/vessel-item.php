@@ -17,10 +17,9 @@
 
     <!-- Bootstrap -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
 
     <!-- FontAwesome -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css" integrity="sha512-Kc323vGBEqzTmouAECnVceyQqyqdsSiqLQISBL29aUW4U/M7pSPA/gEUZQqv1cwx4OnYxTxve5UMg5GT6L4JJg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
     <!-- CSS files -->
     <link rel="stylesheet" href="<?= base_url('assets/css/navbar.css'); ?>">
     <link rel="stylesheet" href="<?= base_url('assets/css/main.css'); ?>">
@@ -52,14 +51,53 @@
         </nav>
 
         <div class="main-container bg-gradient">
-            <div class="alert alert-danger alert-dismissible fade show d-flex align-items-center" role="alert">
-                <i class="fa-solid fa-exclamation-circle me-2"></i>
-                <div>
-                    <strong>Due Wallem: </strong> PHP 39,377.01
+        <?php if($this->session->userdata('user_type') == 2): ?>
+                <div class="accordion mb-3" id="breakdownAccordion">
+                    <div class="accordion-item">
+                        <h2 class="accordion-header">
+                            <button class="accordion-button text-danger" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                                <i class="fa-solid fa-exclamation-circle me-2"></i><strong>Due Wallem: &nbsp;</strong> 60,0000.00                       
+                            </button>
+                        </h2>
+                        <div id="collapseOne" class="accordion-collapse collapse show" data-bs-parent="#breakdownAccordion">
+                            <div class="accordion-body">
+                                <div class="d-flex justify-content-between align-items-end">
+                                    <h4><strong>Credit Breakdown:</strong></h4>
+                                    <p class="text-danger small"><strong>CURRENCY:</strong> PHP</p>
+                                </div>
+                                <table class="table table-hover">
+                                    <caption class="small">As of <span id="currentTime"></span></caption>
+                                    <thead>
+                                        <tr>
+                                            <th class="col-3">Vessel/Voyage</th>
+                                            <th class="col-1">Due Amount</th>
+                                            <th class="text-end col-8">Credited Amount</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr class="breakdown-row">
+                                            <td>Vessel Name V123</td>
+                                            <td>20,000.00</td>
+                                            <td class="text-end">20,000.00</td>
+                                        </tr>
+                                        <tr class="breakdown-row">
+                                            <td>Vessel Name V123</td>
+                                            <td>20,000.00</td>
+                                            <td class="text-end">20,000.00</td>
+                                        </tr>
+                                        <tr class="breakdown-row">
+                                            <td>Vessel Name V123</td>
+                                            <td>20,000.00</td>
+                                            <td class="text-end">20,000.00</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                                <h4 class="text-end bold">PHP 60,0000.00</h4>
+                            </div>
+                        </div>
+                    </div>
                 </div>
-                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-            </div>
-            
+            <?php endif; ?>
             <div class="cont mb-3">
                 <div class="row px-3 d-flex justify-content-start align-items-center">
                     <div class="col p-0">
@@ -69,7 +107,7 @@
                             </div>
                             <div class="col-10">
                                 <p class="label">VESSEL</p>
-                                <p class="title"><?= isset($vessel) ? $vessel : ''; ?></p>
+                                <p class="title"><?= isset($vessel_item) ? $vessel_item->vessel : 'N/A'; ?></p>
                             </div>
                         </div>
                     </div>
@@ -80,7 +118,7 @@
                             </div>
                             <div class="col-9">
                                 <p class="label">VOYAGE</p>
-                                <p class="title"><?= isset($vessel_items->vessel) ? $vessel_items->vessel : ''; ?></p>
+                                <p class="title"><?= isset($vessel_item) ? $vessel_item->voyage : 'N/A'; ?></p>
                             </div>
                         </div>
                     </div>
@@ -91,7 +129,7 @@
                             </div>
                             <div class="col-10">
                                 <p class="label">PORT</p>
-                                <p class="title"><?= isset($vessel_items->vessel) ? $vessel_items->vessel : ''; ?></p>
+                                <p class="title"><?= isset($vessel_item) ? $vessel_item->port : 'N/A'; ?></p>
                             </div>
                         </div>
                     </div>
@@ -102,7 +140,7 @@
                             </div>
                             <div class="col-10">
                                 <p class="label">ARRIVAL</p>
-                                <p class="title">2024-Oct-10</p>
+                                <p class="title"><?= isset($vessel_item) ? $vessel_item->eta : 'N/A'; ?></p>
                             </div>
                         </div>
                         <div class="row d-flex justify-content-start align-items-center">
@@ -111,7 +149,7 @@
                             </div>
                             <div class="col-10">
                                 <p class="label">DEPARTURE</p>
-                                <p class="title">2024-Oct-11</p>
+                                <p class="title"><?= isset($vessel_item) ? $vessel_item->etd : 'N/A'; ?></p>
                             </div>
                         </div>
                     </div>
@@ -131,6 +169,10 @@
                         <li><span class="progress-bar progress-bar-legend bg-danger"></span>Remaining Items: 86.66% (13 of 15)</li>
                     </ul>
                 </div>
+                <div class="d-flex justify-content-end">
+                    <button class="btn btn-success btn-sm" id="markComplete"> <i class="fa-solid fa-check pe-2"></i>Mark as Complete</button>
+                </div>
+
             </div>
 
             <div class="cont">
@@ -147,7 +189,7 @@
                         <div class="row m-2"> 
                             <div class="data-table">
                                 <div class="d-flex justify-content-end">
-                                    <button class="btn btn-success" data-bs-toggle="modal" data-bs-target="#itemSubmissionModal">
+                                    <button class="btn btn-success btn-sm" data-bs-toggle="modal" data-bs-target="#itemSubmissionModal">
                                         <i class="fa-solid fa-plus"></i>
                                         Add Item
                                     </button>
@@ -170,7 +212,6 @@
                                         <tbody>
                                             <?php foreach ($liquidation_master as $entry): ?>
                                                 <?php if ($entry->user_id == $this->session->userdata('user_id')): ?>
-
                                                     <tr>
                                                         <td class="col-3" id="item"><?= $entry->item; ?></td>
                                                         <td class="col" id="description"><?= $entry->description; ?></td>
@@ -185,8 +226,10 @@
                                                         <td class="docRef"><input type="file" class="form-control form-control-sm" multiple></td>
                                                         <td class="text-center validate"><input type="checkbox" class="form-check-input rowCheckbox"></td>
                                                     </tr>
+
                                                 <?php endif; ?>
                                             <?php endforeach; ?>
+
                                         </tbody>
                                     </table>
                                 </div>
@@ -238,24 +281,21 @@
                             </div>
                         </div>
                         <div class="d-flex justify-content-end">
-                            <button type="button" class="btn btn-danger" id="removeBtn">Remove from Validation</button>
-                            <button type="button" class="btn btn-primary" id="submitLiquidation">Submit for Validation</button>
+                            <button type="button" class="btn btn-sm btn-danger me-2" id="removeBtn">Remove from Validation</button>
+                            <button type="button" class="btn btn-sm btn-primary" id="forValidationBtn">Submit for Validation</button>
                         </div>
                     </div>
                     <div class="tab-pane fade" id="validated" role="tabpanel" aria-labelledby="validatedTab">
                         <div class="row m-2"> 
                             <div class="data-table">
                                 <div class="d-flex justify-content-end">
-                                    <button class="btn btn-success btn-sm" data-bs-toggle="modal" data-bs-target="#validatedModal">
-                                        <i class="fa-solid fa-check-circle"></i>
-                                        View Validated Item
-                                    </button>
+                                    
                                 </div>
                                 <div class="table-reponsive">
                                     <table class="table table-hover display" id="dataTable4">
                                     <thead>
                                             <tr>
-                                                <th class="col-3">Items</th>
+                                            <th class="col-3">Items</th>
                                                 <th>Description</th>
                                                 <th class="col-1 text-center">RFP No.</th>
                                                 <th class="col-2">RFP Amount</th>
@@ -267,17 +307,7 @@
                                             </tr>
                                         </thead>
                                         <tbody>
-                                            <tr>
-                                                <td class="itemName">Mooring/Unmooring</td>
-                                                <td>* * Description goes here * *</td>
-                                                <td class="text-center rfpNo">6147</td>
-                                                <td class="rfpAmount">24000.00</td>
-                                                <td class="">24000.00</td>                                                </td>
-                                                <td class="variance">0.00</td>
-                                                <td class="remarks">* * Comments goes here * *</td>
-                                                <td class="docRef"><a href="#">somefiles.pdf</a></td>
-                                                <td>Validated</td>
-                                            </tr>
+                                            
                                         </tbody>
                                     </table>
                                 </div>
@@ -288,6 +318,123 @@
             </div>
 		</div>
   	</div>
+    <button onclick="toggleChat()" class="chat-toggle-btn btn btn-primary rounded-circle">
+        <i class="fas fa-comments"></i>
+        <span class="position-absolute start-100 translate-middle p-2 bg-danger border border-light rounded-circle">
+        <span class="visually-hidden">New alerts</span>
+  </span>
+    </button>
+    <div class="notes-window">
+        <div class="notes-header text-white p-3 text-center">
+            Notes
+        </div>
+        <div class="chat-messages p-3">
+            <?php if (!empty($notes_master)): ?>
+                <?php foreach ($notes_master as $note): ?>
+                    <?php if ($note->epda_ref == $vessel_items->epda_ref): ?>
+                        <?php 
+                            $isSender = $note->sender == $this->session->userdata('username');
+                            $isCurrentUser = $note->user_id == $this->session->userdata('user_id');
+                            $profileClass = $isCurrentUser ? 'profile-notes right' : 'profile-notes';
+                            $messageClass = $isCurrentUser ? 'from-me p-2' : 'from-them p-2';
+                            $userClass = $isSender ? 'sender' : 'receiver';
+                            $formattedDate = htmlspecialchars($note->date);
+                            $formattedMessage = htmlspecialchars($note->note);
+                            $userName = htmlspecialchars($note->user_name);
+                            $userType = htmlspecialchars($note->user_type);
+                        ?>
+                        
+                        <div class="<?= $userClass ?>">
+                            <div class="d-flex justify-content-between text-secondary">
+                                <div>
+                                    <p class="small"><strong><?= $userName ?></strong></p>
+                                    <p class="small"><?= $userType ?></p>
+                                </div>
+                                <div class="d-flex justify-content-end align-items-end">
+                                    <p class="small"><?= $formattedDate ?></p>
+                                </div>
+                            </div>
+                            <div class="d-flex">
+                                <div class="imessage d-flex">
+                                    <div class="<?= $profileClass ?>">
+                                        <img src="<?= base_url('assets/images/default_pic.png') ?>" class="rounded-circle">
+                                    </div>
+                                    <p class="<?= $messageClass ?>">
+                                        <?= $formattedMessage ?>
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    <?php endif; ?>
+                <?php endforeach; ?>
+            <?php else: ?>
+                <p>No notes available for this reference.</p>
+            <?php endif; ?>
+
+        </div>
+            <!-- <div class="receiver">
+                <div class="d-flex justify-content-between text-secondary">
+                    <div>
+                        <p class="small"><strong>Archielyn Anabeso</strong></p>
+                        <p class="small">Accounting Department</p>
+                    </div>
+                    <div class="d-flex justify-content-end align-items-end">
+                        <p class="small">
+                            <?php
+                                date_default_timezone_set('Asia/Singapore'); 
+                                echo date('F j, Y H:i A');
+                            ?>
+                        </p>
+                    </div>
+                </div>
+                <div class="d-flex">
+                    <div class="imessage d-flex">
+                        <div class="profile-notes">
+                            <img src="<?= base_url('assets/images/bg-ship.jpg'); ?>" class="rounded-circle">
+                        </div>
+                        <p class="from-them p-2">
+                        "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+                        </p>
+                    </div>
+                </div>
+            </div>
+            <div class="sender">
+                <div class="d-flex justify-content-between text-secondary">
+                    <div class="d-flex justify-content-end align-items-end">
+                        <p class="small">
+                            <?php
+                                date_default_timezone_set('Asia/Singapore'); 
+                                echo date('F j, Y H:i A');
+                            ?>
+                        </p>
+                    </div>
+                    <div>
+                        <p class="small text-end"><strong>Archielyn Anabeso</strong></p>
+                        <p class="small">Accounting Department</p>
+                    </div>
+                </div>
+                <div class=""> 
+                    <div class="imessage d-flex justify-content-end align-items-right">
+                        <p class="from-me p-2">
+                        "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+                        </p>
+                        <div class="profile-notes right">
+                            <img src="<?= base_url('assets/images/bg-ship.jpg'); ?>" class="rounded-circle">
+                        </div>
+                    </div>
+                    
+                </div>
+            </div> -->
+
+        <input type="text" class="form-control chat-input" placeholder="Type a message...">                                          
+        <!-- <div class="message-input-container">
+            <input type="text" class="form-control chat-input" placeholder="Type a message...">
+            <button class="send-button">
+                <i class="fa-solid fa-paper-plane"></i>
+            </button>
+        </div> -->
+
+    </div>
   <!-- Modals -->
 	<div class="modal fade" id="multipleEntryModal" tabindex="-1" aria-labelledby="multipleEntryModalLabel">
 		<div class="modal-dialog">
@@ -385,7 +532,27 @@
 		</div>
 	</div>
 
-	<script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+    <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.12.1/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.0.8/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+	
+    <script>
+        function toggleChat() {
+            const chat = document.querySelector('.notes-window');
+            chat.classList.toggle('open');
+        }
+        function showTime() {
+            document.getElementById('currentTime').innerHTML = new Date().toUTCString();
+        }
+        showTime();
+        setInterval(function () {
+            showTime();
+        }, 1000);
+    </script>
+    <script>
+       
     </script>
 		
 </body>
