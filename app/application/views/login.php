@@ -15,6 +15,9 @@
 
     <!-- Custom CSS -->
     <link rel="stylesheet" href="<?= base_url('assets/css/login.css'); ?>">
+
+    <!-- Swal -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 </head>
 <body>
     <div class="container">
@@ -37,9 +40,7 @@
                         </div>
                         <button type="submit" class="btn btn-primary w-100">Login</button>
                     </form>
-                    <?php if ($this->session->flashdata('error')): ?>
-                        <p style="color: red;"><?php echo $this->session->flashdata('error'); ?></p>
-                    <?php endif; ?>
+
                     <!-- Footer Text -->
                     <div class="text-center mt-3">
                         <p class="text-muted" style="font-size: 0.9rem;">Made by Wallem Philippines</p>
@@ -48,5 +49,19 @@
             </div>
         </div>
     </div>
+    <!-- Swal -->
+    <?php if ($this->session->flashdata('error')): ?>
+        <script>
+            Swal.fire({
+                title: 'Error!',
+                text: '<?php echo $this->session->flashdata('error'); ?>',
+                icon: 'error',
+                confirmButtonText: 'Try Again'
+            }).then(function() {
+                <?php $this->session->unset_userdata('error'); ?>
+            });
+        </script>
+
+    <?php endif; ?>
 </body>
 </html>

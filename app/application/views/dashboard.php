@@ -15,7 +15,9 @@
     <script src="https://cdn.datatables.net/1.13.5/js/jquery.dataTables.min.js"></script>
 
     <!-- JS Files -->
-    <script src="<?= base_url('assets/js/dataTable.js') ?>"></script>
+    <script src="<?= base_url('assets/js/dataTable.js'); ?>"></script>
+    <script src="<?= base_url('assets/js/main.js'); ?>"></script>
+
 
 
     <!-- Bootstrap -->
@@ -47,7 +49,7 @@
                     <ul class="dropdown-menu dropdown-menu-end">
                         <li>
                             <h6 class="dropdown-header">
-                                <?= $this->session->userdata('username') ?: 'Guest'; ?> - 
+                                <?= $this->session->userdata('fullname') ?: 'Guest'; ?> - 
                                 <?php 
                                     switch ($this->session->userdata('user_type')) {
                                         case 1:
@@ -74,61 +76,6 @@
             </div>
         </nav>
         <div class="main-container bg-gradient">
-            <!-- ALERT FOR SUPERCARGO AGENT ONLY -->
-            <?php if($this->session->userdata('user_type') == 2): ?>
-                <div class="accordion mb-3" id="breakdownAccordion">
-                    <div class="accordion-item">
-                        <h2 class="accordion-header">
-                            <button class="accordion-button text-danger" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
-                                <i class="fa-solid fa-exclamation-circle me-2"></i><strong>Due Wallem: &nbsp;</strong> 60,0000.00                       
-                            </button>
-                        </h2>
-                        <div id="collapseOne" class="accordion-collapse collapse show" data-bs-parent="#breakdownAccordion">
-                            <div class="accordion-body">
-                                <div class="d-flex justify-content-between align-items-end">
-                                    <h4><strong>Credit Breakdown:</strong></h4>
-                                    <p class="text-danger small"><strong>CURRENCY:</strong> PHP</p>
-                                </div>
-                                <table class="table table-hover">
-                                    <caption class="small">As of <span id="currentTime"></span></caption>
-                                    <thead>
-                                        <tr>
-                                            <th class="col-3">Vessel/Voyage</th>
-                                            <th class="col-1">Due Amount</th>
-                                            <th class="text-end col-8">Credited Amount</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <tr class="breakdown-row">
-                                            <td>Vessel Name V123</td>
-                                            <td>20,000.00</td>
-                                            <td class="text-end">20,000.00</td>
-                                        </tr>
-                                        <tr class="breakdown-row">
-                                            <td>Vessel Name V123</td>
-                                            <td>20,000.00</td>
-                                            <td class="text-end">20,000.00</td>
-                                        </tr>
-                                        <tr class="breakdown-row">
-                                            <td>Vessel Name V123</td>
-                                            <td>20,000.00</td>
-                                            <td class="text-end">20,000.00</td>
-                                        </tr>
-                                    </tbody>
-                                </table>
-                                <h4 class="text-end bold">PHP 60,0000.00</h4>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            <?php endif; ?>
-            
-            <div class="dashboard-logo">
-                <img src="<?= base_url('assets/images/wallem_no_bg.png'); ?>" alt="Wallem Logo">
-            </div>
-            <div class="search-section" id="dataTable_filter">
-                <input type="text" id="dataSearch" class="form-control form-control-sm search-bar" placeholder="Search keywords" autofocus>
-            </div>
             <div class="search-result cont d-flex flex-column">
                 <div class="data-table">
                     <!-- table view for accounting -->
@@ -186,7 +133,53 @@
             </div>    
         </div>
     </div>
-
+    <?php if($this->session->userdata('user_type') == 2): ?>
+        <button onclick="toggleBreakdown()" class="breakdown-toggle-btn btn btn-warning rounded-circle">
+            <i class="fa-solid fa-money-bill-transfer"></i>
+            <!-- <span class="position-absolute start-100 translate-middle p-2 bg-danger border border-light rounded-circle">
+                <span class="visually-hidden">New alerts</span>
+            </span> -->
+        </button>
+        <div class="breakdown-window">
+            <div class="breakdown-header text-white p-3 text-center">
+                Credit Breakdown
+            </div>
+            <div class="breakdown-content p-3">                        
+                <div class="d-flex justify-content-between align-items-end">
+                    <h4><strong>Credit Breakdown:</strong></h4>
+                    <p class="text-danger small"><strong>CURRENCY:</strong> PHP</p>
+                </div>
+                <table class="table table-warning table-hover">
+                    <caption class="small">As of <span id="currentTime"></span></caption>
+                    <thead>
+                        <tr>
+                            <th class="col-3">Vessel/Voyage</th>
+                            <th class="col-3">Total</th>
+                            <th class="text-end col-6">Credited Amount</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr class="breakdown-row">
+                            <td>Vessel Name V123</td>
+                            <td>20,000.00</td>
+                            <td class="text-end">20,000.00</td>
+                        </tr>
+                        <tr class="breakdown-row">
+                            <td>Vessel Name V123</td>
+                            <td>20,000.00</td>
+                            <td class="text-end">20,000.00</td>
+                        </tr>
+                        <tr class="breakdown-row">
+                            <td>Vessel Name V123</td>
+                            <td>20,000.00</td>
+                            <td class="text-end">20,000.00</td>
+                        </tr>
+                    </tbody>
+                </table>
+                <h4 class="text-end bold">PHP 60,0000.00</h4>
+            </div>
+        </div>
+    <?php endif; ?>
     <!-- Modals -->
     <div class="modal fade" id="changePasswordModal" tabindex="-1" aria-labelledby="changePasswordModalLabel" aria-hidden="true">
         <div class="modal-dialog">
@@ -219,6 +212,10 @@
         </div>
     </div>
     <script>
+        function toggleBreakdown() {
+            const chat = document.querySelector('.breakdown-window');
+            chat.classList.toggle('open');
+        }
         function showTime() {
             document.getElementById('currentTime').innerHTML = new Date().toUTCString();
         }
@@ -226,6 +223,8 @@
         setInterval(function () {
             showTime();
         }, 1000);
+
+        
     </script>
 </body>
 </html>

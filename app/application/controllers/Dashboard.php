@@ -8,6 +8,7 @@ class Dashboard extends CI_Controller {
         $this->load->model('Liquidation_model');
         $this->load->model('Login_model');
         $this->load->library('session');
+        $this->load->model('User_model');
 
         if (!$this->session->userdata('logged_in')) {
             redirect('login');
@@ -19,8 +20,7 @@ class Dashboard extends CI_Controller {
 
         switch($user_type) {
             case 1: // Admin
-                // $data['agent_liquidations'] = $this->Liquidation_model->get_agent_liquidations();
-                $this->load->view('dashboard');
+                $this->load->view('admin-panel');
                 break;
             case 2: // Agent
                 $data['agent_liquidations'] = $this->Liquidation_model->get_agent_liquidations();
@@ -31,7 +31,7 @@ class Dashboard extends CI_Controller {
                 $this->load->view('dashboard', $data);
                 break;
             default:               
-                $this->load->view('dashboard');
+                $this->load->view('login');
         }
     }
 }

@@ -234,7 +234,42 @@ $(document).ready(function () {
     $("#newRemarks").val('');
     $("#newAmount").val('');
   });
-
+  $(document).on("click", "#updateUserBtn", function () {
+    var user_id = $(this).closest('tr').find('input[name="user_id"]').val();
+    var status = $(this).closest('tr').find('input[name="status"]').val();
+    var username = $(this).closest('tr').find('td.username').text();
+    var email = $(this).closest('tr').find('td.email').text();
+    var fullname = $(this).closest('tr').find('td.fullname').text();
+    var user_type = $(this).closest('tr').find('td.user_type').text();
+    $('#user_id').val(user_id);
+    $('#usernametxt').val(username);
+    $('#emailtxt').val(email);
+    $('#fullnametxt').val(fullname);
+    switch (user_type) {
+      case 'Admin':
+        $('select option[value="1"]').attr('selected', 'selected');
+      break;
+      case 'Agent':
+        $('select option[value="2"]').attr('selected', 'selected');
+      break;
+      case 'Accounting':
+        $('select option[value="3"]').attr('selected', 'selected');
+      break;
+      case 'TAD':
+        $('select option[value="4"]').attr('selected', 'selected');
+      break;
+      default:
+        $('select option[value="0"]').attr('selected', 'selected');
+    }
+    
+    if(status == 1) {
+      $('#status').prop('checked', true);
+    } else {
+      $('#status').prop('checked', false);
+    }
+  });
+  
+    
 });
 // Ensure no conflicting scripts are causing redirection issues
 document.addEventListener('DOMContentLoaded', function() {
@@ -249,4 +284,19 @@ document.addEventListener('DOMContentLoaded', function() {
       });
     }
   });
+  function toggleChat() {
+    const chat = document.querySelector('.notes-window');
+    chat.classList.toggle('open');
+  }
+  function toggleBreakdown() {
+      const chat = document.querySelector('.breakdown-window');
+      chat.classList.toggle('open');
+  }
+  function showTime() {
+      document.getElementById('currentTime').innerHTML = new Date().toUTCString();
+  }
+  showTime();
+  setInterval(function () {
+      showTime();
+  }, 1000);
 });

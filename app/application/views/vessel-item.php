@@ -19,7 +19,8 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
 
     <!-- FontAwesome -->
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" />
+    
     <!-- CSS files -->
     <link rel="stylesheet" href="<?= base_url('assets/css/navbar.css'); ?>">
     <link rel="stylesheet" href="<?= base_url('assets/css/main.css'); ?>">
@@ -41,7 +42,7 @@
                     </button>
                     
                     <ul class="dropdown-menu dropdown-menu-end">
-                        <li><h6 class="dropdown-header"><?= $this->session->userdata('username') ?: 'Guest'; ?> - <?= $this->session->userdata('user_type') == 2 ? 'Supercargo Agent' : ($this->session->userdata('user_type') == 3 ? 'Accounting' : 'Unknown'); ?></h6></li>
+                        <li><h6 class="dropdown-header"><?= $this->session->userdata('fullname') ?: 'Guest'; ?> - <?= $this->session->userdata('user_type') == 2 ? 'Supercargo Agent' : ($this->session->userdata('user_type') == 3 ? 'Accounting' : 'Unknown'); ?></h6></li>
                         <li><hr class="dropdown-divider"></li>
                         <li><button class="dropdown-item" type="button" data-bs-toggle="modal" data-bs-target="#changePasswordModal">Change Password</button></li>
                         <li><a class="dropdown-item" href="<?= site_url('login/logout'); ?>">Signout</a></li>
@@ -51,7 +52,7 @@
         </nav>
 
         <div class="main-container bg-gradient">
-        <?php if($this->session->userdata('user_type') == 2): ?>
+            <?php if($this->session->userdata('user_type') == 2): ?>
                 <div class="accordion mb-3" id="breakdownAccordion">
                     <div class="accordion-item">
                         <h2 class="accordion-header">
@@ -59,7 +60,7 @@
                                 <i class="fa-solid fa-exclamation-circle me-2"></i><strong>Due Wallem: &nbsp;</strong> 60,0000.00                       
                             </button>
                         </h2>
-                        <div id="collapseOne" class="accordion-collapse collapse show" data-bs-parent="#breakdownAccordion">
+                        <div id="collapseOne" class="accordion-collapse collapse" data-bs-parent="#breakdownAccordion">
                             <div class="accordion-body">
                                 <div class="d-flex justify-content-between align-items-end">
                                     <h4><strong>Credit Breakdown:</strong></h4>
@@ -188,7 +189,7 @@
                     <div class="tab-pane fade show active" id="pending" role="tabpanel" aria-labelledby="pendingTab">
                         <div class="row m-2"> 
                             <div class="data-table">
-                                <div class="d-flex justify-content-end">
+                                <div class="d-flex justify-content-end mb-2">
                                     <button class="btn btn-success btn-sm" data-bs-toggle="modal" data-bs-target="#itemSubmissionModal">
                                         <i class="fa-solid fa-plus"></i>
                                         Add Item
@@ -321,58 +322,15 @@
     <button onclick="toggleChat()" class="chat-toggle-btn btn btn-primary rounded-circle">
         <i class="fas fa-comments"></i>
         <span class="position-absolute start-100 translate-middle p-2 bg-danger border border-light rounded-circle">
-        <span class="visually-hidden">New alerts</span>
-  </span>
+            <span class="visually-hidden">New alerts</span>
+        </span>
     </button>
     <div class="notes-window">
         <div class="notes-header text-white p-3 text-center">
             Notes
         </div>
-        <div class="chat-messages p-3">
-            <?php if (!empty($notes_master)): ?>
-                <?php foreach ($notes_master as $note): ?>
-                    <?php if ($note->epda_ref == $vessel_items->epda_ref): ?>
-                        <?php 
-                            $isSender = $note->sender == $this->session->userdata('username');
-                            $isCurrentUser = $note->user_id == $this->session->userdata('user_id');
-                            $profileClass = $isCurrentUser ? 'profile-notes right' : 'profile-notes';
-                            $messageClass = $isCurrentUser ? 'from-me p-2' : 'from-them p-2';
-                            $userClass = $isSender ? 'sender' : 'receiver';
-                            $formattedDate = htmlspecialchars($note->date);
-                            $formattedMessage = htmlspecialchars($note->note);
-                            $userName = htmlspecialchars($note->user_name);
-                            $userType = htmlspecialchars($note->user_type);
-                        ?>
-                        
-                        <div class="<?= $userClass ?>">
-                            <div class="d-flex justify-content-between text-secondary">
-                                <div>
-                                    <p class="small"><strong><?= $userName ?></strong></p>
-                                    <p class="small"><?= $userType ?></p>
-                                </div>
-                                <div class="d-flex justify-content-end align-items-end">
-                                    <p class="small"><?= $formattedDate ?></p>
-                                </div>
-                            </div>
-                            <div class="d-flex">
-                                <div class="imessage d-flex">
-                                    <div class="<?= $profileClass ?>">
-                                        <img src="<?= base_url('assets/images/default_pic.png') ?>" class="rounded-circle">
-                                    </div>
-                                    <p class="<?= $messageClass ?>">
-                                        <?= $formattedMessage ?>
-                                    </p>
-                                </div>
-                            </div>
-                        </div>
-                    <?php endif; ?>
-                <?php endforeach; ?>
-            <?php else: ?>
-                <p>No notes available for this reference.</p>
-            <?php endif; ?>
-
-        </div>
-            <!-- <div class="receiver">
+        <div class="chat-messages p-3">                        
+        <div class="receiver">
                 <div class="d-flex justify-content-between text-secondary">
                     <div>
                         <p class="small"><strong>Archielyn Anabeso</strong></p>
@@ -424,18 +382,90 @@
                     </div>
                     
                 </div>
-            </div> -->
+            </div>
+        </div>
 
         <input type="text" class="form-control chat-input" placeholder="Type a message...">                                          
-        <!-- <div class="message-input-container">
-            <input type="text" class="form-control chat-input" placeholder="Type a message...">
-            <button class="send-button">
-                <i class="fa-solid fa-paper-plane"></i>
-            </button>
-        </div> -->
 
     </div>
+    <?php if($this->session->userdata('user_type') == 2): ?>
+        <button onclick="toggleBreakdown()" class="breakdown-toggle-btn btn btn-warning rounded-circle">
+            <i class="fa-solid fa-money-bill-transfer"></i>
+            <!-- <span class="position-absolute start-100 translate-middle p-2 bg-danger border border-light rounded-circle">
+                <span class="visually-hidden">New alerts</span>
+            </span> -->
+        </button>
+        <div class="breakdown-window">
+            <div class="breakdown-header text-white p-3 text-center">
+                Credit Breakdown
+            </div>
+            <div class="breakdown-content p-3">                        
+                <div class="d-flex justify-content-between align-items-end">
+                    <h4><strong>Credit Breakdown:</strong></h4>
+                    <p class="text-danger small"><strong>CURRENCY:</strong> PHP</p>
+                </div>
+                <table class="table table-warning table-hover">
+                    <caption class="small">As of <span id="currentTime"></span></caption>
+                    <thead>
+                        <tr>
+                            <th class="col-3">Vessel/Voyage</th>
+                            <th class="col-3">Total</th>
+                            <th class="text-end col-6">Credited Amount</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr class="breakdown-row">
+                            <td>Vessel Name V123</td>
+                            <td>20,000.00</td>
+                            <td class="text-end">20,000.00</td>
+                        </tr>
+                        <tr class="breakdown-row">
+                            <td>Vessel Name V123</td>
+                            <td>20,000.00</td>
+                            <td class="text-end">20,000.00</td>
+                        </tr>
+                        <tr class="breakdown-row">
+                            <td>Vessel Name V123</td>
+                            <td>20,000.00</td>
+                            <td class="text-end">20,000.00</td>
+                        </tr>
+                    </tbody>
+                </table>
+                <h4 class="text-end bold">PHP 60,0000.00</h4>
+            </div>
+        </div>
+    <?php endif; ?>
   <!-- Modals -->
+  <div class="modal fade" id="changePasswordModal" tabindex="-1" aria-labelledby="changePasswordModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="changePasswordModalLabel">Change Your Password</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="changePasswordForm" action="<?= site_url('login/change_password'); ?>" method="post">
+                        <div class="mb-3">
+                            <label for="currentUserPassword" class="form-label">Current Password</label>
+                            <input type="password" class="form-control" id="old_password" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="newUserPassword" class="form-label">New Password</label>
+                            <input type="password" class="form-control" id="new_password" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="confirmUserPassword" class="form-label">Confirm New Password</label>
+                            <input type="password" class="form-control" id="confirm_password" required>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                    <button type="button" class="btn btn-primary">Update Password</button>
+                </div>
+            </div>
+        </div>
+    </div>
 	<div class="modal fade" id="multipleEntryModal" tabindex="-1" aria-labelledby="multipleEntryModalLabel">
 		<div class="modal-dialog">
 			<div class="modal-content">
@@ -541,6 +571,10 @@
     <script>
         function toggleChat() {
             const chat = document.querySelector('.notes-window');
+            chat.classList.toggle('open');
+        }
+        function toggleBreakdown() {
+            const chat = document.querySelector('.breakdown-window');
             chat.classList.toggle('open');
         }
         function showTime() {

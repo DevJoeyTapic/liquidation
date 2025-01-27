@@ -5,3 +5,39 @@
     border-radius: 50%;
     display: inline-block;
 }
+.grid-table {
+    display: grid;
+    grid-template-columns: 3fr 1fr 8fr; /* Defines column widths */
+    gap: 10px;
+    padding: 10px;
+  }
+  
+  .grid-header {
+    display: contents; /* Makes header items align in the same grid context */
+    font-weight: bold;
+  }
+  
+  .grid-header span {
+    padding: 10px;
+    background-color: #f8f9fa;
+  }
+  
+  .grid-row {
+    display: contents;
+  }
+  
+  .grid-row span {
+    padding: 10px;
+    background-color: #ffffff;
+    border-bottom: 1px solid #ddd;
+  }
+  
+  .text-end {
+    text-align: right;
+  }
+  
+  .caption {
+    font-size: 0.85rem;
+    color: #777;
+  }
+  
