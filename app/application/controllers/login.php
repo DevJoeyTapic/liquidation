@@ -20,7 +20,7 @@ class Login extends CI_Controller {
 
     public function authenticate() {
         $username = $this->input->post('username');
-        $password = $this->input->post('password');
+        $password = md5($this->input->post('password'));
 
         if (empty($username) || empty($password)) {
             $this->session->set_flashdata('error', 'Username and Password are required.');
@@ -32,6 +32,7 @@ class Login extends CI_Controller {
         if ($user) {
             $this->session->set_userdata('user_id', $user->user_id);
             $this->session->set_userdata('username', $user->username);
+            $this->session->set_userdata('fullname', $user->fullname);
             $this->session->set_userdata('user_type', $user->user_type);
             $this->session->set_userdata('logged_in', true);
 
