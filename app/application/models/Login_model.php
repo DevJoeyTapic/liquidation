@@ -18,8 +18,6 @@ class Login_model extends CI_Model {
             return false;
         }
     }
-    public function change_password($username, $password) {
-        
-    }
+
 }
 ?>
