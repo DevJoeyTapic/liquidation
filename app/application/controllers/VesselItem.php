@@ -10,53 +10,36 @@ class VesselItem extends CI_Controller {
             redirect('login');
         }
     }
-    public function index() {
-        if ($this->session->userdata('user_type') == 2) {
-            $data['agent_liquidations'] = $this->Liquidation_model->get_agent_liquidations();   
-            $this->load->view('vessel-item', $data);
-        }
-        else {
-            redirect('dashboard');
-        }
-    }
     public function view($id) {
         if ($this->session->userdata('user_type') == 2) {
             $user_id = $this->session->userdata('user_id');
-            $data['agent_liquidations'] = $this->Liquidation_model->get_agent_liquidations();  
-            foreach ($data['agent_liquidations'] as $liquidation) {
-                if ($liquidation->id == $id) {
-                    $data['vessel'] = $liquidation->vessel;
-                    $data['voyage'] = $liquidation->voyage;
-                    $data['port'] = $liquidation->port;
-                    $data['eta'] = $liquidation->eta;
-                    $data['etd'] = $liquidation->etd;
-                    break;
-                }
-            }
+            $data['agent_liquidations'] = $this->Liquidation_model->get_agent_liquidations($user_id);  
+            $data['vessel_data'] = $this->Liquidation_model->get_vessel_data($id);
+            
+            // Get data related to the vessel item
             $data['id'] = $id;
             $data['vessel_items'] = $this->Liquidation_model->get_vessel_items($data['id']);
-            $data['liquidation_master'] = $this->Liquidation_model->get_liquidation_master($user_id);
-            $this->load->view('vessel-item', $data);
+            $data['liquidation_item'] = $this->Liquidation_model->get_liquidation_item($user_id, $id);
+            $data['notes'] = $this->Liquidation_model->get_notes($data['id']);
             
-        }
-        else {
-            redirect('dashboard');
-        }
-    }
-
-    public function notes($epda_ref) {
-        if ($this->session->userdata('user_type') == 2 || $this->session->userdata('user_type') == 3) {
-            $data['notes_master'] = $this->Liquidation_model->get_notes_master($epda_ref);
+            // Handle form submission
+            if ($this->input->post('liq_ref') && $this->input->post('sender') && $this->input->post('timestamp')) {
+                $liq_ref = $this->input->post('liq_ref');
+                $sender = $this->input->post('sender');
+                $timestamp = $this->input->post('timestamp');
+                $notes = $this->input->post('notes'); // Make sure to add a message field in your form
     
-            if (empty($data['notes_master'])) {
-                log_message('error', 'No notes found for EPDA reference: ' . $epda_ref);
+                // You might want to insert this data into a database or perform some other action.
+                $this->Liquidation_model->insert_note($liq_ref, $sender, $notes, $timestamp);
+                
             }
-    
+            
             $this->load->view('vessel-item', $data);
         } else {
             redirect('dashboard');
         }
     }
     
+
 }
 ?>

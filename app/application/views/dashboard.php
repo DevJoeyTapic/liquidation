@@ -115,16 +115,16 @@
                             </thead>
                             <tbody>
                                 <?php foreach ($agent_liquidations as $liquidation): ?>
-                                    
-                                    <tr onclick="window.location.href='<?= site_url('vesselitem/view' . '/' . $liquidation->id); ?>'"> 
-                                        
-                                            <td><?= $liquidation->vessel; ?></td>
-                                            <td><?= $liquidation->voyage; ?></td>
-                                            <td><?= $liquidation->port; ?></td>
-                                            <td><?= $liquidation->eta; ?></td>
-                                            <td><?= $liquidation->etd; ?></td>
-                                       
-                                    </tr>
+                                    <?php if ($liquidation->user_id == $this->session->userdata('user_id')): ?>
+                                        <tr onclick="window.location.href='<?= site_url('vesselitem/view' . '/' . $liquidation->id); ?>'"> 
+                                            
+                                                <td><?= $liquidation->vessel_name; ?></td>
+                                                <td><?= $liquidation->voyno; ?></td>
+                                                <td><?= $liquidation->port; ?></td>
+                                                <td><?= $liquidation->eta; ?></td>
+                                                <td><?= $liquidation->etd; ?></td>
+                                        </tr>
+                                    <?php endif; ?>
                                 <?php endforeach; ?>
                             </tbody>
                         </table>

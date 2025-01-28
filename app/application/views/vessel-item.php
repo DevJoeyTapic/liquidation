@@ -52,108 +52,63 @@
         </nav>
 
         <div class="main-container bg-gradient">
-            <?php if($this->session->userdata('user_type') == 2): ?>
-                <div class="accordion mb-3" id="breakdownAccordion">
-                    <div class="accordion-item">
-                        <h2 class="accordion-header">
-                            <button class="accordion-button text-danger" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
-                                <i class="fa-solid fa-exclamation-circle me-2"></i><strong>Due Wallem: &nbsp;</strong> 60,0000.00                       
-                            </button>
-                        </h2>
-                        <div id="collapseOne" class="accordion-collapse collapse" data-bs-parent="#breakdownAccordion">
-                            <div class="accordion-body">
-                                <div class="d-flex justify-content-between align-items-end">
-                                    <h4><strong>Credit Breakdown:</strong></h4>
-                                    <p class="text-danger small"><strong>CURRENCY:</strong> PHP</p>
-                                </div>
-                                <table class="table table-hover">
-                                    <caption class="small">As of <span id="currentTime"></span></caption>
-                                    <thead>
-                                        <tr>
-                                            <th class="col-3">Vessel/Voyage</th>
-                                            <th class="col-1">Due Amount</th>
-                                            <th class="text-end col-8">Credited Amount</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <tr class="breakdown-row">
-                                            <td>Vessel Name V123</td>
-                                            <td>20,000.00</td>
-                                            <td class="text-end">20,000.00</td>
-                                        </tr>
-                                        <tr class="breakdown-row">
-                                            <td>Vessel Name V123</td>
-                                            <td>20,000.00</td>
-                                            <td class="text-end">20,000.00</td>
-                                        </tr>
-                                        <tr class="breakdown-row">
-                                            <td>Vessel Name V123</td>
-                                            <td>20,000.00</td>
-                                            <td class="text-end">20,000.00</td>
-                                        </tr>
-                                    </tbody>
-                                </table>
-                                <h4 class="text-end bold">PHP 60,0000.00</h4>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            <?php endif; ?>
             <div class="cont mb-3">
                 <div class="row px-3 d-flex justify-content-start align-items-center">
-                    <div class="col p-0">
-                        <div class="row p-0 d-flex justify-content-start align-items-center">
-                            <div class="col-2">
-                                <i class="fa-solid fa-ship fa-xl text-warning"></i>
-                            </div>
-                            <div class="col-10">
-                                <p class="label">VESSEL</p>
-                                <p class="title"><?= isset($vessel_item) ? $vessel_item->vessel : 'N/A'; ?></p>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-2 p-0">
-                        <div class="row p-0 d-flex justify-content-start align-items-center">
-                            <div class="col-3">
-                                <i class="fa-solid fa-anchor fa-xl text-info"></i>
-                            </div>
-                            <div class="col-9">
-                                <p class="label">VOYAGE</p>
-                                <p class="title"><?= isset($vessel_item) ? $vessel_item->voyage : 'N/A'; ?></p>
+                    <?php if (!empty($vessel_data)): ?>
+                        <div class="col p-0">
+                            <div class="row p-0 d-flex justify-content-start align-items-center">
+                                <div class="col-2">
+                                    <i class="fa-solid fa-ship fa-xl text-warning"></i>
+                                </div>
+                                <div class="col-10">
+                                    <p class="label">VESSEL</p>
+                                    <p class="title"><?= $vessel_data[0]->vessel_name; ?></p>
+                                </div>
                             </div>
                         </div>
-                    </div>
-                    <div class="col p-0">
-                        <div class="row p-0 d-flex justify-content-start align-items-center">
-                            <div class="col-2">
-                                <i class="fa-solid fa-water fa-xl text-primary"></i>
-                            </div>
-                            <div class="col-10">
-                                <p class="label">PORT</p>
-                                <p class="title"><?= isset($vessel_item) ? $vessel_item->port : 'N/A'; ?></p>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-3 p-0">
-                        <div class="row d-flex justify-content-start align-items-center">
-                            <div class="col-2">
-                                <i class="fa-solid fa-clock fa-xl text-primary"></i>
-                            </div>
-                            <div class="col-10">
-                                <p class="label">ARRIVAL</p>
-                                <p class="title"><?= isset($vessel_item) ? $vessel_item->eta : 'N/A'; ?></p>
+                        <div class="col-2 p-0">
+                            <div class="row p-0 d-flex justify-content-start align-items-center">
+                                <div class="col-3">
+                                    <i class="fa-solid fa-anchor fa-xl text-info"></i>
+                                </div>
+                                <div class="col-9">
+                                    <p class="label">VOYAGE</p>
+                                    <p class="title"><?= $vessel_data[0]->voyno; ?></p>
+                                </div>
                             </div>
                         </div>
-                        <div class="row d-flex justify-content-start align-items-center">
-                            <div class="col-2">
-                                <i class="fa-solid fa-clock fa-xl text-success"></i>
-                            </div>
-                            <div class="col-10">
-                                <p class="label">DEPARTURE</p>
-                                <p class="title"><?= isset($vessel_item) ? $vessel_item->etd : 'N/A'; ?></p>
+                        <div class="col p-0">
+                            <div class="row p-0 d-flex justify-content-start align-items-center">
+                                <div class="col-2">
+                                    <i class="fa-solid fa-water fa-xl text-primary"></i>
+                                </div>
+                                <div class="col-10">
+                                    <p class="label">PORT</p>
+                                    <p class="title"><?= $vessel_data[0]->port; ?></p>
+                                </div>
                             </div>
                         </div>
-                    </div>
+                        <div class="col-3 p-0">
+                            <div class="row d-flex justify-content-start align-items-center">
+                                <div class="col-2">
+                                    <i class="fa-solid fa-clock fa-xl text-primary"></i>
+                                </div>
+                                <div class="col-10">
+                                    <p class="label">ARRIVAL</p>
+                                    <p class="title"><?= $vessel_data[0]->eta; ?></p>
+                                </div>
+                            </div>
+                            <div class="row d-flex justify-content-start align-items-center">
+                                <div class="col-2">
+                                    <i class="fa-solid fa-clock fa-xl text-success"></i>
+                                </div>
+                                <div class="col-10">
+                                    <p class="label">DEPARTURE</p>
+                                    <p class="title"><?= $vessel_data[0]->etd; ?></p>
+                                </div>
+                            </div>
+                        </div>
+                    <?php endif; ?>
                 </div>
             </div>
             <div class="cont mb-3">
@@ -211,18 +166,18 @@
                                             </tr>
                                         </thead>
                                         <tbody>
-                                            <?php foreach ($liquidation_master as $entry): ?>
-                                                <?php if ($entry->user_id == $this->session->userdata('user_id')): ?>
+                                            <?php foreach ($liquidation_item as $item): ?>
+                                                <?php if ($item->user_id == $this->session->userdata('user_id')): ?>
                                                     <tr>
-                                                        <td class="col-3" id="item"><?= $entry->item; ?></td>
-                                                        <td class="col" id="description"><?= $entry->description; ?></td>
-                                                        <td class="col-1 text-center" id="rfpno"><?= $entry->rfp_no; ?></td>
-                                                        <td class="col-2 rfpAmount" id="rfpAmount"><?= number_format($entry->rfp_amount, 2); ?></td>
+                                                        <td class="col-3" id="item"><?= $item->item; ?></td>
+                                                        <td class="col" id="description"></td>
+                                                        <td class="col-1 text-center" id="rfpno"><?= $item->rfp_no; ?></td>
+                                                        <td class="col-2 rfpAmount" id="rfpAmount"><?= number_format($item->rfp_amount, 2); ?></td>
                                                         <td class="col-2 text-end">
                                                             <input type="text" class="form-control form-control-sm actualAmount" id="actualAmount">
                                                             <button class="btn btn-sm text-primary multiple-btn" data-bs-toggle="modal" data-bs-target="#multipleEntryModal">Multiple Entry</button>
                                                         </td>
-                                                        <td class="variance" id="variance"><?= number_format($entry->variance, 2); ?></td>
+                                                        <td class="variance" id="variance"></td>
                                                         <td class="col-2 "><textarea class="form-control form-control-sm remarks" rows="1" style="max-height: 150px"></textarea></td>
                                                         <td class="docRef"><input type="file" class="form-control form-control-sm" multiple></td>
                                                         <td class="text-center validate"><input type="checkbox" class="form-check-input rowCheckbox"></td>
@@ -329,65 +284,79 @@
         <div class="notes-header text-white p-3 text-center">
             Notes
         </div>
-        <div class="chat-messages p-3">                        
-        <div class="receiver">
-                <div class="d-flex justify-content-between text-secondary">
-                    <div>
-                        <p class="small"><strong>Archielyn Anabeso</strong></p>
-                        <p class="small">Accounting Department</p>
-                    </div>
-                    <div class="d-flex justify-content-end align-items-end">
-                        <p class="small">
-                            <?php
-                                date_default_timezone_set('Asia/Singapore'); 
-                                echo date('F j, Y H:i A');
-                            ?>
-                        </p>
-                    </div>
-                </div>
-                <div class="d-flex">
-                    <div class="imessage d-flex">
-                        <div class="profile-notes">
-                            <img src="<?= base_url('assets/images/bg-ship.jpg'); ?>" class="rounded-circle">
+        <div class="chat-messages p-3" id="notes-list">
+            <?php if (!empty($notes)): ?>
+                <?php foreach($notes as $note): ?>
+                    <?php if($note->sender == $this->session->userdata('username')): ?>
+                        <div class="sender">
+                            <div class="d-flex justify-content-between text-secondary">
+                                <div class="d-flex justify-content-end align-items-end">
+                                    <p class="small">
+                                        <?php
+                                            date_default_timezone_set('Asia/Singapore'); 
+                                            echo date('F j, Y H:i A', strtotime($note->timestamp));
+                                        ?>
+                                    </p>
+                                </div>
+                                <div>
+                                    <p class="small text-end"><strong><?= $note->sender; ?></strong></p>
+                                </div>
+                            </div>
+                            <div class=""> 
+                                <div class="imessage d-flex justify-content-end align-items-right">
+                                    <p class="from-me p-2">
+                                    <?= $note->notes; ?>
+                                    </p>
+                                    <div class="profile-notes right">
+                                        <img src="<?= base_url('assets/images/bg-ship.jpg'); ?>" class="rounded-circle">
+                                    </div>
+                                </div>
+                            </div>
                         </div>
-                        <p class="from-them p-2">
-                        "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
-                        </p>
-                    </div>
-                </div>
-            </div>
-            <div class="sender">
-                <div class="d-flex justify-content-between text-secondary">
-                    <div class="d-flex justify-content-end align-items-end">
-                        <p class="small">
-                            <?php
-                                date_default_timezone_set('Asia/Singapore'); 
-                                echo date('F j, Y H:i A');
-                            ?>
-                        </p>
-                    </div>
-                    <div>
-                        <p class="small text-end"><strong>Archielyn Anabeso</strong></p>
-                        <p class="small">Accounting Department</p>
-                    </div>
-                </div>
-                <div class=""> 
-                    <div class="imessage d-flex justify-content-end align-items-right">
-                        <p class="from-me p-2">
-                        "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
-                        </p>
-                        <div class="profile-notes right">
-                            <img src="<?= base_url('assets/images/bg-ship.jpg'); ?>" class="rounded-circle">
+                    <?php else: ?>
+                        <div class="receiver">
+                            <div class="d-flex justify-content-between text-secondary">
+                                <div>
+                                    <p class="small"><strong><?= $note->sender; ?></strong></p>
+                                    <p class="small"><?= $note->sender; ?></p>
+                                </div>
+                                <div class="d-flex justify-content-end align-items-end">
+                                    <p class="small">
+                                        <?php
+                                            date_default_timezone_set('Asia/Singapore'); 
+                                            echo date('F j, Y H:i A', strtotime($note->timestamp));
+                                        ?>
+                                    </p>
+                                </div>
+                            </div>
+                            <div class="d-flex">
+                                <div class="imessage d-flex">
+                                    <div class="profile-notes">
+                                        <img src="<?= base_url('assets/images/bg-ship.jpg'); ?>" class="rounded-circle">
+                                    </div>
+                                    <p class="from-them p-2">
+                                    <?= $note->notes; ?>
+                                    </p>
+                                </div>
+                            </div>
                         </div>
-                    </div>
-                    
-                </div>
-            </div>
+                    <?php endif; ?>
+                <?php endforeach; ?>
+            <?php else: ?>
+                <p>No notes available.</p>
+            <?php endif; ?>
         </div>
+        <form action="<?php echo site_url('vesselitem/view/' . $id );?>" method="POST">
+            <input type="hidden" name="liq_ref" value="<?php echo $id; ?>">
+            <input type="hidden" name="sender" value="<?php echo $this->session->userdata('username'); ?>">
+            <input type="hidden" name="timestamp" value="<?php echo date('Y-m-d H:i:s'); ?>">
+            <input type="text" class="form-control" name="notes" placeholder="Type a message...">
+        </form>
 
-        <input type="text" class="form-control chat-input" placeholder="Type a message...">                                          
+
 
     </div>
+
     <?php if($this->session->userdata('user_type') == 2): ?>
         <button onclick="toggleBreakdown()" class="breakdown-toggle-btn btn btn-warning rounded-circle">
             <i class="fa-solid fa-money-bill-transfer"></i>
