@@ -284,19 +284,4 @@ document.addEventListener('DOMContentLoaded', function() {
       });
     }
   });
-  function toggleChat() {
-    const chat = document.querySelector('.notes-window');
-    chat.classList.toggle('open');
-  }
-  function toggleBreakdown() {
-      const chat = document.querySelector('.breakdown-window');
-      chat.classList.toggle('open');
-  }
-  function showTime() {
-      document.getElementById('currentTime').innerHTML = new Date().toUTCString();
-  }
-  showTime();
-  setInterval(function () {
-      showTime();
-  }, 1000);
 });
