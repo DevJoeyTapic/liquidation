@@ -174,65 +174,98 @@ $(document).ready(function () {
   //   }
   // }
 
-  $("#submitLiquidation").on("click", function () {
-    const checkedRows = $("#dataTable2 .rowCheckbox:checked").closest("tr");
-    if (checkedRows.length > 0) {
-      checkedRows.each(function () {
-        const itemName = $(this).find("td:nth-child(1)").text();
-        const description = $(this).find("td:nth-child(2)").text();
-        const rfpNo = $(this).find("td:nth-child(3)").text();
-        const rfpAmount = $(this).find("td:nth-child(4)").text();
-        const actualAmount = $(this).find("td:nth-child(5) input").val();
-        const variance = $(this).find(".variance").text();
-        const remarks = $(this).find(".remarks").val();
-        const docref = $(this).find("td:nth-child(7)").text().trim() || "NONE";
-        const displayDocRef = docref === "NONE" ? docref : "attachment.pdf";
+  // $("#submitLiquidation").on("click", function () {
+  //   const checkedRows = $("#dataTable2 .rowCheckbox:checked").closest("tr");
+  //   if (checkedRows.length > 0) {
+  //     checkedRows.each(function () {
+  //       const itemName = $(this).find("td:nth-child(1)").text();
+  //       const description = $(this).find("td:nth-child(2)").text();
+  //       const rfpNo = $(this).find("td:nth-child(3)").text();
+  //       const rfpAmount = $(this).find("td:nth-child(4)").text();
+  //       const actualAmount = $(this).find("td:nth-child(5) input").val();
+  //       const variance = $(this).find(".variance").text();
+  //       const remarks = $(this).find(".remarks").val();
+  //       const docref = $(this).find("td:nth-child(7)").text().trim() || "NONE";
+  //       const displayDocRef = docref === "NONE" ? docref : "attachment.pdf";
 
-        const newRow = `<tr>
-                            <td>${itemName}</td>
-                            <td>${description}</td>
-                            <td class="text-center">${rfpNo}</td>
-                            <td>${rfpAmount}</td>
-                            <td>${actualAmount}</td>
-                            <td>${variance}</td>
-                            <td >${remarks}</td>
-                            <td class="text-center">${displayDocRef}</td>
-                            <td class="text-center"><input type="checkbox" class="form-check-input rowCheckbox"></td>
-                          </tr>`;
+  //       const newRow = `<tr>
+  //                         <td>${itemName}</td>
+  //                         <td>${description}</td>
+  //                         <td class="text-center">${rfpNo}</td>
+  //                         <td>${rfpAmount}</td>
+  //                         <td>${actualAmount}</td>
+  //                         <td>${variance}</td>
+  //                         <td >${remarks}</td>
+  //                         <td class="text-center">${displayDocRef}</td>
+  //                         <td class="text-center"><input type="checkbox" class="form-check-input rowCheckbox"></td>
+  //                       </tr>`;
 
-        $("#dataTable3 tbody").append(newRow);
-      });
+  //       $("#dataTable3 tbody").append(newRow);
+  //     });
 
-      checkedRows.remove();
-    }
-  });
+  //     checkedRows.remove();
+  //   }
+  // });
 
   $("#addItem").on("click", function () {
     const newItem = $("#newItem").val();
-    const newDescription = $("#newDescription").val();
     const newRemarks = $("#newRemarks").val();
     const newAmount = $("#newAmount").val();
-    const newItemRow = `<tr>
-                            <td>${newItem}</td>
-                            <td>${newDescription}</td>
-                            <td class="text-center"><span class="badge text-bg-primary">NEW ITEM</span></td>
-                            <td><span class="badge text-bg-primary">NEW ITEM</span></td>
-                            <td class="text-end">
-                              <input type="text" class="form-control form-control-sm actualAmount" id="actualAmount" value="${newAmount}">
-                              <button class="btn btn-sm text-primary multiple-btn" data-bs-toggle="modal" data-bs-target="#multipleEntryModal">Multiple Entry</button>
-                            </td>
-                            <td>0.0</td>
-                            <td ><textarea class="form-control form-control-sm remarks" rows="1" style="max-height: 150px" value="${newRemarks}"></textarea></td>
-                            <td class="text-center"><input type="file" class="form-control form-control-sm" multiple></td>
-                            <td class="text-center"><input type="checkbox" class="form-check-input rowCheckbox"></td>
-                          </tr>`;
-    $("#dataTable2 tbody").append(newItemRow);
-
-    // Clear input fields after adding the new item
-    $("#newItem").val('');
-    $("#newDescription").val('');
-    $("#newRemarks").val('');
-    $("#newAmount").val('');
+    const user_id = $('input[name="user_id"]').val();
+    const supplier = $('input[name="supplier"]').val();
+    const transno = $('input[name="transno"]').val();
+    const isNew = $('input[name="isNew"]').val();
+  
+    $.ajax({
+      url: 'http://localhost:3000/vesselitem/add_item',
+      method: 'POST',
+      data: {
+        newItem: newItem,
+        newRemarks: newRemarks,
+        newAmount: newAmount,
+        user_id: user_id,
+        supplier: supplier,
+        transno: transno,
+        isNew: isNew
+      },
+      success: function (response) {
+        const data = JSON.parse(response);
+  
+        if (data.status === 'success') {
+          const newItemRow = `
+            <tr>
+              <td>${newItem}</td>
+              <td></td>
+              <td class="text-center"><span class="badge text-bg-primary">NEW ITEM</span></td>
+              <td><span class="badge text-bg-primary">NEW ITEM</span></td>
+              <td class="text-end">
+                <input type="text" class="form-control form-control-sm actualAmount" value="${newAmount}" disabled>
+              </td>
+              <td><span class="badge text-bg-primary">NEW ITEM</span></td>
+              <td><textarea class="form-control form-control-sm remarks" rows="1" style="max-height: 150px" disabled>${newRemarks}</textarea></td>
+              <td class="text-center"><input type="file" class="form-control form-control-sm" multiple></td>
+              <td class="text-center"><input type="checkbox" class="form-check-input rowCheckbox">
+                <input type="hidden" name="user_id" value="${user_id}">
+                <input type="hidden" name="supplier" value="${supplier}">
+                <input type="hidden" name="transno" value="${transno}">
+                <input type="hidden" name="isNew" value="${isNew}">
+              </td>
+            </tr>`;
+  
+          $("#dataTable2 tbody").append(newItemRow);
+  
+          // Clear input fields after adding item
+          $("#newItem").val('');
+          $("#newRemarks").val('');
+          $("#newAmount").val('');
+        } else {
+          alert(data.message);
+        }
+      },
+      error: function () {
+        alert('Error occurred while adding item');
+      }
+    });
   });
   $(document).on("click", "#updateUserBtn", function () {
     var user_id = $(this).closest('tr').find('input[name="user_id"]').val();
@@ -269,7 +302,8 @@ $(document).ready(function () {
     }
   });
   
-    
+  $('#submitLiquidation').on('click', function(event) {
+  });
 });
 // Ensure no conflicting scripts are causing redirection issues
 document.addEventListener('DOMContentLoaded', function() {

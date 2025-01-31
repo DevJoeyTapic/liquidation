@@ -19,5 +19,15 @@ class AgentVessel extends CI_Controller {
             redirect('dashboard');
         }
     }
+
+    public function view($id) {
+        if ($this->session->userdata('user_type') == 3) {
+            $data['vessel_data'] = $this->Liquidation_model->get_vessel_data($id);
+            $data['vessel_items'] = $this->Liquidation_model->get_vessel_items($data['vessel_data'][0]->transno);
+            $this->load->view('agent-vessel', $data);
+        } else {
+            redirect('dashboard');
+        }
+    }
 }
 ?>

@@ -21,23 +21,42 @@ class VesselItem extends CI_Controller {
             $data['vessel_items'] = $this->Liquidation_model->get_vessel_items($data['id']);
             $data['liquidation_item'] = $this->Liquidation_model->get_liquidation_item($user_id, $id);
             $data['notes'] = $this->Liquidation_model->get_notes($data['id']);
-            
-            // Handle form submission
-            if ($this->input->post('liq_ref') && $this->input->post('sender') && $this->input->post('timestamp')) {
-                $liq_ref = $this->input->post('liq_ref');
-                $sender = $this->input->post('sender');
-                $timestamp = $this->input->post('timestamp');
-                $notes = $this->input->post('notes'); // Make sure to add a message field in your form
-    
-                // You might want to insert this data into a database or perform some other action.
-                $this->Liquidation_model->insert_note($liq_ref, $sender, $notes, $timestamp);
-                
-            }
-            
+
             $this->load->view('vessel-item', $data);
+            
         } else {
             redirect('dashboard');
         }
+    }
+
+    public function archive($id) {
+        if ($this->session->userdata('user_type') == 2) {
+            $data['archive_complete'] = $this->Liquidation_model->mark_complete_archive($id);
+            if ($data['archive_complete']) {
+                redirect('dashboard');
+            } else {
+                $this->load->view('vessel-item', $data);
+            }
+        }
+    }
+
+    public function add_item() {
+        $data = array(
+            'user_id' => $this->input->post('user_id'),
+            'supplier' => $this->input->post('supplier'),
+            'transno' => $this->input->post('transno'),
+            'item' => $this->input->post('newItem'),
+            'remarks' => $this->input->post('newRemarks'),
+            'actual_amount' => $this->input->post('newAmount'),
+            'isNew' => $this->input->post('isNew')
+        );
+        $insertedId = $this->Liquidation_model->insert_item($data);
+        if ($insertedId) {
+            echo json_encode(array('status' => 'success', 'id' => $insertedId));
+        } else {
+            echo json_encode(array('status' => 'error', 'message' => 'Failed to add item'));
+        }
+        
     }
     
 

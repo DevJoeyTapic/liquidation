@@ -18,8 +18,6 @@
     <script src="<?= base_url('assets/js/dataTable.js'); ?>"></script>
     <script src="<?= base_url('assets/js/main.js'); ?>"></script>
 
-
-
     <!-- Bootstrap -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
@@ -69,7 +67,6 @@
                             </h6>
                         </li>
                         <li><hr class="dropdown-divider"></li>
-                        <li><button class="dropdown-item" type="button" data-bs-toggle="modal" data-bs-target="#changePasswordModal">Change Password</button></li>
                         <li><a class="dropdown-item" href="<?= site_url('login/logout'); ?>">Signout</a></li>
                     </ul>
                 </div>  
@@ -84,22 +81,23 @@
                             <thead>
                                 <tr>
                                     <th>Agent</th>
-                                    <th>Liquidation No.</th>
                                     <th>Vessel</th>
                                     <th>Voyage</th>
+                                    <th>Port</th>
                                 </tr>
                             </thead>
                             <tbody>
                                 <?php foreach ($accounting_liquidations as $liquidation): ?>
-                                    <tr onclick="window.location.href='<?= site_url('agentvessel'); ?>'">
-                                        <td><?= $liquidation->agent_name; ?></td>
-                                        <td><?= $liquidation->liquidation_no; ?></td>
-                                        <td><?= $liquidation->vessel; ?></td>
-                                        <td><?= $liquidation->voyage; ?></td>
+                                    <tr onclick="window.location.href='<?= site_url('agentvessel/view/' . $liquidation->id); ?>'"> 
+                                        <td><?= $liquidation->supplier; ?></td>
+                                        <td><?= $liquidation->vessel_name; ?></td>
+                                        <td><?= $liquidation->voyno; ?></td>
+                                        <td><?= $liquidation->port; ?></td>
                                     </tr>
                                 <?php endforeach; ?>
                             </tbody>
                         </table>
+                        
                     </div>
                     <!-- table view for supercargo agent -->
                     <div class="table-responsive" style="display: <?= ($this->session->userdata('user_type') == 2) ? 'block' : 'none'; ?>">
@@ -115,14 +113,13 @@
                             </thead>
                             <tbody>
                                 <?php foreach ($agent_liquidations as $liquidation): ?>
-                                    <?php if ($liquidation->user_id == $this->session->userdata('user_id')): ?>
-                                        <tr onclick="window.location.href='<?= site_url('vesselitem/view' . '/' . $liquidation->id); ?>'"> 
-                                            
-                                                <td><?= $liquidation->vessel_name; ?></td>
-                                                <td><?= $liquidation->voyno; ?></td>
-                                                <td><?= $liquidation->port; ?></td>
-                                                <td><?= $liquidation->eta; ?></td>
-                                                <td><?= $liquidation->etd; ?></td>
+                                    <?php if ($liquidation->user_id == $this->session->userdata('user_id') && $liquidation->status !== '2'): ?>
+                                        <tr onclick="window.location.href='<?= site_url('vesselitem/view/' . $liquidation->id); ?>'"> 
+                                            <td><?= $liquidation->vessel_name; ?></td>
+                                            <td><?= $liquidation->voyno; ?></td>
+                                            <td><?= $liquidation->port; ?></td>
+                                            <td><?= $liquidation->eta; ?></td>
+                                            <td><?= $liquidation->etd; ?></td>
                                         </tr>
                                     <?php endif; ?>
                                 <?php endforeach; ?>
