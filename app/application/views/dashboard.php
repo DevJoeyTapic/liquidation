@@ -87,14 +87,17 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                <?php foreach ($accounting_liquidations as $liquidation): ?>
-                                    <tr onclick="window.location.href='<?= site_url('agentvessel/view/' . $liquidation->id); ?>'"> 
-                                        <td><?= $liquidation->supplier; ?></td>
-                                        <td><?= $liquidation->vessel_name; ?></td>
-                                        <td><?= $liquidation->voyno; ?></td>
-                                        <td><?= $liquidation->port; ?></td>
-                                    </tr>
-                                <?php endforeach; ?>
+                                <?php if (!empty($accounting_liquidations)): ?>
+                                    <?php foreach ($accounting_liquidations as $liquidation): ?>
+                                        
+                                        <tr onclick="window.location.href='<?= site_url('agentvessel/view/' . $liquidation->id); ?>'"> 
+                                            <td><?= $liquidation->supplier; ?></td>
+                                            <td><?= $liquidation->vessel_name; ?></td>
+                                            <td><?= $liquidation->voyno; ?></td>
+                                            <td><?= $liquidation->port; ?></td>
+                                        </tr>
+                                    <?php endforeach; ?>
+                                <?php endif ?>
                             </tbody>
                         </table>
                         

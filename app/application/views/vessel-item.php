@@ -222,8 +222,7 @@
                                                 <?php if ($item->user_id == $this->session->userdata('user_id') && $item->status == '0'): ?>
                                                     <tr>
                                                         <td class="col-3" id="item">
-                                                            
-                                                            <?= $item->item; ?>
+                                                            <?= $item->item; ?><?= $item->status ?>
                                                             <?php if($item->controlled == 0): ?>
                                                                 <span class="badge rounded-pill text-bg-warning">Controlled</span>
                                                             <?php endif; ?>
@@ -299,6 +298,7 @@
 
                                             <?php foreach ($liquidation_item as $item): ?>
                                                 <?php if ($item->user_id == $this->session->userdata('user_id') && $item->status == '1'): ?>
+
                                                     <tr>
                                                         <td class="col-3" id="item"><?= $item->item; ?></td>
                                                         <td class="col" id="description">description from another table in multiple entry </td>
