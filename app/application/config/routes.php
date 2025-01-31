@@ -14,3 +14,5 @@ $route['editUser'] = 'admin/editUser';
 $route['dashboard'] = 'dashboard';
 $route['vesselitem'] = 'vesselitem/view';
 $route['agentvessel'] = 'agentvessel';
+$route['archive'] = 'vesselitem/archive/(:any)';
+$route['add_item'] = 'vesselitem/add_item';
