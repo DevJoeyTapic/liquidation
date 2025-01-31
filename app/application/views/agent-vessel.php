@@ -58,13 +58,10 @@
         <div class="main-container bg-gradient">
             <div class="cont mb-3">
                 <div class="row p-0">
-                    <div class="col-3 d-flex justify-content-center align-items-center agent-section">
-                        <div class="agent-img">
-                            <img src="images/default_pic.png" alt="">
-                        </div>
+                    <div class="col-2 d-flex justify-content-center align-items-center agent-section">
                         <div class="agent-name ps-3">
                             <h4><?= $vessel_data[0]->supplier; ?></h4>
-                            <p class="label">ATTENDING SUPERCARGO</p>
+                            <p class="label small">ATTENDING SUPERCARGO</p>
                         </div>
                     </div>
                     <div class="col-9 text-center my-3 vessel-section d-flex justify-content-between align-items-center">

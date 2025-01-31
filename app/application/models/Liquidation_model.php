@@ -21,6 +21,7 @@ class Liquidation_model extends CI_Model {
                 WHERE i.status IN (1, 2)
                 GROUP BY l.transno;";
         $query = $this->db->query($sql);
+        return $query->result();
         
     }
 
