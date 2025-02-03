@@ -222,7 +222,7 @@
                                                 <?php if ($item->user_id == $this->session->userdata('user_id') && $item->status == '0'): ?>
                                                     <tr>
                                                         <td class="col-3" id="item">
-                                                            <?= $item->item; ?><?= $item->status ?>
+                                                            <?= $item->item; ?>
                                                             <?php if($item->controlled == 0): ?>
                                                                 <span class="badge rounded-pill text-bg-warning">Controlled</span>
                                                             <?php endif; ?>
@@ -291,7 +291,7 @@
                                                 <th class="col-2">Variance</th>
                                                 <th class="col-2">Remarks</th>
                                                 <th class="col-2 text-center">Document Reference</th>
-                                                <th>Edit</th>
+                                                <th>Action</th>
                                             </tr>
                                         </thead>
                                         <tbody>
@@ -301,7 +301,7 @@
 
                                                     <tr>
                                                         <td class="col-3" id="item"><?= $item->item; ?></td>
-                                                        <td class="col" id="description">description from another table in multiple entry </td>
+                                                        <td class="col" id="description">**description from another table in multiple entry </td>
                                                         <td class="col-1 text-center" id="rfpno"><?= $item->rfp_no; ?></td>
                                                         <td class="col-2 rfpAmount" id="rfpAmount"><?= number_format($item->rfp_amount, 2); ?></td>
                                                         <td class="col-2"><?= $item->actual_amount ?></td>
@@ -335,20 +335,38 @@
                                 <div class="table-reponsive">
                                     <table class="table table-hover display" id="dataTable4">
                                     <thead>
-                                            <tr>
-                                            <th class="col-3">Items</th>
-                                                <th>Description</th>
-                                                <th class="col-1 text-center">RFP No.</th>
-                                                <th class="col-2">RFP Amount</th>
-                                                <th class="col-2">Actual Amount</th>
-                                                <th class="col-2">Variance</th>
-                                                <th class="col-2">Remarks</th>
-                                                <th class="col-2 text-center">Document Reference</th>
-                                                <th>Status</th>
-                                            </tr>
+                                        
+                                                <tr>
+                                                    <th class="col-3">Items</th>
+                                                    <th>Description</th>
+                                                    <th class="col-1 text-center">RFP No.</th>
+                                                    <th class="col-2">RFP Amount</th>
+                                                    <th class="col-2">Actual Amount</th>
+                                                    <th class="col-2">Variance</th>
+                                                    <th class="col-2">Remarks</th>
+                                                    <th class="col-2 text-center">Document Reference</th>
+                                                    <th>Status</th>
+                                                </tr>
+                                           
                                         </thead>
                                         <tbody>
-                                            
+                                            <?php foreach ($liquidation_item as $item): ?>
+                                                <?php if ($item->user_id == $this->session->userdata('user_id') && $item->status == '2'): ?>
+                                                    <tr>
+                                                        <td class="col-3" id="item"><?= $item->item; ?></td>
+                                                        <td class="col" id="description">**description from another table in multiple entry </td>
+                                                        <td class="col-1 text-center" id="rfpno"><?= $item->rfp_no; ?></td>
+                                                        <td class="col-2 rfpAmount" id="rfpAmount"><?= number_format($item->rfp_amount, 2); ?></td>
+                                                        <td class="col-2"><?= $item->actual_amount ?></td>
+                                                        <td class="variance"><?= $item->variance ?></td>
+                                                        <td class="col-2 "><?= $item->remarks ?></td>
+                                                        <td class="docRef text-center">
+                                                            <?= !empty($item->doc_ref) ? '<a href="' . $item->doc_ref . '" target="_blank"><span class="badge bg-primary">open file</span></a>' : '<span class="badge bg-danger">not provided</span>' ?>
+                                                        </td>
+                                                        <td class="text-center validate"><?= $item->status ?></td>
+                                                    </tr>
+                                                <?php endif; ?>
+                                            <?php endforeach; ?>
                                         </tbody>
                                     </table>
                                 </div>

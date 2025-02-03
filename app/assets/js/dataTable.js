@@ -33,6 +33,12 @@ $(document).ready(function () {
     searching: true,
     pageLength: 10,
   });
+  // table for tad dashboard
+  var table6 = $("#dataTable6").DataTable({
+    paging: true,
+    searching: true,
+    pageLength: 10,
+  });
 
   var tableUsers = $("#tableUsers").DataTable({
     paging: true,

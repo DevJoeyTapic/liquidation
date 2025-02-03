@@ -31,6 +31,10 @@ class Dashboard extends CI_Controller {
                 $data['accounting_liquidations'] = $this->Liquidation_model->get_accounting_liquidations();
                 $this->load->view('dashboard', $data);
                 break;
+            case 4: // TAD
+                $data['tad_liquidations'] = $this->Liquidation_model->get_tad_liquidations();
+                $this->load->view('dashboard', $data);
+                break;
             default:               
                 $this->load->view('login');
         }

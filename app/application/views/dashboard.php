@@ -102,6 +102,31 @@
                         </table>
                         
                     </div>
+                    <!-- table view for TAD -->
+                    <div class="table-responsive" style="display: <?= ($this->session->userdata('user_type') == 4) ? 'block' : 'none'; ?>">
+                        <table class="table table-hover table-striped" id="dataTable6">
+                            <thead>
+                                <tr>
+                                    <th>Agent</th>
+                                    <th>Vessel</th>
+                                    <th>Voyage</th>
+                                    <th>Port</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <?php if (!empty($tad_liquidations)): ?>                                   
+                                    <?php foreach ($tad_liquidations as $liquidation): ?>
+                                        <tr onclick="window.location.href='<?= site_url('agentvessel/view/' . $liquidation->id); ?>'"> 
+                                            <td><?= $liquidation->supplier; ?></td>
+                                            <td><?= $liquidation->vessel_name; ?></td>
+                                            <td><?= $liquidation->voyno; ?></td>
+                                            <td><?= $liquidation->port; ?></td>
+                                        </tr>
+                                    <?php endforeach; ?>
+                                <?php endif ?>
+                            </tbody>
+                        </table>
+                    </div>
                     <!-- table view for supercargo agent -->
                     <div class="table-responsive" style="display: <?= ($this->session->userdata('user_type') == 2) ? 'block' : 'none'; ?>">
                         <table class="table table-hover display" id="dataTable1">
@@ -216,13 +241,13 @@
             const chat = document.querySelector('.breakdown-window');
             chat.classList.toggle('open');
         }
-        function showTime() {
-            document.getElementById('currentTime').innerHTML = new Date().toUTCString();
-        }
-        showTime();
-        setInterval(function () {
-            showTime();
-        }, 1000);
+        // function showTime() {
+        //     document.getElementById('currentTime').innerHTML = new Date().toUTCString();
+        // }
+        // showTime();
+        // setInterval(function () {
+        //     showTime();
+        // }, 1000);
 
         
     </script>

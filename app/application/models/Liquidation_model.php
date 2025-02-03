@@ -6,23 +6,41 @@ class Liquidation_model extends CI_Model {
     }
 
     public function get_accounting_liquidations() {
-        $sql = "SELECT 
-                    MAX(l.id) AS id,
-                    MAX(l.user_id) AS user_id,
-                    MAX(l.supplier) AS supplier,
-                    l.transno,
-                    MAX(l.vessel_name) AS vessel_name,
-                    MAX(l.voyno) AS voyno,
-                    MAX(l.`port`) AS port,
-                    MAX(i.`status`) AS status
+        $sql = "SELECT
+                l.id,
+                l.user_id,
+                l.supplier,
+                l.transno,
+                l.vessel_name,
+                l.voyno,
+                l.`port`,
+                l.`status`
                 FROM tbl_agent_liquidation AS l
                 INNER JOIN tbl_agent_liquidation_items AS i
                 ON l.transno = i.transno
-                WHERE i.status IN (1, 2)
-                GROUP BY l.transno;";
+                WHERE i.`status` = 2 AND l.`status` = 1
+                GROUP BY l.transno, l.voyno";
         $query = $this->db->query($sql);
         return $query->result();
-        
+    }
+
+    public function get_tad_liquidations() {
+        $sql = "SELECT
+                l.id,
+                l.user_id,
+                l.supplier,
+                l.transno,
+                l.vessel_name,
+                l.voyno,
+                l.`port`,
+                l.`status`
+                FROM tbl_agent_liquidation AS l
+                INNER JOIN tbl_agent_liquidation_items AS i
+                ON l.transno = i.transno
+                WHERE i.`status` = 1 AND l.`status` = 1
+                GROUP BY l.transno, l.voyno";
+        $query = $this->db->query($sql);
+        return $query->result();
     }
 
     public function get_agent_liquidations($user_id) {
@@ -52,7 +70,9 @@ class Liquidation_model extends CI_Model {
     }
     
     public function get_liquidation_item($user_id, $id) {
-        $sql = "SELECT * FROM tbl_agent_liquidation_items AS i
+        $sql = "SELECT 
+                i.id, i.user_id, i.supplier, i.transno, i.transno, i.item, i.rfp_no, i.currency, i.rfp_amount, i.actual_amount, i.`variance`, i.remarks, i.doc_ref, i.status, i.controlled, i.isNew
+                FROM tbl_agent_liquidation_items AS i
                 INNER JOIN tbl_agent_liquidation AS l
                 ON i.transno = l.transno
                 WHERE i.user_id = ? AND l.id = ?";
