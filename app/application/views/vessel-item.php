@@ -138,7 +138,7 @@
                             $remaining++;
                         endif;
                     endforeach;
-                    $liqpercent = $liquidated/$count;
+                    $liqpercent = ($liquidated/$count) * 100;
                     $remainingP = ($remaining/$count) * 100;
                 ?>
                 <div class="progress">
@@ -167,8 +167,9 @@
                                 $remaining++;
                             endif;
                         endforeach;
-                        $liqpercent = $liquidated/$count;
-                        $remainingP = ($remaining/$count) * 100;
+                        $liqpercent = intval(($liquidated / $count) * 100);
+                        $remainingP = intval(($remaining / $count) * 100);
+
                     ?>
                         <li class="mb-2"><strong>Total No. of Items: <?= $count; ?></strong></li>
                         <li><span class="progress-bar progress-bar-legend bg-primary"></span>Liquidated Items: <?= $liqpercent; ?>% (<?= $liquidated; ?> of <?= $count ?>)</li>
@@ -177,7 +178,7 @@
                 </div>
                 <?php if (!empty($agent_liquidations)): ?>
                     <div class="d-flex justify-content-end">
-                        <button class="btn btn-success btn-sm" id="markComplete" > <i class="fa-solid fa-check pe-2"></i>Mark as Complete</button>
+                        <button class="btn btn-success btn-sm" id="markComplete" <?= ($liqpercent == 100) ? '' : 'disabled' ?>> <i class="fa-solid fa-check pe-2"></i>Mark as Complete</button>
                     </div>
                 <?php endif ?>
 
@@ -351,7 +352,7 @@
                                         </thead>
                                         <tbody>
                                             <?php foreach ($liquidation_item as $item): ?>
-                                                <?php if ($item->user_id == $this->session->userdata('user_id') && $item->status == '2'): ?>
+                                                <?php if ($item->user_id == $this->session->userdata('user_id') && ($item->status == '2' || $item->status == '3')): ?>
                                                     <tr>
                                                         <td class="col-3" id="item"><?= $item->item; ?></td>
                                                         <td class="col" id="description">**description from another table in multiple entry </td>
@@ -363,7 +364,7 @@
                                                         <td class="docRef text-center">
                                                             <?= !empty($item->doc_ref) ? '<a href="' . $item->doc_ref . '" target="_blank"><span class="badge bg-primary">open file</span></a>' : '<span class="badge bg-danger">not provided</span>' ?>
                                                         </td>
-                                                        <td class="text-center validate"><?= $item->status ?></td>
+                                                        <td class="text-center validate small"><?= ($item->status == '2') ? 'Pending TAD' :  'Pending Accounting' ?></td>
                                                     </tr>
                                                 <?php endif; ?>
                                             <?php endforeach; ?>
@@ -390,7 +391,7 @@
         <div class="chat-messages p-3" id="notes-list">
             <?php if (!empty($notes)): ?>
                 <?php foreach($notes as $note): ?>
-                    <?php if($note->sender == $this->session->userdata('username')): ?>
+                    <?php if($note->sender == $this->session->userdata('fullname')): ?>
                         <div class="sender">
                             <div class="d-flex justify-content-between text-secondary">
                                 <div class="d-flex justify-content-end align-items-end">
