@@ -145,7 +145,7 @@
                                                     <th class="col-2">Variance</th>
                                                     <th class="col-2">Remarks</th>
                                                     <th class="col-2 text-center">Document Reference</th>
-                                                    <th class="col">Validate</th>
+                                                    <th class="col text-center">Validate</th>
                                                 </tr>
                                             </thead>
                                             <tbody>
@@ -161,11 +161,11 @@
                                                             <td>Desc from other table for multiple entry</td>
                                                             <td class="text-center"><?= $item->rfp_no; ?></td>
                                                             <td id="debit"><span class="label text-dark"><?= $item->currency; ?>&nbsp; </span><?= $item->rfp_amount; ?></td>
-                                                            <td id="credit"><span class="label text-dark">PHP </span>36,000.00</td>
+                                                            <td id="credit"><span class="label text-dark"><?= $item->currency; ?>&nbsp; </span><?= $item->actual_amount; ?></td>
                                                             <td><?= $item->variance; ?></td>
-                                                            <td>partial</td>
+                                                            <td><?= $item->remarks ?></td>
                                                             <td><a href="https://drive.google.com/drive/folders/1WGxD2F_E9Sv9CiCYYiR2p6xfu9On5Ewt?usp=drive_link">link this to the gdrive folder</a></td>
-                                                            <td><input type="checkbox" class="form-check-input"></td>
+                                                            <td class="text-center"><input type="checkbox" class="form-check-input"></td>
                                                         </tr>
                                                     <?php endif; ?>
                                                 <?php endforeach; ?>
@@ -197,17 +197,38 @@
                                         <table class="table table-striped table-hover display" id="dataTable4">
                                             <thead>
                                                 <tr>
-                                                    <th class="col-2">Item Name</th>
+                                                    <th class="col-3">Items</th>
+                                                    <th class="col">Description</th>
                                                     <th class="col-1 text-center">RFP No.</th>
-                                                    <th class="col-2 text-center">RFP Amount</th>
+                                                    <th class="col-2">RFP Amount</th>
                                                     <th class="col-2">Actual Amount</th>
+                                                    <th class="col-2">Variance</th>
                                                     <th class="col-2">Remarks</th>
                                                     <th class="col-2 text-center">Document Reference</th>
-                                                    <th class="col-1 text-center">Status</th>
+                                                    <th class="col text-center">Status</th>
                                                 </tr>
                                             </thead>
                                             <tbody>
-                                                <tr></tr>
+                                                <?php foreach ($vessel_items as $item): ?>
+                                                    <?php if ($item->status == 3): ?>
+                                                        <tr>
+                                                            <td>
+                                                                <?= $item->item; ?>
+                                                                <?php if($item->controlled == 0): ?>
+                                                                    <span class="badge rounded-pill text-bg-warning">Controlled</span>
+                                                                <?php endif; ?>
+                                                            </td>
+                                                            <td>Desc from other table for multiple entry</td>
+                                                            <td class="text-center"><?= $item->rfp_no; ?></td>
+                                                            <td id="debit"><span class="label text-dark"><?= $item->currency; ?>&nbsp; </span><?= $item->rfp_amount; ?></td>
+                                                            <td id="credit"><span class="label text-dark"><?= $item->currency; ?>&nbsp; </span><?= $item->actual_amount; ?></td>
+                                                            <td><?= $item->variance; ?></td>
+                                                            <td><?= $item->remarks ?></td>
+                                                            <td><a href="https://drive.google.com/drive/folders/1WGxD2F_E9Sv9CiCYYiR2p6xfu9On5Ewt?usp=drive_link">link this to the gdrive folder</a></td>
+                                                            <td class="text-center"><?= $item->status ?></td>
+                                                        </tr>
+                                                    <?php endif; ?>
+                                                <?php endforeach; ?>
                                             </tbody>
                                         </table>
                                     </div>    
