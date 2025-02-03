@@ -174,38 +174,38 @@ $(document).ready(function () {
   //   }
   // }
 
-  // $("#submitLiquidation").on("click", function () {
-  //   const checkedRows = $("#dataTable2 .rowCheckbox:checked").closest("tr");
-  //   if (checkedRows.length > 0) {
-  //     checkedRows.each(function () {
-  //       const itemName = $(this).find("td:nth-child(1)").text();
-  //       const description = $(this).find("td:nth-child(2)").text();
-  //       const rfpNo = $(this).find("td:nth-child(3)").text();
-  //       const rfpAmount = $(this).find("td:nth-child(4)").text();
-  //       const actualAmount = $(this).find("td:nth-child(5) input").val();
-  //       const variance = $(this).find(".variance").text();
-  //       const remarks = $(this).find(".remarks").val();
-  //       const docref = $(this).find("td:nth-child(7)").text().trim() || "NONE";
-  //       const displayDocRef = docref === "NONE" ? docref : "attachment.pdf";
+  $('#submitLiquidation').on('click', function(event) {
+    const checkedRows = $("#dataTable2 .rowCheckbox:checked").closest("tr");
+    if (checkedRows.length > 0) {
+      checkedRows.each(function () {
+        const itemName = $(this).find("td:nth-child(1)").text();
+        const description = $(this).find("td:nth-child(2)").text();
+        const rfpNo = $(this).find("td:nth-child(3)").text();
+        const rfpAmount = $(this).find("td:nth-child(4)").text();
+        const actualAmount = $(this).find("td:nth-child(5) input").val();
+        const variance = $(this).find(".variance").text();
+        const remarks = $(this).find(".remarks").val();
+        const docref = $(this).find("td:nth-child(7)").text().trim() || "NONE";
+        const displayDocRef = docref === "NONE" ? docref : "attachment.pdf";
 
-  //       const newRow = `<tr>
-  //                         <td>${itemName}</td>
-  //                         <td>${description}</td>
-  //                         <td class="text-center">${rfpNo}</td>
-  //                         <td>${rfpAmount}</td>
-  //                         <td>${actualAmount}</td>
-  //                         <td>${variance}</td>
-  //                         <td >${remarks}</td>
-  //                         <td class="text-center">${displayDocRef}</td>
-  //                         <td class="text-center"><input type="checkbox" class="form-check-input rowCheckbox"></td>
-  //                       </tr>`;
+        const newRow = `<tr>
+                          <td>${itemName}</td>
+                          <td>${description}</td>
+                          <td class="text-center">${rfpNo}</td>
+                          <td>${rfpAmount}</td>
+                          <td>${actualAmount}</td>
+                          <td>${variance}</td>
+                          <td >${remarks}</td>
+                          <td class="text-center">${displayDocRef}</td>
+                          <td class="text-center"><input type="checkbox" class="form-check-input rowCheckbox"></td>
+                        </tr>`;
 
-  //       $("#dataTable3 tbody").append(newRow);
-  //     });
+        $("#dataTable3 tbody").append(newRow);
+      });
 
-  //     checkedRows.remove();
-  //   }
-  // });
+      checkedRows.remove();
+    }
+  });
 
   $("#addItem").on("click", function () {
     const newItem = $("#newItem").val();
@@ -267,6 +267,9 @@ $(document).ready(function () {
       }
     });
   });
+
+
+
   $(document).on("click", "#updateUserBtn", function () {
     var user_id = $(this).closest('tr').find('input[name="user_id"]').val();
     var status = $(this).closest('tr').find('input[name="status"]').val();
@@ -303,10 +306,12 @@ $(document).ready(function () {
   });
   
   $('#submitLiquidation').on('click', function(event) {
+    
   });
 });
 // Ensure no conflicting scripts are causing redirection issues
 document.addEventListener('DOMContentLoaded', function() {
+
   $('#validateAll').on('change', function() {
     if ($(this).is(':checked')) {
       $('.form-check-input').each(function() {
@@ -318,4 +323,4 @@ document.addEventListener('DOMContentLoaded', function() {
       });
     }
   });
-});
+})

@@ -18,7 +18,7 @@ class Liquidation_model extends CI_Model {
                 FROM tbl_agent_liquidation AS l
                 INNER JOIN tbl_agent_liquidation_items AS i
                 ON l.transno = i.transno
-                WHERE i.`status` = 2 AND l.`status` = 1
+                WHERE i.`status` = 3 AND l.`status` = 1
                 GROUP BY l.transno, l.voyno";
         $query = $this->db->query($sql);
         return $query->result();
