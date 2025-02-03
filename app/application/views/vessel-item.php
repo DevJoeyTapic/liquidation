@@ -14,10 +14,6 @@
     <link rel="stylesheet" href="https://cdn.datatables.net/1.13.5/css/jquery.dataTables.min.css">
     <script src="https://cdn.datatables.net/1.13.5/js/jquery.dataTables.min.js"></script>
 
-    <!-- JS Files -->
-    <script src="<?= base_url('assets/js/dataTable.js'); ?>"></script>
-    <script src="<?= base_url('assets/js/main.js'); ?>"></script>
-
     <!-- Bootstrap -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
@@ -32,6 +28,12 @@
 
     <!-- Swal -->
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+    <!-- JS Files -->
+    <script src="<?= base_url('assets/js/dataTable.js'); ?>"></script>
+    <script src="<?= base_url('assets/js/main.js'); ?>"></script>
+
+
 
 
 
@@ -245,9 +247,9 @@
                                                         </td>
                                                         <td class="col-2 text-end">
                                                             <?php if($item->isNew == '1'): ?>  
-                                                                <input type="text" class="form-control form-control-sm actualAmount" id="actualAmount" value="<?= $item->actual_amount; ?>" required disabled>
+                                                                <input type="text" class="form-control form-control-sm actualAmount" id="actualAmount" value="<?= $item->actual_amount; ?>" disabled>
                                                             <?php else: ?>  
-                                                                <input type="text" class="form-control form-control-sm actualAmount" id="actualAmount" value="<?= $item->actual_amount; ?>"required>
+                                                                <input type="text" class="form-control form-control-sm actualAmount" id="actualAmount" value="<?= $item->actual_amount; ?>" required>
                                                                 <button class="btn btn-sm text-primary multiple-btn" data-bs-toggle="modal" data-bs-target="#multipleEntryModal">Multiple Entry</button>
                                                             <?php endif ?>
                                                         </td>
