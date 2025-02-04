@@ -29,5 +29,18 @@ class AgentVessel extends CI_Controller {
             redirect('dashboard');
         }
     }
+
+    public function submit_acctg($id) {
+        $item_id = $this->input->post('item_id');
+        $updatedId = $this->Liquidation_model->update_item_for_acctg($id);
+        if ($updatedId) {
+            echo json_encode(array('status' => 'success', 'id' => $updatedId));
+        } else {
+            echo json_encode(array('status' => 'error', 'message' => 'Failed to update
+             item'));
+        }
+
+        
+    }
 }
 ?>

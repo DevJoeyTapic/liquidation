@@ -247,9 +247,9 @@
                                                         </td>
                                                         <td class="col-2 text-end">
                                                             <?php if($item->isNew == '1'): ?>  
-                                                                <input type="text" class="form-control form-control-sm actualAmount" id="actualAmount" value="<?= $item->actual_amount; ?>" disabled>
+                                                                <input type="text" class="form-control form-control-sm actualAmount" id="actualAmount" name="actualAmount" value="<?= $item->actual_amount; ?>" disabled>
                                                             <?php else: ?>  
-                                                                <input type="text" class="form-control form-control-sm actualAmount" id="actualAmount" value="<?= $item->actual_amount; ?>" required>
+                                                                <input type="text" class="form-control form-control-sm actualAmount" id="actualAmount" name="actualAmount" value="<?= $item->actual_amount; ?>" required>
                                                                 <button class="btn btn-sm text-primary multiple-btn" data-bs-toggle="modal" data-bs-target="#multipleEntryModal">Multiple Entry</button>
                                                             <?php endif ?>
                                                         </td>
@@ -266,7 +266,10 @@
                                                             <?php endif ?>
 
                                                         <td class="docRef"><input type="file" class="form-control form-control-sm" multiple></td>
-                                                        <td class="text-center validate"><input type="checkbox" class="form-check-input rowCheckbox"></td>
+                                                        <td class="text-center validate">
+                                                            <input type="checkbox" class="form-check-input rowCheckbox">
+                                                            <input type="hidden" name="item_id" value="<?php echo $item->id; ?>">
+                                                        </td>
                                                     </tr>
                                                 <?php endif; ?>
                                             <?php endforeach; ?>
@@ -276,7 +279,7 @@
                             </div>
                         </div>
                         <div class="d-flex justify-content-end">
-                            <button type="button" class="btn btn-primary" id="submitLiquidation" data-id="<?= $id; ?>">Submit</button>
+                            <button type="button" class="btn btn-primary" id="submitLiquidation" >Submit</button>
                         </div>
                     </div>
                     <div class="tab-pane fade" id="forValidation" role="tabpanel" aria-labelledby="forValidationTab">
@@ -298,10 +301,8 @@
                                             </tr>
                                         </thead>
                                         <tbody>
-
                                             <?php foreach ($liquidation_item as $item): ?>
                                                 <?php if ($item->user_id == $this->session->userdata('user_id') && $item->status == '1'): ?>
-
                                                     <tr>
                                                         <td class="col-3" id="item"><?= $item->item; ?></td>
                                                         <td class="col" id="description">**description from another table in multiple entry </td>
@@ -313,11 +314,13 @@
                                                         <td class="docRef text-center">
                                                             <?= !empty($item->doc_ref) ? '<a href="' . $item->doc_ref . '" target="_blank"><span class="badge bg-primary">open file</span></a>' : '<span class="badge bg-danger">not provided</span>' ?>
                                                         </td>
-                                                        <td class="text-center validate"><input type="checkbox" class="form-check-input rowCheckbox"></td>
+                                                        <td class="text-center validate">
+                                                            <input type="checkbox" class="form-check-input rowCheckbox">
+                                                            <input type="hidden" name="item_id" value="<?php echo $item->id; ?>">
+                                                        </td>
                                                     </tr>
                                                 <?php endif; ?>
                                             <?php endforeach; ?>
-                                     
                                             <!-- see main.js #submitLiquidation click -->
                                         </tbody>
                                     </table>
@@ -354,7 +357,7 @@
                                         </thead>
                                         <tbody>
                                             <?php foreach ($liquidation_item as $item): ?>
-                                                <?php if ($item->user_id == $this->session->userdata('user_id') && ($item->status == '2' || $item->status == '3')): ?>
+                                                <?php if ($item->user_id == $this->session->userdata('user_id') && ($item->status == '2')): ?>
                                                     <tr>
                                                         <td class="col-3" id="item"><?= $item->item; ?></td>
                                                         <td class="col" id="description">**description from another table in multiple entry </td>
@@ -366,7 +369,8 @@
                                                         <td class="docRef text-center">
                                                             <?= !empty($item->doc_ref) ? '<a href="' . $item->doc_ref . '" target="_blank"><span class="badge bg-primary">open file</span></a>' : '<span class="badge bg-danger">not provided</span>' ?>
                                                         </td>
-                                                        <td class="text-center validate small"><?= ($item->status == '2') ? 'Pending TAD' :  'Pending Accounting' ?></td>
+                                                        <td class="text-center validate small"><?= ($item->status == '1') ? 'Pending VOO/OM' : (($item->status == '2') ? 'Pending Accounting' : 'Status Unknown') ?>
+                                                        </td>
                                                     </tr>
                                                 <?php endif; ?>
                                             <?php endforeach; ?>

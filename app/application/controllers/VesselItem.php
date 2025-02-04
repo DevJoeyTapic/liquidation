@@ -59,6 +59,32 @@ class VesselItem extends CI_Controller {
         
     }
     
+    public function submit_voo_om($id) {
+        $item_id = $this->input->post('item_id');
+        $actual_amount = $this->input->post('actualAmount');
+        $variance = $this->input->post('variance');
+        $updatedId = $this->Liquidation_model->update_item_for_voo_om($id);
+        if ($updatedId) {
+            echo json_encode(array('status' => 'success', 'id' => $updatedId));
+        } else {
+            echo json_encode(array('status' => 'error', 'message' => 'Failed to update
+             item'));
+        }
+    }
+
+    public function submit_acctg($id) {
+        $item_id = $this->input->post('item_id');
+        $updatedId = $this->Liquidation_model->update_item_for_acctg($id);
+        if ($updatedId) {
+            echo json_encode(array('status' => 'success', 'id' => $updatedId));
+        } else {
+            echo json_encode(array('status' => 'error', 'message' => 'Failed to update
+             item'));
+        }
+    }
+
+
+    
 
 }
 ?>
