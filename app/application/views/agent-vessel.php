@@ -14,10 +14,6 @@
     <link rel="stylesheet" href="https://cdn.datatables.net/1.13.5/css/jquery.dataTables.min.css">
     <script src="https://cdn.datatables.net/1.13.5/js/jquery.dataTables.min.js"></script>
 
-    <!-- JS Files -->
-    <script src="<?= base_url('assets/js/dataTable.js'); ?>"></script>
-    <script src="<?= base_url('assets/js/main.js'); ?>"></script>
-
     <!-- Bootstrap -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
@@ -32,6 +28,10 @@
 
     <!-- Swal -->
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+    <!-- JS Files -->
+    <script src="<?= base_url('assets/js/dataTable.js'); ?>"></script>
+    <script src="<?= base_url('assets/js/main.js'); ?>"></script>
 
 </head>
 <body>
@@ -165,7 +165,10 @@
                                                             <td><?= $item->variance; ?></td>
                                                             <td><?= $item->remarks ?></td>
                                                             <td><a href="https://drive.google.com/drive/folders/1WGxD2F_E9Sv9CiCYYiR2p6xfu9On5Ewt?usp=drive_link">link this to the gdrive folder</a></td>
-                                                            <td class="text-center"><input type="checkbox" class="form-check-input"></td>
+                                                            <td class="text-center">
+                                                                <input type="checkbox" class="form-check-input rowCheckbox">
+                                                                <input type="hidden" name="item_id" value="<?php echo $item->id; ?>">
+                                                            </td>
                                                         </tr>
                                                     <?php endif; ?>
                                                 <?php endforeach; ?>
@@ -175,10 +178,10 @@
                                 </div>
                                 <div class="row mt-3">
                                     <div class="col d-flex gap-2 justify-content-end align-items-end">
-                                        <button class="btn btn-success" data-bs-toggle="modal" id="validateAllBtn">
+                                        <button class="btn btn-success" id="validateAllBtn">
                                             Check All
                                         </button>
-                                        <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#confirmationModal" id="confirmValidation">
+                                        <button class="btn btn-primary" id="confirmValidation">
                                             Confirm
                                         </button>
                                     </div>
@@ -242,23 +245,6 @@
     </div>
 
     <!-- Modals -->
-    <div class="modal fade" id="confirmationModal" tabindex="-1" aria-labelledby="confirmationModalLabel" aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h1 class="modal-title fs-5" id="confirmationModalLabel">Confirmation</h1>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                    The item(s) will be moved to validated items liquidation. Do you want to proceed?
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-                    <button type="button" class="btn btn-primary" id="confirmMove">Proceed</button>
-                </div>
-            </div>
-        </div>
-    </div>
 
     <script>
         $('#validateAllBtn').on('click', function() {

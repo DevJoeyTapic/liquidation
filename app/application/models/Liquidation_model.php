@@ -7,18 +7,18 @@ class Liquidation_model extends CI_Model {
 
     public function get_accounting_liquidations() {
         $sql = "SELECT
-                l.id,
-                l.user_id,
-                l.supplier,
-                l.transno,
-                l.vessel_name,
-                l.voyno,
-                l.`port`,
-                l.`status`
+                    l.id,
+                    l.user_id,
+                    l.supplier,
+                    l.transno,
+                    l.vessel_name,
+                    l.voyno,
+                    l.`port`,
+                    l.`status`
                 FROM tbl_agent_liquidation AS l
                 INNER JOIN tbl_agent_liquidation_items AS i
                 ON l.transno = i.transno
-                WHERE i.`status` = 3 AND l.`status` = 1
+                WHERE i.`status` = 2 AND l.`status` = 1
                 GROUP BY l.transno, l.voyno";
         $query = $this->db->query($sql);
         return $query->result();
@@ -93,6 +93,19 @@ class Liquidation_model extends CI_Model {
         return $this->db->insert_id();
     }
 
+    public function update_item_for_voo_om($id) {
+        $sql ="UPDATE tbl_agent_liquidation_items
+               SET STATUS = 1
+               WHERE id = ?";
+        $this->db->query($sql, array($id));
+    }
+
+    public function update_item_for_acctg($id) {
+        $sql ="UPDATE tbl_agent_liquidation_items
+               SET STATUS = 3
+               WHERE id = ?";
+        $this->db->query($sql, array($id));
+    }
     public function get_notes($liq_ref) {
         $sql = "SELECT * FROM notes_master
                 WHERE liq_ref = ?";

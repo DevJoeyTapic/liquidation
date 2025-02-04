@@ -1,8 +1,71 @@
 $(document).ready(function () {
-  $('#forValidationBtn').on('click', function() {
-  alert('This is for validation');
-  });
+  let baseUrl = 'http://192.168.192.251:3000'
+
   let row;
+  $('#confirmValidation').on('click', function() {
+    const checkedRows = $("#dataTable3 .rowCheckbox:checked").closest("tr");
+    if (checkedRows.length > 0) {
+      checkedRows.each(function () {
+        const itemName = $(this).find("td:nth-child(1)").text();
+        const description = $(this).find("td:nth-child(2)").text();
+        const rfpNo = $(this).find("td:nth-child(3)").text();
+        const rfpAmount = $(this).find("td:nth-child(4)").text();
+        const actualAmount = $(this).find("td:nth-child(5) input").val();
+        const variance = $(this).find(".variance").text();
+        const remarks = $(this).find(".remarks").val();
+        const item_id = $('input[name="item_id"]').val();
+        $.ajax({
+          url: baseUrl + '/agentvessel/submit_acctg/' + item_id,
+          method: 'POST',
+          data: {
+            itemName: itemName,
+            description: description,
+            rfpNo: rfpNo,
+            rfpAmount: rfpAmount,
+            actualAmount: actualAmount,
+            variance: variance,
+            remarks: remarks,
+            item_id: item_id
+          },
+          success: function (response) {
+            console.log("URL being requested: " + baseUrl + '/agentvessel/submit_acctg/' + item_id);
+            const data = JSON.parse(response);
+            alert("Server Response: " + response);
+            if (data.status === 'success') {
+              const newRow = `<tr>
+                          <td>${itemName}</td>
+                          <td>${description}</td>
+                          <td class="text-center">${rfpNo}</td>
+                          <td>${rfpAmount}</td>
+                          <td>${actualAmount}</td>
+                          <td>${variance}</td>
+                          <td >${remarks}</td>
+                          <td class="text-center"></td>
+                          <td class="text-center">
+                            <input type="checkbox" class="form-check-input rowCheckbox">
+                          </td>
+                        </tr>`;
+              $("#dataTable4 tbody").append(newRow);
+              checkedRows.remove();
+
+            } else {
+              alert(data.message);
+            }
+          },
+          error: function (xhr, status, error) {
+            // This will run if the AJAX request fails
+            console.log("AJAX Error: " + status + ": " + error);
+            console.error("Response: " + xhr.responseText); 
+            console.log("URL being requested: " + baseUrl + '/agentvessel/submit_acctg/' + item_id);
+          },
+          timeout: 5000 
+        })
+      });
+    } else {
+      console.log(error);
+    }
+  });
+
   function updateTotal() {
     let total = 0;
     $(".new-amount").each(function () {
@@ -185,10 +248,25 @@ $(document).ready(function () {
         const actualAmount = $(this).find("td:nth-child(5) input").val();
         const variance = $(this).find(".variance").text();
         const remarks = $(this).find(".remarks").val();
-        const docref = $(this).find("td:nth-child(7)").text().trim() || "NONE";
-        const displayDocRef = docref === "NONE" ? docref : "attachment.pdf";
-
-        const newRow = `<tr>
+        const item_id = $('input[name="item_id"]').val();
+        $.ajax({
+          url: baseUrl + '/vesselitem/submit_voo_om/' + item_id,
+          method: 'POST',
+          data: {
+            itemName: itemName,
+            description: description,
+            rfpNo: rfpNo,
+            rfpAmount: rfpAmount,
+            actualAmount: actualAmount,
+            variance: variance,
+            remarks: remarks,
+            item_id: item_id
+          },
+          success: function (response) {
+            const data = JSON.parse(response);
+            alert("Server Response: " + response);
+            if (data.status === 'success') {
+              const newRow = `<tr>
                           <td>${itemName}</td>
                           <td>${description}</td>
                           <td class="text-center">${rfpNo}</td>
@@ -196,17 +274,30 @@ $(document).ready(function () {
                           <td>${actualAmount}</td>
                           <td>${variance}</td>
                           <td >${remarks}</td>
-                          <td class="text-center">${displayDocRef}</td>
-                          <td class="text-center"><input type="checkbox" class="form-check-input rowCheckbox"></td>
+                          <td class="text-center"></td>
+                          <td class="text-center">
+                            <input type="checkbox" class="form-check-input rowCheckbox">
+                          </td>
                         </tr>`;
-
-        $("#dataTable3 tbody").append(newRow);
+              $("#dataTable3 tbody").append(newRow);
+              checkedRows.remove();
+            } else {
+              alert(data.message);
+            }
+          },
+          error: function (xhr, status, error) {
+            // This will run if the AJAX request fails
+            console.log("AJAX Error: " + status + ": " + error);
+            console.error("Response: " + xhr.responseText); 
+            console.log("URL being requested: " + baseUrl + '/vesselitem/submit_voo_om/' + item_id);
+          },
+          timeout: 5000 
+        })
       });
-
-      checkedRows.remove();
     }
   });
-
+  
+  
   $("#addItem").on("click", function () {
     const newItem = $("#newItem").val();
     const newRemarks = $("#newRemarks").val();
@@ -217,7 +308,7 @@ $(document).ready(function () {
     const isNew = $('input[name="isNew"]').val();
   
     $.ajax({
-      url: 'http://localhost:3000/vesselitem/add_item',
+      url: baseUrl + '/vesselitem/add_item',
       method: 'POST',
       data: {
         newItem: newItem,
