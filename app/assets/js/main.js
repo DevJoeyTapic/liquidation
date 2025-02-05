@@ -2,69 +2,291 @@ $(document).ready(function () {
   let baseUrl = 'http://192.168.192.251:3000'
 
   let row;
-  $('#confirmValidation').on('click', function() {
-    const checkedRows = $("#dataTable3 .rowCheckbox:checked").closest("tr");
-    if (checkedRows.length > 0) {
-      checkedRows.each(function () {
-        const itemName = $(this).find("td:nth-child(1)").text();
-        const description = $(this).find("td:nth-child(2)").text();
-        const rfpNo = $(this).find("td:nth-child(3)").text();
-        const rfpAmount = $(this).find("td:nth-child(4)").text();
-        const actualAmount = $(this).find("td:nth-child(5) input").val();
-        const variance = $(this).find(".variance").text();
-        const remarks = $(this).find(".remarks").val();
-        const item_id = $('input[name="item_id"]').val();
-        $.ajax({
-          url: baseUrl + '/agentvessel/submit_acctg/' + item_id,
-          method: 'POST',
-          data: {
-            itemName: itemName,
-            description: description,
-            rfpNo: rfpNo,
-            rfpAmount: rfpAmount,
-            actualAmount: actualAmount,
-            variance: variance,
-            remarks: remarks,
-            item_id: item_id
-          },
-          success: function (response) {
-            console.log("URL being requested: " + baseUrl + '/agentvessel/submit_acctg/' + item_id);
-            const data = JSON.parse(response);
-            alert("Server Response: " + response);
-            if (data.status === 'success') {
-              const newRow = `<tr>
-                          <td>${itemName}</td>
-                          <td>${description}</td>
-                          <td class="text-center">${rfpNo}</td>
-                          <td>${rfpAmount}</td>
-                          <td>${actualAmount}</td>
-                          <td>${variance}</td>
-                          <td >${remarks}</td>
-                          <td class="text-center"></td>
-                          <td class="text-center">
-                            <input type="checkbox" class="form-check-input rowCheckbox">
-                          </td>
-                        </tr>`;
-              $("#dataTable4 tbody").append(newRow);
-              checkedRows.remove();
+  $('#submitLiquidation').on('click', function(event) {
+    Swal.fire({
+        title: 'Submit Liquidation Item/s',
+        text: 'Are you sure you want to submit item/s for liquidation?',
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonText: 'Yes',
+        cancelButtonText: 'Cancel'
+    }).then((result) => {
+        if (result.isConfirmed) {
+            Swal.fire({
+                title: "Item/s Submitted!",
+                icon: "success"
+            }).then(() => {
+                location.reload();
+                const checkedRows = $("#dataTable2 .rowCheckbox:checked").closest("tr");
+                
+                if (checkedRows.length > 0) {
+                    checkedRows.each(function () {
+                        const itemName = $(this).find("td:nth-child(1)").text();
+                        const description = $(this).find("td:nth-child(2)").text();
+                        const rfpNo = $(this).find("td:nth-child(3)").text();
+                        const rfpAmount = $(this).find("td:nth-child(4)").text();
+                        const actualAmount = $(this).find("td:nth-child(5) input").val();
+                        const variance = $(this).find(".variance").text();
+                        const remarks = $(this).find(".remarks").val();
+                        const item_id = $(this).find("input[name='item_id']").val();
+                        console.log("URL being requested: " + baseUrl + '/vesselitem/submit_for_validation/' + item_id);
 
-            } else {
-              alert(data.message);
-            }
-          },
-          error: function (xhr, status, error) {
-            // This will run if the AJAX request fails
-            console.log("AJAX Error: " + status + ": " + error);
-            console.error("Response: " + xhr.responseText); 
-            console.log("URL being requested: " + baseUrl + '/agentvessel/submit_acctg/' + item_id);
-          },
-          timeout: 5000 
-        })
+                        $.ajax({
+                            url: baseUrl + '/vesselitem/submit_for_validation/' + item_id,
+                            method: 'POST',
+                            data: {
+                                itemName: itemName,
+                                description: description,
+                                rfpNo: rfpNo,
+                                rfpAmount: rfpAmount,
+                                actualAmount: actualAmount,
+                                variance: variance,
+                                remarks: remarks,
+                                item_id: item_id
+                            },
+                            success: function (response) {
+                                const data = JSON.parse(response);
+                                if (data.status === 'success') {
+                                    const newRow = `<tr>
+                                        <td>${itemName}</td>
+                                        <td>${description}</td>
+                                        <td class="text-center">${rfpNo}</td>
+                                        <td>${rfpAmount}</td>
+                                        <td>${actualAmount}</td>
+                                        <td>${variance}</td>
+                                        <td>${remarks}</td>
+                                        <td class="text-center"></td>
+                                        <td class="text-center">
+                                            <input type="checkbox" class="form-check-input rowCheckbox">
+                                        </td>
+                                    </tr>`;
+                                    
+                                    $("#dataTable3 tbody").append(newRow);
+                                    
+                                    // Remove the row from the original table (or mark as processed)
+                                    $(this).remove(); // Remove the row from the first table
+                                }
+                            },
+                            error: function (xhr, status, error) {
+                                // Handle AJAX errors
+                                console.error("AJAX Error: " + status + ": " + error);
+                                console.error("Response: " + xhr.responseText); 
+                            },
+                            timeout: 5000 // Set a timeout for the request
+                        });
+                    });
+                }
+                window.location.href = baseUrl + '/vesselitem/view/' + $id
+            });
+        }
+      });
+  });
+
+  $('#confirmValidationV').on('click', function() {
+    const checkedRows = $("#dataTable6 .rowCheckbox:checked").closest("tr");
+    
+    if (checkedRows.length > 0) {
+      // Show confirmation dialog first
+      Swal.fire({
+          title: 'Submit Validation Item/s',
+          text: 'Are you sure you want to validate the selected liquidations item/s?',
+          icon: 'warning',
+          showCancelButton: true,
+          confirmButtonText: 'Yes',
+          cancelButtonText: 'Cancel'
+      }).then((result) => {
+          location.reload();
+          if (result.isConfirmed) {
+              // Proceed with AJAX requests only after confirmation
+              checkedRows.each(function () {
+                  const itemName = $(this).find("td:nth-child(1)").text();
+                  const description = $(this).find("td:nth-child(2)").text();
+                  const rfpNo = $(this).find("td:nth-child(3)").text();
+                  const rfpAmount = $(this).find("td:nth-child(4)").text();
+                  const actualAmount = $(this).find("td:nth-child(5) input").val();
+                  const variance = $(this).find(".variance").text();
+                  const remarks = $(this).find(".remarks").val();
+                  const item_id = $(this).find('input[name="item_id"]').val();
+
+                  $.ajax({
+                      url: baseUrl + '/agentvessel/voo_om_validate/' + item_id,
+                      method: 'POST',
+                      data: {
+                          itemName: itemName,
+                          description: description,
+                          rfpNo: rfpNo,
+                          rfpAmount: rfpAmount,
+                          actualAmount: actualAmount,
+                          variance: variance,
+                          remarks: remarks,
+                          item_id: item_id
+                      },
+                      success: function (response) {
+                          console.log("URL being requested: " + baseUrl + '/agentvessel/voo_om_validate/' + item_id);
+                          const data = JSON.parse(response);
+                          
+                          if (data.status === 'success') {
+                              // Show success message using Swal
+                              Swal.fire({
+                                  title: 'Item/s Submitted Successfully!',
+                                  icon: 'success'
+                              }).then(() => {
+                                  location.reload();
+                                  // Add the new row to the second table after success
+                                  
+                                  const newRow = `<tr>
+                                                  <td>${itemName}</td>
+                                                  <td>${description}</td>
+                                                  <td class="text-center">${rfpNo}</td>
+                                                  <td>${rfpAmount}</td>
+                                                  <td>${actualAmount}</td>
+                                                  <td>${variance}</td>
+                                                  <td>${remarks}</td>
+                                                  <td class="text-center"></td>
+                                                  <td class="text-center">
+                                                      <input type="checkbox" class="form-check-input rowCheckbox">
+                                                  </td>
+                                              </tr>`;
+                                  $("#dataTable7 tbody").append(newRow);
+                                  
+                                  // Remove the row from the original table
+                                  $(this).remove();
+                              });
+                          } else {
+                              // Optionally handle failure (if necessary)
+                              Swal.fire({
+                                  title: 'Submission Failed!',
+                                  text: data.message || 'Something went wrong. Please try again.',
+                                  icon: 'error'
+                              });
+                          }
+                      },
+                      error: function (xhr, status, error) {
+                          console.log("AJAX Error: " + status + ": " + error);
+                          console.error("Response: " + xhr.responseText); 
+                          console.log("URL being requested: " + baseUrl + '/agentvessel/voo_om_validate/' + item_id);
+                          Swal.fire({
+                              title: 'Error!',
+                              text: 'There was an error processing your request. Please try again later.',
+                              icon: 'error'
+                          });
+                      },
+                      timeout: 5000 
+                  });
+                  window.location.href = baseUrl + '/agentvessel/view/' + $id;
+              });
+          }
       });
     } else {
-      console.log(error);
+        Swal.fire({
+            title: 'No Items Selected!',
+            text: 'Please select at least one item to submit for accounting.',
+            icon: 'info'
+        });
     }
   });
+
+  $('#confirmValidationA').on('click', function() {
+    const checkedRows = $("#dataTable9 .rowCheckbox:checked").closest("tr");
+    
+    if (checkedRows.length > 0) {
+      // Show confirmation dialog first
+      Swal.fire({
+          title: 'Submit Validation Item/s',
+          text: 'Are you sure you want to validate the selected liquidations item/s?',
+          icon: 'warning',
+          showCancelButton: true,
+          confirmButtonText: 'Yes',
+          cancelButtonText: 'Cancel'
+      }).then((result) => {
+          if (result.isConfirmed) {
+            location.reload();
+              checkedRows.each(function () {
+                  const itemName = $(this).find("td:nth-child(1)").text();
+                  const description = $(this).find("td:nth-child(2)").text();
+                  const rfpNo = $(this).find("td:nth-child(3)").text();
+                  const rfpAmount = $(this).find("td:nth-child(4)").text();
+                  const actualAmount = $(this).find("td:nth-child(5) input").val();
+                  const variance = $(this).find(".variance").text();
+                  const remarks = $(this).find(".remarks").val();
+                  const item_id = $(this).find('input[name="item_id"]').val();
+
+                  $.ajax({
+                      url: baseUrl + '/agentvessel/acctg_validate/' + item_id,
+                      method: 'POST',
+                      data: {
+                          itemName: itemName,
+                          description: description,
+                          rfpNo: rfpNo,
+                          rfpAmount: rfpAmount,
+                          actualAmount: actualAmount,
+                          variance: variance,
+                          remarks: remarks,
+                          item_id: item_id
+                      },
+                      success: function (response) {
+                          console.log("URL being requested: " + baseUrl + '/agentvessel/acctg_validate/' + item_id);
+                          const data = JSON.parse(response);
+                          
+                          if (data.status === 'success') {
+                              // Show success message using Swal
+                              Swal.fire({
+                                  title: 'Item/s Submitted Successfully!',
+                                  icon: 'success'
+                              }).then(() => {
+                                  
+                                  const newRow = `<tr>
+                                                  <td>${itemName}</td>
+                                                  <td>${description}</td>
+                                                  <td class="text-center">${rfpNo}</td>
+                                                  <td>${rfpAmount}</td>
+                                                  <td>${actualAmount}</td>
+                                                  <td>${variance}</td>
+                                                  <td>${remarks}</td>
+                                                  <td class="text-center"></td>
+                                                  <td class="text-center">
+                                                      <input type="checkbox" class="form-check-input rowCheckbox">
+                                                  </td>
+                                              </tr>`;
+                                  $("#dataTable7 tbody").append(newRow);
+                                  
+                                  // Remove the row from the original table
+                                  $(this).remove();
+                              });
+                          } else {
+                              // Optionally handle failure (if necessary)
+                              Swal.fire({
+                                  title: 'Submission Failed!',
+                                  text: data.message || 'Something went wrong. Please try again.',
+                                  icon: 'error'
+                              });
+                          }
+                      },
+                      error: function (xhr, status, error) {
+                          console.log("AJAX Error: " + status + ": " + error);
+                          console.error("Response: " + xhr.responseText); 
+                          console.log("URL being requested: " + baseUrl + '/agentvessel/acctg_validate/' + item_id);
+                          Swal.fire({
+                              title: 'Error!',
+                              text: 'There was an error processing your request. Please try again later.',
+                              icon: 'error'
+                          });
+                      },
+                      timeout: 5000 
+                  });
+                  window.location.href = baseUrl + '/agentvessel/view/' + $id;
+              });
+          }
+      });
+    } else {
+        Swal.fire({
+            title: 'No Items Selected!',
+            text: 'Please select at least one item to submit for accounting.',
+            icon: 'info'
+        });
+    }
+  });
+
 
   function updateTotal() {
     let total = 0;
@@ -158,7 +380,7 @@ $(document).ready(function () {
       checkbox.prop("disabled", true); // Disable the checkbox
       $("#submitLiquidation").addClass("disabled").prop("disabled", true);
     }
-});
+  });
 
 
   $(".add").on("click", function () {
@@ -224,8 +446,6 @@ $(document).ready(function () {
     }
   });
 
-  $(".rowCheckbox").change(function () {
-  });
   // function toggleSubmit() {
   //   let anyChecked = $(".rowCheckbox:checked").length > 0;
 
@@ -237,65 +457,7 @@ $(document).ready(function () {
   //   }
   // }
 
-  $('#submitLiquidation').on('click', function(event) {
-    const checkedRows = $("#dataTable2 .rowCheckbox:checked").closest("tr");
-    if (checkedRows.length > 0) {
-      checkedRows.each(function () {
-        const itemName = $(this).find("td:nth-child(1)").text();
-        const description = $(this).find("td:nth-child(2)").text();
-        const rfpNo = $(this).find("td:nth-child(3)").text();
-        const rfpAmount = $(this).find("td:nth-child(4)").text();
-        const actualAmount = $(this).find("td:nth-child(5) input").val();
-        const variance = $(this).find(".variance").text();
-        const remarks = $(this).find(".remarks").val();
-        const item_id = $('input[name="item_id"]').val();
-        $.ajax({
-          url: baseUrl + '/vesselitem/submit_voo_om/' + item_id,
-          method: 'POST',
-          data: {
-            itemName: itemName,
-            description: description,
-            rfpNo: rfpNo,
-            rfpAmount: rfpAmount,
-            actualAmount: actualAmount,
-            variance: variance,
-            remarks: remarks,
-            item_id: item_id
-          },
-          success: function (response) {
-            const data = JSON.parse(response);
-            alert("Server Response: " + response);
-            if (data.status === 'success') {
-              const newRow = `<tr>
-                          <td>${itemName}</td>
-                          <td>${description}</td>
-                          <td class="text-center">${rfpNo}</td>
-                          <td>${rfpAmount}</td>
-                          <td>${actualAmount}</td>
-                          <td>${variance}</td>
-                          <td >${remarks}</td>
-                          <td class="text-center"></td>
-                          <td class="text-center">
-                            <input type="checkbox" class="form-check-input rowCheckbox">
-                          </td>
-                        </tr>`;
-              $("#dataTable3 tbody").append(newRow);
-              checkedRows.remove();
-            } else {
-              alert(data.message);
-            }
-          },
-          error: function (xhr, status, error) {
-            // This will run if the AJAX request fails
-            console.log("AJAX Error: " + status + ": " + error);
-            console.error("Response: " + xhr.responseText); 
-            console.log("URL being requested: " + baseUrl + '/vesselitem/submit_voo_om/' + item_id);
-          },
-          timeout: 5000 
-        })
-      });
-    }
-  });
+
   
   
   $("#addItem").on("click", function () {
@@ -359,8 +521,6 @@ $(document).ready(function () {
     });
   });
 
-
-
   $(document).on("click", "#updateUserBtn", function () {
     var user_id = $(this).closest('tr').find('input[name="user_id"]').val();
     var status = $(this).closest('tr').find('input[name="status"]').val();
@@ -394,10 +554,6 @@ $(document).ready(function () {
     } else {
       $('#status').prop('checked', false);
     }
-  });
-  
-  $('#submitLiquidation').on('click', function(event) {
-    
   });
 });
 // Ensure no conflicting scripts are causing redirection issues

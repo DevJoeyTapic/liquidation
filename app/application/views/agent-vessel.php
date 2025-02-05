@@ -133,8 +133,9 @@
                         <div class="tab-pane fade show active" id="pending" role="tabpanel" aria-labelledby="pendingTab">
                             <div class="row m-2"> 
                                 <div class="data-table">
-                                    <div class="table-responsive">
-                                        <table class="table table-striped table-hover display" id="dataTable3">
+                                    <!-- items table for VOO/OM -->
+                                    <div class="table-responsive" style="display: <?= ($this->session->userdata('user_type') == 4) ? 'block' : 'none'; ?>">
+                                        <table class="table table-striped table-hover display" id="dataTable6">
                                             <thead>
                                                 <tr>
                                                     <th class="col-3">Items</th>
@@ -150,7 +151,7 @@
                                             </thead>
                                             <tbody>
                                                 <?php foreach ($vessel_items as $item): ?>
-                                                    <?php if ($item->status == 2): ?>
+                                                    <?php if ($item->status == 1): ?>
                                                         <tr>
                                                             <td>
                                                                 <?= $item->item; ?>
@@ -158,10 +159,10 @@
                                                                     <span class="badge rounded-pill text-bg-warning">Controlled</span>
                                                                 <?php endif; ?>
                                                             </td>
-                                                            <td>Desc from other table for multiple entry</td>
+                                                            <td></td>
                                                             <td class="text-center"><?= $item->rfp_no; ?></td>
-                                                            <td id="debit"><span class="label text-dark"><?= $item->currency; ?>&nbsp; </span><?= $item->rfp_amount; ?></td>
-                                                            <td id="credit"><span class="label text-dark"><?= $item->currency; ?>&nbsp; </span><?= $item->actual_amount; ?></td>
+                                                            <td id="debit"><span class="label text-dark"><?= $item->rfp_amount; ?></td>
+                                                            <td id="credit"><span class="label text-dark"><?= $item->actual_amount; ?></td>
                                                             <td><?= $item->variance; ?></td>
                                                             <td><?= $item->remarks ?></td>
                                                             <td><a href="https://drive.google.com/drive/folders/1WGxD2F_E9Sv9CiCYYiR2p6xfu9On5Ewt?usp=drive_link">link this to the gdrive folder</a></td>
@@ -174,14 +175,60 @@
                                                 <?php endforeach; ?>
                                             </tbody>
                                         </table>
-                                    </div>    
-                                </div>
+                                    </div> 
+                                    <!-- items table for accounting -->
+                                    <div class="table-responsive" style="display: <?= ($this->session->userdata('user_type') == 3) ? 'block' : 'none'; ?>">
+                                        <table class="table table-striped table-hover display" id="dataTable9">
+                                            <thead>
+                                                <tr>
+                                                    <th class="col-3">Items</th>
+                                                    <th class="col">Description</th>
+                                                    <th class="col-1 text-center">RFP No.</th>
+                                                    <th class="col-2">RFP Amount</th>
+                                                    <th class="col-2">Actual Amount</th>
+                                                    <th class="col-2">Variance</th>
+                                                    <th class="col-2">Remarks</th>
+                                                    <th class="col-2 text-center">Document Reference</th>
+                                                    <th class="col text-center">Validate</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <?php if(!empty($vessel_items)): ?>
+                                                    <?php foreach ($vessel_items as $item): ?>
+                                                        <?php if ($item->status == 2): ?>
+                                                            <tr>
+                                                                <td>
+                                                                    <?= $item->item; ?>
+                                                                    <?php if($item->controlled == 0): ?>
+                                                                        <span class="badge rounded-pill text-bg-warning">Controlled</span>
+                                                                    <?php endif; ?>
+                                                                </td>
+                                                                <td></td>
+                                                                <td class="text-center"><?= $item->rfp_no; ?></td>
+                                                                <td id="debit"><span class="label text-dark"><?= $item->rfp_amount; ?></td>
+                                                                <td id="credit"><span class="label text-dark"><?= $item->actual_amount; ?></td>
+                                                                <td><?= $item->variance; ?></td>
+                                                                <td><?= $item->remarks ?></td>
+                                                                <td><a href="https://drive.google.com/drive/folders/1WGxD2F_E9Sv9CiCYYiR2p6xfu9On5Ewt?usp=drive_link">link this to the gdrive folder</a></td>
+                                                                <td class="text-center">
+                                                                    <input type="checkbox" class="form-check-input rowCheckbox">
+                                                                    <input type="hidden" name="item_id" value="<?php echo $item->id; ?>">
+                                                                </td>
+                                                            </tr>
+                                                        <?php endif; ?>
+                                                    <?php endforeach; ?>
+                                                <?php endif ?>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div> 
+                                        
                                 <div class="row mt-3">
                                     <div class="col d-flex gap-2 justify-content-end align-items-end">
                                         <button class="btn btn-success" id="validateAllBtn">
                                             Check All
                                         </button>
-                                        <button class="btn btn-primary" id="confirmValidation">
+                                        <button class="btn btn-primary" id="<?= ($this->session->userdata('user_type') == 3) ? 'confirmValidationA' : 'confirmValidationV'; ?>">
                                             Confirm
                                         </button>
                                     </div>
@@ -196,8 +243,49 @@
                             </div>
                             <div class="row m-2">
                                 <div class="data-table">
-                                    <div class="table-responsive">
-                                        <table class="table table-striped table-hover display" id="dataTable4">
+                                    <!-- table for voo/om validated -->
+                                    <div class="table-responsive" style="display: <?= ($this->session->userdata('user_type') == 4) ? 'block' : 'none'; ?>">
+                                        <table class="table table-striped table-hover display" id="dataTable7">
+                                            <thead>
+                                                <tr>
+                                                    <th class="col-3">Items</th>
+                                                    <th class="col">Description</th>
+                                                    <th class="col-1 text-center">RFP No.</th>
+                                                    <th class="col-2">RFP Amount</th>
+                                                    <th class="col-2">Actual Amount</th>
+                                                    <th class="col-2">Variance</th>
+                                                    <th class="col-2">Remarks</th>
+                                                    <th class="col-2 text-center">Document Reference</th>
+                                                    <th class="col text-center">Status</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <?php foreach ($vessel_items as $item): ?>
+                                                    <?php if ($item->status == 2): ?>
+                                                        <tr>
+                                                            <td>
+                                                                <?= $item->item; ?>
+                                                                <?php if($item->controlled == 0): ?>
+                                                                    <span class="badge rounded-pill text-bg-warning">Controlled</span>
+                                                                <?php endif; ?>
+                                                            </td>
+                                                            <td></td>
+                                                            <td class="text-center"><?= $item->rfp_no; ?></td>
+                                                            <td id="debit"><span class="label text-dark"><?= $item->rfp_amount; ?></td>
+                                                            <td id="credit"><span class="label text-dark"><?= $item->actual_amount; ?></td>
+                                                            <td><?= $item->variance; ?></td>
+                                                            <td><?= $item->remarks ?></td>
+                                                            <td><a href="https://drive.google.com/drive/folders/1WGxD2F_E9Sv9CiCYYiR2p6xfu9On5Ewt?usp=drive_link">link this to the gdrive folder</a></td>
+                                                            <td class="text-center"><?= $item->status ?></td>
+                                                        </tr>
+                                                    <?php endif; ?>
+                                                <?php endforeach; ?>
+                                            </tbody>
+                                        </table>
+                                    </div>    
+                                    <!-- table for accounting validated-->
+                                    <div class="table-responsive" style="display: <?= ($this->session->userdata('user_type') == 3) ? 'block' : 'none'; ?>">
+                                        <table class="table table-striped table-hover display" id="dataTable10">
                                             <thead>
                                                 <tr>
                                                     <th class="col-3">Items</th>
@@ -221,10 +309,10 @@
                                                                     <span class="badge rounded-pill text-bg-warning">Controlled</span>
                                                                 <?php endif; ?>
                                                             </td>
-                                                            <td>Desc from other table for multiple entry</td>
+                                                            <td></td>
                                                             <td class="text-center"><?= $item->rfp_no; ?></td>
-                                                            <td id="debit"><span class="label text-dark"><?= $item->currency; ?>&nbsp; </span><?= $item->rfp_amount; ?></td>
-                                                            <td id="credit"><span class="label text-dark"><?= $item->currency; ?>&nbsp; </span><?= $item->actual_amount; ?></td>
+                                                            <td id="debit"><span class="label text-dark"><?= $item->rfp_amount; ?></td>
+                                                            <td id="credit"><span class="label text-dark"><?= $item->actual_amount; ?></td>
                                                             <td><?= $item->variance; ?></td>
                                                             <td><?= $item->remarks ?></td>
                                                             <td><a href="https://drive.google.com/drive/folders/1WGxD2F_E9Sv9CiCYYiR2p6xfu9On5Ewt?usp=drive_link">link this to the gdrive folder</a></td>
@@ -234,7 +322,8 @@
                                                 <?php endforeach; ?>
                                             </tbody>
                                         </table>
-                                    </div>    
+                                    </div>  
+                                    
                                 </div>
                             </div>
                         </div>
