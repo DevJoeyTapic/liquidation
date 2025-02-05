@@ -21,10 +21,6 @@ $(document).ready(function () {
                 
                 if (checkedRows.length > 0) {
                     checkedRows.each(function () {
-                        const itemName = $(this).find("td:nth-child(1)").text();
-                        const description = $(this).find("td:nth-child(2)").text();
-                        const rfpNo = $(this).find("td:nth-child(3)").text();
-                        const rfpAmount = $(this).find("td:nth-child(4)").text();
                         const actualAmount = $(this).find("td:nth-child(5) input").val();
                         const variance = $(this).find(".variance").text();
                         const remarks = $(this).find(".remarks").val();
@@ -35,48 +31,17 @@ $(document).ready(function () {
                             url: baseUrl + '/vesselitem/submit_for_validation/' + item_id,
                             method: 'POST',
                             data: {
-                                itemName: itemName,
-                                description: description,
-                                rfpNo: rfpNo,
-                                rfpAmount: rfpAmount,
                                 actualAmount: actualAmount,
                                 variance: variance,
                                 remarks: remarks,
                                 item_id: item_id
-                            },
-                            success: function (response) {
-                                const data = JSON.parse(response);
-                                if (data.status === 'success') {
-                                    const newRow = `<tr>
-                                        <td>${itemName}</td>
-                                        <td>${description}</td>
-                                        <td class="text-center">${rfpNo}</td>
-                                        <td>${rfpAmount}</td>
-                                        <td>${actualAmount}</td>
-                                        <td>${variance}</td>
-                                        <td>${remarks}</td>
-                                        <td class="text-center"></td>
-                                        <td class="text-center">
-                                            <input type="checkbox" class="form-check-input rowCheckbox">
-                                        </td>
-                                    </tr>`;
-                                    
-                                    $("#dataTable3 tbody").append(newRow);
-                                    
-                                    // Remove the row from the original table (or mark as processed)
-                                    $(this).remove(); // Remove the row from the first table
-                                }
-                            },
-                            error: function (xhr, status, error) {
-                                // Handle AJAX errors
-                                console.error("AJAX Error: " + status + ": " + error);
-                                console.error("Response: " + xhr.responseText); 
-                            },
-                            timeout: 5000 // Set a timeout for the request
+                            }
                         });
+                        console.log(baseUrl + '/vesselitem/view/' + $id);
+
                     });
                 }
-                window.location.href = baseUrl + '/vesselitem/view/' + $id
+                window.location.href = baseUrl + '/vesselitem/view/' + $id;
             });
         }
       });
@@ -120,58 +85,7 @@ $(document).ready(function () {
                           variance: variance,
                           remarks: remarks,
                           item_id: item_id
-                      },
-                      success: function (response) {
-                          console.log("URL being requested: " + baseUrl + '/agentvessel/voo_om_validate/' + item_id);
-                          const data = JSON.parse(response);
-                          
-                          if (data.status === 'success') {
-                              // Show success message using Swal
-                              Swal.fire({
-                                  title: 'Item/s Submitted Successfully!',
-                                  icon: 'success'
-                              }).then(() => {
-                                  location.reload();
-                                  // Add the new row to the second table after success
-                                  
-                                  const newRow = `<tr>
-                                                  <td>${itemName}</td>
-                                                  <td>${description}</td>
-                                                  <td class="text-center">${rfpNo}</td>
-                                                  <td>${rfpAmount}</td>
-                                                  <td>${actualAmount}</td>
-                                                  <td>${variance}</td>
-                                                  <td>${remarks}</td>
-                                                  <td class="text-center"></td>
-                                                  <td class="text-center">
-                                                      <input type="checkbox" class="form-check-input rowCheckbox">
-                                                  </td>
-                                              </tr>`;
-                                  $("#dataTable7 tbody").append(newRow);
-                                  
-                                  // Remove the row from the original table
-                                  $(this).remove();
-                              });
-                          } else {
-                              // Optionally handle failure (if necessary)
-                              Swal.fire({
-                                  title: 'Submission Failed!',
-                                  text: data.message || 'Something went wrong. Please try again.',
-                                  icon: 'error'
-                              });
-                          }
-                      },
-                      error: function (xhr, status, error) {
-                          console.log("AJAX Error: " + status + ": " + error);
-                          console.error("Response: " + xhr.responseText); 
-                          console.log("URL being requested: " + baseUrl + '/agentvessel/voo_om_validate/' + item_id);
-                          Swal.fire({
-                              title: 'Error!',
-                              text: 'There was an error processing your request. Please try again later.',
-                              icon: 'error'
-                          });
-                      },
-                      timeout: 5000 
+                      }                      
                   });
                   window.location.href = baseUrl + '/agentvessel/view/' + $id;
               });
@@ -223,59 +137,11 @@ $(document).ready(function () {
                           variance: variance,
                           remarks: remarks,
                           item_id: item_id
-                      },
-                      success: function (response) {
-                          console.log("URL being requested: " + baseUrl + '/agentvessel/acctg_validate/' + item_id);
-                          const data = JSON.parse(response);
-                          
-                          if (data.status === 'success') {
-                              // Show success message using Swal
-                              Swal.fire({
-                                  title: 'Item/s Submitted Successfully!',
-                                  icon: 'success'
-                              }).then(() => {
-                                  
-                                  const newRow = `<tr>
-                                                  <td>${itemName}</td>
-                                                  <td>${description}</td>
-                                                  <td class="text-center">${rfpNo}</td>
-                                                  <td>${rfpAmount}</td>
-                                                  <td>${actualAmount}</td>
-                                                  <td>${variance}</td>
-                                                  <td>${remarks}</td>
-                                                  <td class="text-center"></td>
-                                                  <td class="text-center">
-                                                      <input type="checkbox" class="form-check-input rowCheckbox">
-                                                  </td>
-                                              </tr>`;
-                                  $("#dataTable7 tbody").append(newRow);
-                                  
-                                  // Remove the row from the original table
-                                  $(this).remove();
-                              });
-                          } else {
-                              // Optionally handle failure (if necessary)
-                              Swal.fire({
-                                  title: 'Submission Failed!',
-                                  text: data.message || 'Something went wrong. Please try again.',
-                                  icon: 'error'
-                              });
-                          }
-                      },
-                      error: function (xhr, status, error) {
-                          console.log("AJAX Error: " + status + ": " + error);
-                          console.error("Response: " + xhr.responseText); 
-                          console.log("URL being requested: " + baseUrl + '/agentvessel/acctg_validate/' + item_id);
-                          Swal.fire({
-                              title: 'Error!',
-                              text: 'There was an error processing your request. Please try again later.',
-                              icon: 'error'
-                          });
-                      },
-                      timeout: 5000 
+                      }
                   });
-                  window.location.href = baseUrl + '/agentvessel/view/' + $id;
               });
+              window.location.href = baseUrl + '/agentvessel/view/' + $id;
+
           }
       });
     } else {

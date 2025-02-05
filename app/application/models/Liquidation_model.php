@@ -94,11 +94,19 @@ class Liquidation_model extends CI_Model {
         return $this->db->insert_id();
     }
 
-    public function update_item_agent($id) {
+    public function update_item_agent($data) {
         $sql ="UPDATE tbl_agent_liquidation_items
-               SET `status` = 1
+               SET `status` = 1,
+               actual_amount = ?,
+               variance = ?,
+               `remarks` = ?
                WHERE id = ?";
-        $this->db->query($sql, array($id));
+        $this->db->query($sql, array(
+            $data['actualAmount'],
+            $data['variance'],
+            $data['remarks'],
+            $data['item_id']
+        ));
     }
 
     public function update_item_by_voo_om($id) {

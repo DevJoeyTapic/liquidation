@@ -165,7 +165,7 @@
                     </div>
                 </div>
             </div> 
-            <div class="cont" style="display: <?= ($this->session->userdata('user_type') == 5) ? 'block' : 'none'; ?>">
+            <div style="display: <?= ($this->session->userdata('user_type') == 5) ? 'block' : 'none'; ?>">
                 <div class="accordion" id="user-accordion">
                     <div class="accordion-item">
                         <h2 class="accordion-header">
