@@ -10,53 +10,67 @@ class VesselItem extends CI_Controller {
             redirect('login');
         }
     }
-    public function index() {
-        if ($this->session->userdata('user_type') == 2) {
-            $data['agent_liquidations'] = $this->Liquidation_model->get_agent_liquidations();   
-            $this->load->view('vessel-item', $data);
-        }
-        else {
-            redirect('dashboard');
-        }
-    }
     public function view($id) {
         if ($this->session->userdata('user_type') == 2) {
             $user_id = $this->session->userdata('user_id');
-            $data['agent_liquidations'] = $this->Liquidation_model->get_agent_liquidations();  
-            foreach ($data['agent_liquidations'] as $liquidation) {
-                if ($liquidation->id == $id) {
-                    $data['vessel'] = $liquidation->vessel;
-                    $data['voyage'] = $liquidation->voyage;
-                    $data['port'] = $liquidation->port;
-                    $data['eta'] = $liquidation->eta;
-                    $data['etd'] = $liquidation->etd;
-                    break;
-                }
-            }
+            $data['agent_liquidations'] = $this->Liquidation_model->get_agent_liquidations($user_id);  
+            $data['vessel_data'] = $this->Liquidation_model->get_vessel_data($id);
+            
+            // Get data related to the vessel item
             $data['id'] = $id;
             $data['vessel_items'] = $this->Liquidation_model->get_vessel_items($data['id']);
-            $data['liquidation_master'] = $this->Liquidation_model->get_liquidation_master($user_id);
+            $data['liquidation_item'] = $this->Liquidation_model->get_liquidation_item($user_id, $id);
+            $data['notes'] = $this->Liquidation_model->get_notes($data['id']);
+
             $this->load->view('vessel-item', $data);
             
-        }
-        else {
-            redirect('dashboard');
-        }
-    }
-
-    public function notes($epda_ref) {
-        if ($this->session->userdata('user_type') == 2 || $this->session->userdata('user_type') == 3) {
-            $data['notes_master'] = $this->Liquidation_model->get_notes_master($epda_ref);
-    
-            if (empty($data['notes_master'])) {
-                log_message('error', 'No notes found for EPDA reference: ' . $epda_ref);
-            }
-    
-            $this->load->view('vessel-item', $data);
         } else {
             redirect('dashboard');
         }
     }
+
+    public function archive($id) {
+        if ($this->session->userdata('user_type') == 2) {
+            $data['archive_complete'] = $this->Liquidation_model->mark_complete_archive($id);
+            if ($data['archive_complete']) {
+                redirect('dashboard');
+            } else {
+                $this->load->view('vessel-item', $data);
+            }
+        }
+    }
+
+    public function add_item() {
+        $data = array(
+            'user_id' => $this->input->post('user_id'),
+            'supplier' => $this->input->post('supplier'),
+            'transno' => $this->input->post('transno'),
+            'item' => $this->input->post('newItem'),
+            'remarks' => $this->input->post('newRemarks'),
+            'actual_amount' => $this->input->post('newAmount'),
+            'isNew' => $this->input->post('isNew')
+        );
+        $insertedId = $this->Liquidation_model->insert_item($data);
+        if ($insertedId) {
+            echo json_encode(array('status' => 'success', 'id' => $insertedId));
+        } else {
+            echo json_encode(array('status' => 'error', 'message' => 'Failed to add item'));
+        }
+    }
     
+    public function submit_for_validation($data) {
+        $data = array(
+            'item_id' => $this->input->post('item_id'),
+            'actualAmount' => $this->input->post('actualAmount'),
+            'variance' => $this->input->post('variance'),
+            'remarks' => $this->input->post('remarks')
+        );
+        $updatedId = $this->Liquidation_model->update_item_agent($data);
+        if ($updatedId) {
+            echo json_encode(array('status' => 'success', 'id' => $updatedId));
+        } else {
+            redirect('vesselitem');
+        }
+    }
 }
 ?>

@@ -6,26 +6,36 @@
     <title>ALS</title>
     <link rel="icon" type="image/png" href="<?= base_url('assets/images/liquidate.ico'); ?>">
 
+    <!-- Google Font -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+      
     <!-- DataTables -->
     <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
     <link rel="stylesheet" href="https://cdn.datatables.net/1.13.5/css/jquery.dataTables.min.css">
-    <script src="https://cdn.datatables.net/1.13.5/js/jquery.dataTables.min.js"></script>  
+    <script src="https://cdn.datatables.net/1.13.5/js/jquery.dataTables.min.js"></script>
+
+    <!-- Bootstrap -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+
+    <!-- FontAwesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" />
+
+    <!-- CSS files -->
+    <link rel="stylesheet" href="<?= base_url('assets/css/navbar.css'); ?>">
+    <link rel="stylesheet" href="<?= base_url('assets/css/global.css'); ?>">
+    <link rel="stylesheet" href="<?= base_url('assets/css/dashboard.css'); ?>">
+
+    <!-- Swal -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
     <!-- JS Files -->
     <script src="<?= base_url('assets/js/dataTable.js'); ?>"></script>
     <script src="<?= base_url('assets/js/main.js'); ?>"></script>
 
-    <!-- Bootstrap -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
 
-    <!-- FontAwesome -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" />
-    
-    <!-- CSS files -->
-    <link rel="stylesheet" href="<?= base_url('assets/css/navbar.css'); ?>">
-    <link rel="stylesheet" href="<?= base_url('assets/css/main.css'); ?>">
-    <link rel="stylesheet" href="<?= base_url('assets/css/global.css'); ?>">
-    <link rel="stylesheet" href="<?= base_url('assets/css/dashboard.css'); ?>">
+
+
 
 </head>
 <body>
@@ -44,7 +54,6 @@
                     <ul class="dropdown-menu dropdown-menu-end">
                         <li><h6 class="dropdown-header"><?= $this->session->userdata('fullname') ?: 'Guest'; ?> - <?= $this->session->userdata('user_type') == 2 ? 'Supercargo Agent' : ($this->session->userdata('user_type') == 3 ? 'Accounting' : 'Unknown'); ?></h6></li>
                         <li><hr class="dropdown-divider"></li>
-                        <li><button class="dropdown-item" type="button" data-bs-toggle="modal" data-bs-target="#changePasswordModal">Change Password</button></li>
                         <li><a class="dropdown-item" href="<?= site_url('login/logout'); ?>">Signout</a></li>
                     </ul>
                 </div>  
@@ -52,127 +61,128 @@
         </nav>
 
         <div class="main-container bg-gradient">
-            <?php if($this->session->userdata('user_type') == 2): ?>
-                <div class="accordion mb-3" id="breakdownAccordion">
-                    <div class="accordion-item">
-                        <h2 class="accordion-header">
-                            <button class="accordion-button text-danger" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
-                                <i class="fa-solid fa-exclamation-circle me-2"></i><strong>Due Wallem: &nbsp;</strong> 60,0000.00                       
-                            </button>
-                        </h2>
-                        <div id="collapseOne" class="accordion-collapse collapse" data-bs-parent="#breakdownAccordion">
-                            <div class="accordion-body">
-                                <div class="d-flex justify-content-between align-items-end">
-                                    <h4><strong>Credit Breakdown:</strong></h4>
-                                    <p class="text-danger small"><strong>CURRENCY:</strong> PHP</p>
-                                </div>
-                                <table class="table table-hover">
-                                    <caption class="small">As of <span id="currentTime"></span></caption>
-                                    <thead>
-                                        <tr>
-                                            <th class="col-3">Vessel/Voyage</th>
-                                            <th class="col-1">Due Amount</th>
-                                            <th class="text-end col-8">Credited Amount</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <tr class="breakdown-row">
-                                            <td>Vessel Name V123</td>
-                                            <td>20,000.00</td>
-                                            <td class="text-end">20,000.00</td>
-                                        </tr>
-                                        <tr class="breakdown-row">
-                                            <td>Vessel Name V123</td>
-                                            <td>20,000.00</td>
-                                            <td class="text-end">20,000.00</td>
-                                        </tr>
-                                        <tr class="breakdown-row">
-                                            <td>Vessel Name V123</td>
-                                            <td>20,000.00</td>
-                                            <td class="text-end">20,000.00</td>
-                                        </tr>
-                                    </tbody>
-                                </table>
-                                <h4 class="text-end bold">PHP 60,0000.00</h4>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            <?php endif; ?>
             <div class="cont mb-3">
                 <div class="row px-3 d-flex justify-content-start align-items-center">
-                    <div class="col p-0">
-                        <div class="row p-0 d-flex justify-content-start align-items-center">
-                            <div class="col-2">
-                                <i class="fa-solid fa-ship fa-xl text-warning"></i>
-                            </div>
-                            <div class="col-10">
-                                <p class="label">VESSEL</p>
-                                <p class="title"><?= isset($vessel_item) ? $vessel_item->vessel : 'N/A'; ?></p>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-2 p-0">
-                        <div class="row p-0 d-flex justify-content-start align-items-center">
-                            <div class="col-3">
-                                <i class="fa-solid fa-anchor fa-xl text-info"></i>
-                            </div>
-                            <div class="col-9">
-                                <p class="label">VOYAGE</p>
-                                <p class="title"><?= isset($vessel_item) ? $vessel_item->voyage : 'N/A'; ?></p>
+                    <?php if (!empty($vessel_data)): ?>
+                        <div class="col p-0">
+                            <div class="row p-0 d-flex justify-content-start align-items-center">
+                                <div class="col-2">
+                                    <i class="fa-solid fa-ship fa-xl text-warning"></i>
+                                </div>
+                                <div class="col-10">
+                                    <p class="label">VESSEL</p>
+                                    <p class="title"><?= $vessel_data[0]->vessel_name; ?></p>
+                                </div>
                             </div>
                         </div>
-                    </div>
-                    <div class="col p-0">
-                        <div class="row p-0 d-flex justify-content-start align-items-center">
-                            <div class="col-2">
-                                <i class="fa-solid fa-water fa-xl text-primary"></i>
-                            </div>
-                            <div class="col-10">
-                                <p class="label">PORT</p>
-                                <p class="title"><?= isset($vessel_item) ? $vessel_item->port : 'N/A'; ?></p>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-3 p-0">
-                        <div class="row d-flex justify-content-start align-items-center">
-                            <div class="col-2">
-                                <i class="fa-solid fa-clock fa-xl text-primary"></i>
-                            </div>
-                            <div class="col-10">
-                                <p class="label">ARRIVAL</p>
-                                <p class="title"><?= isset($vessel_item) ? $vessel_item->eta : 'N/A'; ?></p>
+                        <div class="col-2 p-0">
+                            <div class="row p-0 d-flex justify-content-start align-items-center">
+                                <div class="col-3">
+                                    <i class="fa-solid fa-anchor fa-xl text-info"></i>
+                                </div>
+                                <div class="col-9">
+                                    <p class="label">VOYAGE</p>
+                                    <p class="title"><?= $vessel_data[0]->voyno; ?></p>
+                                </div>
                             </div>
                         </div>
-                        <div class="row d-flex justify-content-start align-items-center">
-                            <div class="col-2">
-                                <i class="fa-solid fa-clock fa-xl text-success"></i>
-                            </div>
-                            <div class="col-10">
-                                <p class="label">DEPARTURE</p>
-                                <p class="title"><?= isset($vessel_item) ? $vessel_item->etd : 'N/A'; ?></p>
+                        <div class="col p-0">
+                            <div class="row p-0 d-flex justify-content-start align-items-center">
+                                <div class="col-2">
+                                    <i class="fa-solid fa-water fa-xl text-primary"></i>
+                                </div>
+                                <div class="col-10">
+                                    <p class="label">PORT</p>
+                                    <p class="title"><?= $vessel_data[0]->port; ?></p>
+                                </div>
                             </div>
                         </div>
-                    </div>
+                        <div class="col-3 p-0">
+                            <div class="row d-flex justify-content-start align-items-center">
+                                <div class="col-2">
+                                    <i class="fa-solid fa-clock fa-xl text-primary"></i>
+                                </div>
+                                <div class="col-10">
+                                    <p class="label">ARRIVAL</p>
+                                    <p class="title"><?= $vessel_data[0]->eta; ?></p>
+                                </div>
+                            </div>
+                            <div class="row d-flex justify-content-start align-items-center">
+                                <div class="col-2">
+                                    <i class="fa-solid fa-clock fa-xl text-success"></i>
+                                </div>
+                                <div class="col-10">
+                                    <p class="label">DEPARTURE</p>
+                                    <p class="title"><?= $vessel_data[0]->etd; ?></p>
+                                </div>
+                            </div>
+                        </div>
+                    <?php endif; ?>
                 </div>
             </div>
             <div class="cont mb-3">
                 <h5 class="mb-3">Liquidation Overview</h5>
+                <?php 
+                    $count = 0;
+                    $liquidated = 0;
+                    $remaining = 0;
+                    foreach ($liquidation_item as $item): 
+                        $status = (int)$item->status;
+
+                        if ($item->user_id == $this->session->userdata('user_id')): 
+                            $count++;
+                        endif;
+                        if ($status == 3):
+                            $liquidated++;
+                            
+                        endif;
+                        if ($status != 3):
+                            $remaining++;
+                        endif;
+                    endforeach;
+                    $liqpercent = ($liquidated/$count) * 100;
+                    $remainingP = ($remaining/$count) * 100;
+                ?>
                 <div class="progress">
-                    <div class="progress-bar bg-primary" role="progressbar" style="width: 13.33%" aria-valuenow="15" aria-valuemin="0" aria-valuemax="100"></div>
-                    <div class="progress-bar bg-danger" role="progressbar" style="width: 86.66%" aria-valuenow="30" aria-valuemin="0" aria-valuemax="100"></div>
+                    <div class="progress-bar bg-primary" role="progressbar" style="width: <?= $liqpercent; ?>%" aria-valuenow="<?= $liqpercent; ?>" aria-valuemin="0" aria-valuemax="100"></div>
+                    <div class="progress-bar bg-danger" role="progressbar" style="width: <?= $remainingP; ?>%" aria-valuenow="<?= $remainingP; ?>" aria-valuemin="0" aria-valuemax="100"></div>
                 </div>
+
 
                 <div class="legend mt-2">
                     <ul class="list-unstyled">
-                        <li class="mb-2"><strong>Total No. of Items: 15 item/s</strong></li>
-                        <li><span class="progress-bar progress-bar-legend bg-primary"></span>Liquidated Items: 13.33% (2 of 15)</li>
-                        <li><span class="progress-bar progress-bar-legend bg-danger"></span>Remaining Items: 86.66% (13 of 15)</li>
+                    <?php 
+                        $count = 0;
+                        $liquidated = 0;
+                        $remaining = 0;
+                        foreach ($liquidation_item as $item): 
+                            $status = (int)$item->status;
+
+                            if ($item->user_id == $this->session->userdata('user_id')): 
+                                $count++;
+                            endif;
+                            if ($status == 3):
+                                $liquidated++;
+                                
+                            endif;
+                            if ($status != 3):
+                                $remaining++;
+                            endif;
+                        endforeach;
+                        $liqpercent = intval(($liquidated / $count) * 100);
+                        $remainingP = intval(($remaining / $count) * 100);
+
+                    ?>
+                        <li class="mb-2"><strong>Total No. of Items: <?= $count; ?></strong></li>
+                        <li><span class="progress-bar progress-bar-legend bg-primary"></span>Liquidated Items: <?= $liqpercent; ?>% (<?= $liquidated; ?> of <?= $count ?>)</li>
+                        <li><span class="progress-bar progress-bar-legend bg-danger"></span>Remaining Items: <?= $remainingP; ?>% (<?= $remaining; ?> of <?= $count ?>)</li>
                     </ul>
                 </div>
-                <div class="d-flex justify-content-end">
-                    <button class="btn btn-success btn-sm" id="markComplete"> <i class="fa-solid fa-check pe-2"></i>Mark as Complete</button>
-                </div>
+                <?php if (!empty($agent_liquidations)): ?>
+                    <div class="d-flex justify-content-end">
+                        <button class="btn btn-success btn-sm" id="markComplete" <?= ($liqpercent == 100) ? '' : 'disabled' ?>> <i class="fa-solid fa-check pe-2"></i>Mark as Complete</button>
+                    </div>
+                <?php endif ?>
 
             </div>
 
@@ -211,33 +221,65 @@
                                             </tr>
                                         </thead>
                                         <tbody>
-                                            <?php foreach ($liquidation_master as $entry): ?>
-                                                <?php if ($entry->user_id == $this->session->userdata('user_id')): ?>
+                                            <?php foreach ($liquidation_item as $item): ?>
+                                                <?php if ($item->user_id == $this->session->userdata('user_id') && $item->status == '0'): ?>
                                                     <tr>
-                                                        <td class="col-3" id="item"><?= $entry->item; ?></td>
-                                                        <td class="col" id="description"><?= $entry->description; ?></td>
-                                                        <td class="col-1 text-center" id="rfpno"><?= $entry->rfp_no; ?></td>
-                                                        <td class="col-2 rfpAmount" id="rfpAmount"><?= number_format($entry->rfp_amount, 2); ?></td>
-                                                        <td class="col-2 text-end">
-                                                            <input type="text" class="form-control form-control-sm actualAmount" id="actualAmount">
-                                                            <button class="btn btn-sm text-primary multiple-btn" data-bs-toggle="modal" data-bs-target="#multipleEntryModal">Multiple Entry</button>
+                                                        <td class="col-3" id="item">
+                                                            <?= $item->item; ?>
+                                                            <?php if($item->controlled == 0): ?>
+                                                                <span class="badge rounded-pill text-bg-warning">Controlled</span>
+                                                            <?php endif; ?>
                                                         </td>
-                                                        <td class="variance" id="variance"><?= number_format($entry->variance, 2); ?></td>
-                                                        <td class="col-2 "><textarea class="form-control form-control-sm remarks" rows="1" style="max-height: 150px"></textarea></td>
-                                                        <td class="docRef"><input type="file" class="form-control form-control-sm" multiple></td>
-                                                        <td class="text-center validate"><input type="checkbox" class="form-check-input rowCheckbox"></td>
-                                                    </tr>
+                                                        <td class="col" id="description"></td>
+                                                        <td class="col-1 text-center" id="rfpno">
+                                                            <?php if($item->isNew == '1'): ?>  
+                                                                <span class="badge text-bg-primary">NEW ITEM</span>
+                                                            <?php else: ?>  
+                                                                <?= $item->rfp_no; ?>
+                                                            <?php endif ?>
+                                                        </td>
+                                                        <td class="col-2 rfpAmount" id="rfpAmount">
+                                                            <?php if($item->isNew == '1'): ?>  
+                                                                <span class="badge text-bg-primary">NEW ITEM</span>
+                                                            <?php else: ?>  
+                                                                <?= number_format($item->rfp_amount, 2); ?>
+                                                            <?php endif ?>
+                                                        </td>
+                                                        <td class="col-2 text-end">
+                                                            <?php if($item->isNew == '1'): ?>  
+                                                                <input type="text" class="form-control form-control-sm actualAmount" id="actualAmount" name="actualAmount" value="<?= $item->actual_amount; ?>" disabled>
+                                                            <?php else: ?>  
+                                                                <input type="text" class="form-control form-control-sm actualAmount" id="actualAmount" name="actualAmount" value="<?= $item->actual_amount; ?>" required>
+                                                                <button class="btn btn-sm text-primary multiple-btn" data-bs-toggle="modal" data-bs-target="#multipleEntryModal">Multiple Entry</button>
+                                                            <?php endif ?>
+                                                        </td>
+                                                        <td class="variance" id="variance">
+                                                            <?php if($item->isNew == '1'): ?>  
+                                                                <span class="badge text-bg-primary">NEW ITEM</span>
+                                                            <?php endif ?>
+                                                        </td>
+                                                        <td class="col-2 ">
+                                                            <?php if($item->isNew == '1'): ?>  
+                                                                <textarea class="form-control form-control-sm remarks" rows="1" style="max-height: 150px" disabled><?= $item->remarks; ?></textarea></td>
+                                                            <?php else: ?>  
+                                                                <textarea class="form-control form-control-sm remarks" rows="1" style="max-height: 150px"><?= $item->remarks; ?></textarea></td>
+                                                            <?php endif ?>
 
+                                                        <td class="docRef"><input type="file" class="form-control form-control-sm" multiple></td>
+                                                        <td class="text-center validate">
+                                                            <input type="checkbox" class="form-check-input rowCheckbox">
+                                                            <input type="hidden" name="item_id" value="<?php echo $item->id; ?>">
+                                                        </td>
+                                                    </tr>
                                                 <?php endif; ?>
                                             <?php endforeach; ?>
-
                                         </tbody>
                                     </table>
                                 </div>
                             </div>
                         </div>
                         <div class="d-flex justify-content-end">
-                            <button type="button" class="btn btn-primary" id="submitLiquidation">Submit</button>
+                            <button type="button" class="btn btn-primary" id="submitLiquidation" >Submit</button>
                         </div>
                     </div>
                     <div class="tab-pane fade" id="forValidation" role="tabpanel" aria-labelledby="forValidationTab">
@@ -255,26 +297,30 @@
                                                 <th class="col-2">Variance</th>
                                                 <th class="col-2">Remarks</th>
                                                 <th class="col-2 text-center">Document Reference</th>
-                                                <th>Edit</th>
+                                                <th>Action</th>
                                             </tr>
                                         </thead>
                                         <tbody>
-                                           
-                                            <tr id="checkAllRow">
-                                                <td></td>
-                                                <td></td>
-                                                <td></td>
-                                                <td></td>
-                                                <td></td>
-                                                <td></td>
-                                                <td></td>
-                                                <td></td>
-                                                <td class="text-center">
-                                                    <span class="text-end small">Check All</span> 
-                                                    <input type="checkbox" class="form-check-input rowCheckbox mx-2" id="validateAll">
-                                                </td>   
-                                            </tr>
-                                     
+                                            <?php foreach ($liquidation_item as $item): ?>
+                                                <?php if ($item->user_id == $this->session->userdata('user_id') && $item->status == '1'): ?>
+                                                    <tr>
+                                                        <td class="col-3" id="item"><?= $item->item; ?></td>
+                                                        <td class="col" id="description"></td>
+                                                        <td class="col-1 text-center" id="rfpno"><?= $item->rfp_no; ?></td>
+                                                        <td class="col-2 rfpAmount" id="rfpAmount"><?= number_format($item->rfp_amount, 2); ?></td>
+                                                        <td class="col-2"><?= $item->actual_amount ?></td>
+                                                        <td class="variance"><?= $item->variance ?></td>
+                                                        <td class="col-2 "><?= $item->remarks ?></td>
+                                                        <td class="docRef text-center">
+                                                            <?= !empty($item->doc_ref) ? '<a href="' . $item->doc_ref . '" target="_blank"><span class="badge bg-primary">open file</span></a>' : '<span class="badge bg-danger">not provided</span>' ?>
+                                                        </td>
+                                                        <td class="text-center validate">
+                                                            <input type="checkbox" class="form-check-input rowCheckbox">
+                                                            <input type="hidden" name="item_id" value="<?php echo $item->id; ?>">
+                                                        </td>
+                                                    </tr>
+                                                <?php endif; ?>
+                                            <?php endforeach; ?>
                                             <!-- see main.js #submitLiquidation click -->
                                         </tbody>
                                     </table>
@@ -283,7 +329,7 @@
                         </div>
                         <div class="d-flex justify-content-end">
                             <button type="button" class="btn btn-sm btn-danger me-2" id="removeBtn">Remove from Validation</button>
-                            <button type="button" class="btn btn-sm btn-primary" id="forValidationBtn">Submit for Validation</button>
+                            <!-- <button type="button" class="btn btn-sm btn-primary" id="forValidationBtn">Submit for Validation</button> -->
                         </div>
                     </div>
                     <div class="tab-pane fade" id="validated" role="tabpanel" aria-labelledby="validatedTab">
@@ -295,20 +341,39 @@
                                 <div class="table-reponsive">
                                     <table class="table table-hover display" id="dataTable4">
                                     <thead>
-                                            <tr>
-                                            <th class="col-3">Items</th>
-                                                <th>Description</th>
-                                                <th class="col-1 text-center">RFP No.</th>
-                                                <th class="col-2">RFP Amount</th>
-                                                <th class="col-2">Actual Amount</th>
-                                                <th class="col-2">Variance</th>
-                                                <th class="col-2">Remarks</th>
-                                                <th class="col-2 text-center">Document Reference</th>
-                                                <th>Status</th>
-                                            </tr>
+                                        
+                                                <tr>
+                                                    <th class="col-3">Items</th>
+                                                    <th>Description</th>
+                                                    <th class="col-1 text-center">RFP No.</th>
+                                                    <th class="col-2">RFP Amount</th>
+                                                    <th class="col-2">Actual Amount</th>
+                                                    <th class="col-2">Variance</th>
+                                                    <th class="col-2">Remarks</th>
+                                                    <th class="col-2 text-center">Document Reference</th>
+                                                    <th>Status</th>
+                                                </tr>
+                                           
                                         </thead>
                                         <tbody>
-                                            
+                                            <?php foreach ($liquidation_item as $item): ?>
+                                                <?php if ($item->user_id == $this->session->userdata('user_id') && ($item->status == '2')): ?>
+                                                    <tr>
+                                                        <td class="col-3" id="item"><?= $item->item; ?></td>
+                                                        <td class="col" id="description"></td>
+                                                        <td class="col-1 text-center" id="rfpno"><?= $item->rfp_no; ?></td>
+                                                        <td class="col-2 rfpAmount" id="rfpAmount"><?= number_format($item->rfp_amount, 2); ?></td>
+                                                        <td class="col-2"><?= $item->actual_amount ?></td>
+                                                        <td class="variance"><?= $item->variance ?></td>
+                                                        <td class="col-2 "><?= $item->remarks ?></td>
+                                                        <td class="docRef text-center">
+                                                            <?= !empty($item->doc_ref) ? '<a href="' . $item->doc_ref . '" target="_blank"><span class="badge bg-primary">open file</span></a>' : '<span class="badge bg-danger">not provided</span>' ?>
+                                                        </td>
+                                                        <td class="text-center validate small"><?= ($item->status == '1') ? 'Pending VOO/OM' : (($item->status == '2') ? 'Pending Accounting' : 'Status Unknown') ?>
+                                                        </td>
+                                                    </tr>
+                                                <?php endif; ?>
+                                            <?php endforeach; ?>
                                         </tbody>
                                     </table>
                                 </div>
@@ -329,65 +394,79 @@
         <div class="notes-header text-white p-3 text-center">
             Notes
         </div>
-        <div class="chat-messages p-3">                        
-        <div class="receiver">
-                <div class="d-flex justify-content-between text-secondary">
-                    <div>
-                        <p class="small"><strong>Archielyn Anabeso</strong></p>
-                        <p class="small">Accounting Department</p>
-                    </div>
-                    <div class="d-flex justify-content-end align-items-end">
-                        <p class="small">
-                            <?php
-                                date_default_timezone_set('Asia/Singapore'); 
-                                echo date('F j, Y H:i A');
-                            ?>
-                        </p>
-                    </div>
-                </div>
-                <div class="d-flex">
-                    <div class="imessage d-flex">
-                        <div class="profile-notes">
-                            <img src="<?= base_url('assets/images/bg-ship.jpg'); ?>" class="rounded-circle">
+        <div class="chat-messages p-3" id="notes-list">
+            <?php if (!empty($notes)): ?>
+                <?php foreach($notes as $note): ?>
+                    <?php if($note->sender == $this->session->userdata('fullname')): ?>
+                        <div class="sender">
+                            <div class="d-flex justify-content-between text-secondary">
+                                <div class="d-flex justify-content-end align-items-end">
+                                    <p class="small">
+                                        <?php
+                                            date_default_timezone_set('Asia/Singapore'); 
+                                            echo date('F j, Y H:i A', strtotime($note->timestamp));
+                                        ?>
+                                    </p>
+                                </div>
+                                <div>
+                                    <p class="small text-end"><strong><?= $note->sender; ?></strong></p>
+                                </div>
+                            </div>
+                            <div class=""> 
+                                <div class="imessage d-flex justify-content-end align-items-right">
+                                    <p class="from-me p-2">
+                                    <?= $note->notes; ?>
+                                    </p>
+                                    <div class="profile-notes right">
+                                        <img src="<?= base_url('assets/images/bg-ship.jpg'); ?>" class="rounded-circle">
+                                    </div>
+                                </div>
+                            </div>
                         </div>
-                        <p class="from-them p-2">
-                        "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
-                        </p>
-                    </div>
-                </div>
-            </div>
-            <div class="sender">
-                <div class="d-flex justify-content-between text-secondary">
-                    <div class="d-flex justify-content-end align-items-end">
-                        <p class="small">
-                            <?php
-                                date_default_timezone_set('Asia/Singapore'); 
-                                echo date('F j, Y H:i A');
-                            ?>
-                        </p>
-                    </div>
-                    <div>
-                        <p class="small text-end"><strong>Archielyn Anabeso</strong></p>
-                        <p class="small">Accounting Department</p>
-                    </div>
-                </div>
-                <div class=""> 
-                    <div class="imessage d-flex justify-content-end align-items-right">
-                        <p class="from-me p-2">
-                        "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
-                        </p>
-                        <div class="profile-notes right">
-                            <img src="<?= base_url('assets/images/bg-ship.jpg'); ?>" class="rounded-circle">
+                    <?php else: ?>
+                        <div class="receiver">
+                            <div class="d-flex justify-content-between text-secondary">
+                                <div>
+                                    <p class="small"><strong><?= $note->sender; ?></strong></p>
+                                    <p class="small"><?= $note->sender; ?></p>
+                                </div>
+                                <div class="d-flex justify-content-end align-items-end">
+                                    <p class="small">
+                                        <?php
+                                            date_default_timezone_set('Asia/Singapore'); 
+                                            echo date('F j, Y H:i A', strtotime($note->timestamp));
+                                        ?>
+                                    </p>
+                                </div>
+                            </div>
+                            <div class="d-flex">
+                                <div class="imessage d-flex">
+                                    <div class="profile-notes">
+                                        <img src="<?= base_url('assets/images/bg-ship.jpg'); ?>" class="rounded-circle">
+                                    </div>
+                                    <p class="from-them p-2">
+                                    <?= $note->notes; ?>
+                                    </p>
+                                </div>
+                            </div>
                         </div>
-                    </div>
-                    
-                </div>
-            </div>
+                    <?php endif; ?>
+                <?php endforeach; ?>
+            <?php else: ?>
+                <p>No notes available.</p>
+            <?php endif; ?>
         </div>
+        <form action="<?php echo site_url('vesselitem/view/' . $id );?>" method="POST">
+            <input type="hidden" name="liq_ref" value="<?php echo $id; ?>">
+            <input type="hidden" name="sender" value="<?php echo $this->session->userdata('username'); ?>">
+            <input type="hidden" name="timestamp" value="<?php echo date('Y-m-d H:i:s'); ?>">
+            <input type="text" class="form-control" name="notes" placeholder="Type a message...">
+        </form>
 
-        <input type="text" class="form-control chat-input" placeholder="Type a message...">                                          
+
 
     </div>
+
     <?php if($this->session->userdata('user_type') == 2): ?>
         <button onclick="toggleBreakdown()" class="breakdown-toggle-btn btn btn-warning rounded-circle">
             <i class="fa-solid fa-money-bill-transfer"></i>
@@ -523,7 +602,7 @@
 		</div>
 	</div>
 
-	<div class="modal fade" id="itemSubmissionModal" tabindex="-1" aria-labelledby="itemSubmissionModalLabel" aria-hidden="true">
+	<div class="modal fade" id="itemSubmissionModal" tabindex="-1" aria-labelledby="itemSubmissionModalLabel">
 		<div class="modal-dialog">
 			<div class="modal-content">
 				<div class="modal-header">
@@ -531,42 +610,36 @@
 					<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
 				</div>
 				<div class="modal-body">
-					<div class="row m-2">
-						<label for="itemName p-0">Item Name: </label>
-						<input type="text" class="form-control form-control-sm mb-2" id="newItem">
-					</div>
+                    <input type="hidden" name="user_id" value="<?= $item->user_id; ?>">
+                    <input type="hidden" name="supplier" value="<?= $item->supplier; ?>">
+                    <input type="hidden" name="transno" value="<?= $item->transno; ?>">
+                    <input type="hidden" name="isNew" value="1">
                     <div class="row m-2">
-						<label for="itemName p-0">Description: </label>
-						<input type="text" class="form-control form-control-sm mb-2" id="newDescription">
-					</div>
-					<div class="row m-2 gap-2">
-						<div class="col p-0">
-							<label for="amount">Amount: </label>
-							<input type="text" class="form-control form-control-sm mb-2" placeholder="0.00" id="newAmount">
-						</div>
-					</div>
-					<div class="row m-2">
-						<label for="remarks">Remarks: </label>
-						<textarea class="form-control form-control-sm mb-2" rows="3" style="max-height: 150px;" id="newRemarks"></textarea>
-					</div>
-					<div class="row m-2">
-						<label for="docref">Upload:</label>
-						<input type="file" class="form-control form-control-sm mb-2" name="filenames[]" multiple id="newUpload">
-					</div>
-				</div>
-				<div class="modal-footer">
-					<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-					<button type="button" class="btn btn-primary" id="addItem" data-bs-dismiss="modal">Add</button>
-				</div>
+                        <label for="itemName p-0">Item Name: </label>
+                        <input type="text" class="form-control form-control-sm mb-2" id="newItem">
+                    </div>
+                    <div class="row m-2 gap-2">
+                        <div class="col p-0">
+                            <label for="amount">Amount: </label>
+                            <input type="text" class="form-control form-control-sm mb-2" placeholder="0.00" id="newAmount">
+                        </div>
+                    </div>
+                    <div class="row m-2">
+                        <label for="remarks">Remarks: </label>
+                        <textarea class="form-control form-control-sm mb-2" rows="3" style="max-height: 150px;" id="newRemarks"></textarea>
+                    </div>
+                    <div class="row m-2">
+                        <label for="docref">Upload:</label>
+                        <input type="file" class="form-control form-control-sm mb-2" name="filenames[]" multiple id="newUpload">
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                    <button type="button" class="btn btn-primary" id="addItem" data-bs-dismiss="modal">Add</button>
+                </div>
 			</div>
 		</div>
 	</div>
-
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
-    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
-    <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.12.1/js/jquery.dataTables.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.0.8/dist/umd/popper.min.js"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 	
     <script>
         function toggleChat() {
@@ -586,7 +659,28 @@
         }, 1000);
     </script>
     <script>
-       
+       $('#markComplete').on('click', function(event) {
+            event.preventDefault(); 
+
+            Swal.fire({
+                title: 'Archive Confirmation',
+                text: 'Are you sure you want to archive this item? This action cannot be undone.',
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonText: 'Yes, archive it!',
+                cancelButtonText: 'Cancel'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    <?php $this->session->unset_userdata('error'); ?> 
+                    Swal.fire({
+                        title: "Liquidation Complete!",
+                        icon: "success"
+                    }).then(() => {
+                        window.location.href = "<?= site_url('vesselitem/archive/' . $id); ?>";
+                    })
+                }
+            });
+        });
     </script>
 		
 </body>

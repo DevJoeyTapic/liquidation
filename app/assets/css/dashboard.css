@@ -173,7 +173,7 @@ body {
 /* Chat container style */
 .notes-window {
   position: fixed;
-  right: 50px;
+  right: 10px;
   bottom: 0;
   width: 30%;
   max-height: 400px; /* Set max height */

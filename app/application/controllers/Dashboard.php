@@ -23,11 +23,20 @@ class Dashboard extends CI_Controller {
                 $this->load->view('admin-panel');
                 break;
             case 2: // Agent
-                $data['agent_liquidations'] = $this->Liquidation_model->get_agent_liquidations();
+                $user_id = $this->session->userdata('user_id');
+                $data['agent_liquidations'] = $this->Liquidation_model->get_agent_liquidations($user_id);
                 $this->load->view('dashboard', $data);
                 break;
             case 3: // Accounting
                 $data['accounting_liquidations'] = $this->Liquidation_model->get_accounting_liquidations();
+                $this->load->view('dashboard', $data);
+                break;
+            case 4: // VOO/OM
+                $data['voo_om_liquidations'] = $this->Liquidation_model->get_voo_om_liquidations();
+                $this->load->view('dashboard', $data);
+                break;
+            case 5: // VOO/Agent
+                $data['agent_voo_liq_val'] = $this->Liquidation_model->get_voo_om_liquidations();
                 $this->load->view('dashboard', $data);
                 break;
             default:               

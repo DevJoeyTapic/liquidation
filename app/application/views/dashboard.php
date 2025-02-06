@@ -18,8 +18,6 @@
     <script src="<?= base_url('assets/js/dataTable.js'); ?>"></script>
     <script src="<?= base_url('assets/js/main.js'); ?>"></script>
 
-
-
     <!-- Bootstrap -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
@@ -56,10 +54,19 @@
                                             echo 'Admin';
                                             break;
                                         case 2:
-                                            echo 'Supercargo Agent';
+                                            echo 'Agent';
                                             break;
                                         case 3:
                                             echo 'Accounting';
+                                            break;
+                                        case 4:
+                                            echo 'VOO/OM';
+                                            break;
+                                        case 5:
+                                            echo 'Agent/VOO';
+                                            break;
+                                        case 6:
+                                            echo 'TAD';
                                             break;
                                         default:
                                             echo 'Unknown';
@@ -69,35 +76,63 @@
                             </h6>
                         </li>
                         <li><hr class="dropdown-divider"></li>
-                        <li><button class="dropdown-item" type="button" data-bs-toggle="modal" data-bs-target="#changePasswordModal">Change Password</button></li>
                         <li><a class="dropdown-item" href="<?= site_url('login/logout'); ?>">Signout</a></li>
                     </ul>
                 </div>  
             </div>
         </nav>
         <div class="main-container bg-gradient">
-            <div class="search-result cont d-flex flex-column">
+            <div class="search-result cont d-flex flex-column" style="display: <?= ($this->session->userdata('user_type') != 5) ? 'block' : 'none'; ?>">
                 <div class="data-table">
-                    <!-- table view for accounting -->
-                    <div class="table-responsive" style="display: <?= ($this->session->userdata('user_type') == 3) ? 'block' : 'none'; ?>">
+                    <!-- table view for voo/om -->
+                    <div class="table-responsive" style="display: <?= ($this->session->userdata('user_type') == 4) ? 'block' : 'none'; ?>">
                         <table class="table table-hover table-striped" id="dataTable5">
                             <thead>
                                 <tr>
                                     <th>Agent</th>
-                                    <th>Liquidation No.</th>
                                     <th>Vessel</th>
                                     <th>Voyage</th>
+                                    <th>Port</th>
                                 </tr>
                             </thead>
                             <tbody>
-                                <?php foreach ($accounting_liquidations as $liquidation): ?>
-                                    <tr onclick="window.location.href='<?= site_url('agentvessel'); ?>'">
-                                        <td><?= $liquidation->agent_name; ?></td>
-                                        <td><?= $liquidation->liquidation_no; ?></td>
-                                        <td><?= $liquidation->vessel; ?></td>
-                                        <td><?= $liquidation->voyage; ?></td>
-                                    </tr>
-                                <?php endforeach; ?>
+                                <?php if (!empty($voo_om_liquidations)): ?>
+                                    <?php foreach ($voo_om_liquidations as $liquidation): ?>
+                                        
+                                        <tr onclick="window.location.href='<?= site_url('agentvessel/view/' . $liquidation->id); ?>'"> 
+                                            <td><?= $liquidation->supplier; ?></td>
+                                            <td><?= $liquidation->vessel_name; ?></td>
+                                            <td><?= $liquidation->voyno; ?></td>
+                                            <td><?= $liquidation->port; ?></td>
+                                        </tr>
+                                    <?php endforeach; ?>
+                                <?php endif ?>
+                            </tbody>
+                        </table>
+                    </div>
+                    <!-- table view for accounting -->
+                    <div class="table-responsive" style="display: <?= ($this->session->userdata('user_type') == 3) ? 'block' : 'none'; ?>">
+                        <table class="table table-hover table-striped" id="dataTable8">
+                            <thead>
+                                <tr>
+                                    <th>Agent</th>
+                                    <th>Vessel</th>
+                                    <th>Voyage</th>
+                                    <th>Port</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <?php if (!empty($accounting_liquidations)): ?>
+                                    <?php foreach ($accounting_liquidations as $liquidation): ?>
+                                        
+                                        <tr onclick="window.location.href='<?= site_url('agentvessel/view/' . $liquidation->id); ?>'"> 
+                                            <td><?= $liquidation->supplier; ?></td>
+                                            <td><?= $liquidation->vessel_name; ?></td>
+                                            <td><?= $liquidation->voyno; ?></td>
+                                            <td><?= $liquidation->port; ?></td>
+                                        </tr>
+                                    <?php endforeach; ?>
+                                <?php endif ?>
                             </tbody>
                         </table>
                     </div>
@@ -115,22 +150,37 @@
                             </thead>
                             <tbody>
                                 <?php foreach ($agent_liquidations as $liquidation): ?>
-                                    
-                                    <tr onclick="window.location.href='<?= site_url('vesselitem/view' . '/' . $liquidation->id); ?>'"> 
-                                        
-                                            <td><?= $liquidation->vessel; ?></td>
-                                            <td><?= $liquidation->voyage; ?></td>
+                                    <?php if ($liquidation->user_id == $this->session->userdata('user_id') && $liquidation->status !== '2'): ?>
+                                        <tr onclick="window.location.href='<?= site_url('vesselitem/view/' . $liquidation->id); ?>'"> 
+                                            <td><?= $liquidation->vessel_name; ?></td>
+                                            <td><?= $liquidation->voyno; ?></td>
                                             <td><?= $liquidation->port; ?></td>
                                             <td><?= $liquidation->eta; ?></td>
                                             <td><?= $liquidation->etd; ?></td>
-                                       
-                                    </tr>
+                                        </tr>
+                                    <?php endif; ?>
                                 <?php endforeach; ?>
                             </tbody>
                         </table>
                     </div>
                 </div>
-            </div>    
+            </div> 
+            <div style="display: <?= ($this->session->userdata('user_type') == 5) ? 'block' : 'none'; ?>">
+                <div class="accordion" id="user-accordion">
+                    <div class="accordion-item">
+                        <h2 class="accordion-header">
+                            <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                                <strong>For Liquidation</strong>
+                            </button>
+                        </h2>
+                        <div id="collapseOne" class="accordion-collapse collapse show" data-bs-parent="#user-accordion">
+                            <div class="accordion-body">
+                                
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
     <?php if($this->session->userdata('user_type') == 2): ?>
@@ -216,13 +266,13 @@
             const chat = document.querySelector('.breakdown-window');
             chat.classList.toggle('open');
         }
-        function showTime() {
-            document.getElementById('currentTime').innerHTML = new Date().toUTCString();
-        }
-        showTime();
-        setInterval(function () {
-            showTime();
-        }, 1000);
+        // function showTime() {
+        //     document.getElementById('currentTime').innerHTML = new Date().toUTCString();
+        // }
+        // showTime();
+        // setInterval(function () {
+        //     showTime();
+        // }, 1000);
 
         
     </script>

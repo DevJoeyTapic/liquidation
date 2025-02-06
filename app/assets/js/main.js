@@ -1,8 +1,159 @@
 $(document).ready(function () {
-  $('#forValidationBtn').on('click', function() {
-  alert('This is for validation');
-  });
+  let baseUrl = 'http://192.168.192.251:3000'
+
   let row;
+  $('#submitLiquidation').on('click', function(event) {
+    Swal.fire({
+        title: 'Submit Liquidation Item/s',
+        text: 'Are you sure you want to submit item/s for liquidation?',
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonText: 'Yes',
+        cancelButtonText: 'Cancel'
+    }).then((result) => {
+        if (result.isConfirmed) {
+            Swal.fire({
+                title: "Item/s Submitted!",
+                icon: "success"
+            }).then(() => {
+                location.reload();
+                const checkedRows = $("#dataTable2 .rowCheckbox:checked").closest("tr");
+                
+                if (checkedRows.length > 0) {
+                    checkedRows.each(function () {
+                        const actualAmount = $(this).find("td:nth-child(5) input").val();
+                        const variance = $(this).find(".variance").text();
+                        const remarks = $(this).find(".remarks").val();
+                        const item_id = $(this).find("input[name='item_id']").val();
+                        console.log("URL being requested: " + baseUrl + '/vesselitem/submit_for_validation/' + item_id);
+
+                        $.ajax({
+                            url: baseUrl + '/vesselitem/submit_for_validation/' + item_id,
+                            method: 'POST',
+                            data: {
+                                actualAmount: actualAmount,
+                                variance: variance,
+                                remarks: remarks,
+                                item_id: item_id
+                            }
+                        });
+                        console.log(baseUrl + '/vesselitem/view/' + $id);
+
+                    });
+                }
+                window.location.href = baseUrl + '/vesselitem/view/' + $id;
+            });
+        }
+      });
+  });
+
+  $('#confirmValidationV').on('click', function() {
+    const checkedRows = $("#dataTable6 .rowCheckbox:checked").closest("tr");
+    
+    if (checkedRows.length > 0) {
+      // Show confirmation dialog first
+      Swal.fire({
+          title: 'Submit Validation Item/s',
+          text: 'Are you sure you want to validate the selected liquidations item/s?',
+          icon: 'warning',
+          showCancelButton: true,
+          confirmButtonText: 'Yes',
+          cancelButtonText: 'Cancel'
+      }).then((result) => {
+          location.reload();
+          if (result.isConfirmed) {
+              // Proceed with AJAX requests only after confirmation
+              checkedRows.each(function () {
+                  const itemName = $(this).find("td:nth-child(1)").text();
+                  const description = $(this).find("td:nth-child(2)").text();
+                  const rfpNo = $(this).find("td:nth-child(3)").text();
+                  const rfpAmount = $(this).find("td:nth-child(4)").text();
+                  const actualAmount = $(this).find("td:nth-child(5) input").val();
+                  const variance = $(this).find(".variance").text();
+                  const remarks = $(this).find(".remarks").val();
+                  const item_id = $(this).find('input[name="item_id"]').val();
+
+                  $.ajax({
+                      url: baseUrl + '/agentvessel/voo_om_validate/' + item_id,
+                      method: 'POST',
+                      data: {
+                          itemName: itemName,
+                          description: description,
+                          rfpNo: rfpNo,
+                          rfpAmount: rfpAmount,
+                          actualAmount: actualAmount,
+                          variance: variance,
+                          remarks: remarks,
+                          item_id: item_id
+                      }                      
+                  });
+                  window.location.href = baseUrl + '/agentvessel/view/' + $id;
+              });
+          }
+      });
+    } else {
+        Swal.fire({
+            title: 'No Items Selected!',
+            text: 'Please select at least one item to submit for accounting.',
+            icon: 'info'
+        });
+    }
+  });
+
+  $('#confirmValidationA').on('click', function() {
+    const checkedRows = $("#dataTable9 .rowCheckbox:checked").closest("tr");
+    
+    if (checkedRows.length > 0) {
+      // Show confirmation dialog first
+      Swal.fire({
+          title: 'Submit Validation Item/s',
+          text: 'Are you sure you want to validate the selected liquidations item/s?',
+          icon: 'warning',
+          showCancelButton: true,
+          confirmButtonText: 'Yes',
+          cancelButtonText: 'Cancel'
+      }).then((result) => {
+          if (result.isConfirmed) {
+            location.reload();
+              checkedRows.each(function () {
+                  const itemName = $(this).find("td:nth-child(1)").text();
+                  const description = $(this).find("td:nth-child(2)").text();
+                  const rfpNo = $(this).find("td:nth-child(3)").text();
+                  const rfpAmount = $(this).find("td:nth-child(4)").text();
+                  const actualAmount = $(this).find("td:nth-child(5) input").val();
+                  const variance = $(this).find(".variance").text();
+                  const remarks = $(this).find(".remarks").val();
+                  const item_id = $(this).find('input[name="item_id"]').val();
+
+                  $.ajax({
+                      url: baseUrl + '/agentvessel/acctg_validate/' + item_id,
+                      method: 'POST',
+                      data: {
+                          itemName: itemName,
+                          description: description,
+                          rfpNo: rfpNo,
+                          rfpAmount: rfpAmount,
+                          actualAmount: actualAmount,
+                          variance: variance,
+                          remarks: remarks,
+                          item_id: item_id
+                      }
+                  });
+              });
+              window.location.href = baseUrl + '/agentvessel/view/' + $id;
+
+          }
+      });
+    } else {
+        Swal.fire({
+            title: 'No Items Selected!',
+            text: 'Please select at least one item to submit for accounting.',
+            icon: 'info'
+        });
+    }
+  });
+
+
   function updateTotal() {
     let total = 0;
     $(".new-amount").each(function () {
@@ -95,7 +246,7 @@ $(document).ready(function () {
       checkbox.prop("disabled", true); // Disable the checkbox
       $("#submitLiquidation").addClass("disabled").prop("disabled", true);
     }
-});
+  });
 
 
   $(".add").on("click", function () {
@@ -161,8 +312,6 @@ $(document).ready(function () {
     }
   });
 
-  $(".rowCheckbox").change(function () {
-  });
   // function toggleSubmit() {
   //   let anyChecked = $(".rowCheckbox:checked").length > 0;
 
@@ -174,66 +323,70 @@ $(document).ready(function () {
   //   }
   // }
 
-  $("#submitLiquidation").on("click", function () {
-    const checkedRows = $("#dataTable2 .rowCheckbox:checked").closest("tr");
-    if (checkedRows.length > 0) {
-      checkedRows.each(function () {
-        const itemName = $(this).find("td:nth-child(1)").text();
-        const description = $(this).find("td:nth-child(2)").text();
-        const rfpNo = $(this).find("td:nth-child(3)").text();
-        const rfpAmount = $(this).find("td:nth-child(4)").text();
-        const actualAmount = $(this).find("td:nth-child(5) input").val();
-        const variance = $(this).find(".variance").text();
-        const remarks = $(this).find(".remarks").val();
-        const docref = $(this).find("td:nth-child(7)").text().trim() || "NONE";
-        const displayDocRef = docref === "NONE" ? docref : "attachment.pdf";
 
-        const newRow = `<tr>
-                            <td>${itemName}</td>
-                            <td>${description}</td>
-                            <td class="text-center">${rfpNo}</td>
-                            <td>${rfpAmount}</td>
-                            <td>${actualAmount}</td>
-                            <td>${variance}</td>
-                            <td >${remarks}</td>
-                            <td class="text-center">${displayDocRef}</td>
-                            <td class="text-center"><input type="checkbox" class="form-check-input rowCheckbox"></td>
-                          </tr>`;
-
-        $("#dataTable3 tbody").append(newRow);
-      });
-
-      checkedRows.remove();
-    }
-  });
-
+  
+  
   $("#addItem").on("click", function () {
     const newItem = $("#newItem").val();
-    const newDescription = $("#newDescription").val();
     const newRemarks = $("#newRemarks").val();
     const newAmount = $("#newAmount").val();
-    const newItemRow = `<tr>
-                            <td>${newItem}</td>
-                            <td>${newDescription}</td>
-                            <td class="text-center"><span class="badge text-bg-primary">NEW ITEM</span></td>
-                            <td><span class="badge text-bg-primary">NEW ITEM</span></td>
-                            <td class="text-end">
-                              <input type="text" class="form-control form-control-sm actualAmount" id="actualAmount" value="${newAmount}">
-                              <button class="btn btn-sm text-primary multiple-btn" data-bs-toggle="modal" data-bs-target="#multipleEntryModal">Multiple Entry</button>
-                            </td>
-                            <td>0.0</td>
-                            <td ><textarea class="form-control form-control-sm remarks" rows="1" style="max-height: 150px" value="${newRemarks}"></textarea></td>
-                            <td class="text-center"><input type="file" class="form-control form-control-sm" multiple></td>
-                            <td class="text-center"><input type="checkbox" class="form-check-input rowCheckbox"></td>
-                          </tr>`;
-    $("#dataTable2 tbody").append(newItemRow);
-
-    // Clear input fields after adding the new item
-    $("#newItem").val('');
-    $("#newDescription").val('');
-    $("#newRemarks").val('');
-    $("#newAmount").val('');
+    const user_id = $('input[name="user_id"]').val();
+    const supplier = $('input[name="supplier"]').val();
+    const transno = $('input[name="transno"]').val();
+    const isNew = $('input[name="isNew"]').val();
+  
+    $.ajax({
+      url: baseUrl + '/vesselitem/add_item',
+      method: 'POST',
+      data: {
+        newItem: newItem,
+        newRemarks: newRemarks,
+        newAmount: newAmount,
+        user_id: user_id,
+        supplier: supplier,
+        transno: transno,
+        isNew: isNew
+      },
+      success: function (response) {
+        const data = JSON.parse(response);
+  
+        if (data.status === 'success') {
+          const newItemRow = `
+            <tr>
+              <td>${newItem}</td>
+              <td></td>
+              <td class="text-center"><span class="badge text-bg-primary">NEW ITEM</span></td>
+              <td><span class="badge text-bg-primary">NEW ITEM</span></td>
+              <td class="text-end">
+                <input type="text" class="form-control form-control-sm actualAmount" value="${newAmount}" disabled>
+              </td>
+              <td><span class="badge text-bg-primary">NEW ITEM</span></td>
+              <td><textarea class="form-control form-control-sm remarks" rows="1" style="max-height: 150px" disabled>${newRemarks}</textarea></td>
+              <td class="text-center"><input type="file" class="form-control form-control-sm" multiple></td>
+              <td class="text-center"><input type="checkbox" class="form-check-input rowCheckbox">
+                <input type="hidden" name="user_id" value="${user_id}">
+                <input type="hidden" name="supplier" value="${supplier}">
+                <input type="hidden" name="transno" value="${transno}">
+                <input type="hidden" name="isNew" value="${isNew}">
+              </td>
+            </tr>`;
+  
+          $("#dataTable2 tbody").append(newItemRow);
+  
+          // Clear input fields after adding item
+          $("#newItem").val('');
+          $("#newRemarks").val('');
+          $("#newAmount").val('');
+        } else {
+          alert(data.message);
+        }
+      },
+      error: function () {
+        alert('Error occurred while adding item');
+      }
+    });
   });
+
   $(document).on("click", "#updateUserBtn", function () {
     var user_id = $(this).closest('tr').find('input[name="user_id"]').val();
     var status = $(this).closest('tr').find('input[name="status"]').val();
@@ -268,11 +421,10 @@ $(document).ready(function () {
       $('#status').prop('checked', false);
     }
   });
-  
-    
 });
 // Ensure no conflicting scripts are causing redirection issues
 document.addEventListener('DOMContentLoaded', function() {
+
   $('#validateAll').on('change', function() {
     if ($(this).is(':checked')) {
       $('.form-check-input').each(function() {
@@ -284,19 +436,4 @@ document.addEventListener('DOMContentLoaded', function() {
       });
     }
   });
-  function toggleChat() {
-    const chat = document.querySelector('.notes-window');
-    chat.classList.toggle('open');
-  }
-  function toggleBreakdown() {
-      const chat = document.querySelector('.breakdown-window');
-      chat.classList.toggle('open');
-  }
-  function showTime() {
-      document.getElementById('currentTime').innerHTML = new Date().toUTCString();
-  }
-  showTime();
-  setInterval(function () {
-      showTime();
-  }, 1000);
-});
+})
