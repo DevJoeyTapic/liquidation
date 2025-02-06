@@ -54,10 +54,19 @@
                                             echo 'Admin';
                                             break;
                                         case 2:
-                                            echo 'Supercargo Agent';
+                                            echo 'Agent';
                                             break;
                                         case 3:
                                             echo 'Accounting';
+                                            break;
+                                        case 4:
+                                            echo 'VOO/OM';
+                                            break;
+                                        case 5:
+                                            echo 'Agent/VOO';
+                                            break;
+                                        case 6:
+                                            echo 'TAD';
                                             break;
                                         default:
                                             echo 'Unknown';
@@ -73,11 +82,37 @@
             </div>
         </nav>
         <div class="main-container bg-gradient">
-            <div class="search-result cont d-flex flex-column">
+            <div class="search-result cont d-flex flex-column" style="display: <?= ($this->session->userdata('user_type') != 5) ? 'block' : 'none'; ?>">
                 <div class="data-table">
+                    <!-- table view for voo/om -->
+                    <div class="table-responsive" style="display: <?= ($this->session->userdata('user_type') == 4) ? 'block' : 'none'; ?>">
+                        <table class="table table-hover table-striped" id="dataTable5">
+                            <thead>
+                                <tr>
+                                    <th>Agent</th>
+                                    <th>Vessel</th>
+                                    <th>Voyage</th>
+                                    <th>Port</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <?php if (!empty($voo_om_liquidations)): ?>
+                                    <?php foreach ($voo_om_liquidations as $liquidation): ?>
+                                        
+                                        <tr onclick="window.location.href='<?= site_url('agentvessel/view/' . $liquidation->id); ?>'"> 
+                                            <td><?= $liquidation->supplier; ?></td>
+                                            <td><?= $liquidation->vessel_name; ?></td>
+                                            <td><?= $liquidation->voyno; ?></td>
+                                            <td><?= $liquidation->port; ?></td>
+                                        </tr>
+                                    <?php endforeach; ?>
+                                <?php endif ?>
+                            </tbody>
+                        </table>
+                    </div>
                     <!-- table view for accounting -->
                     <div class="table-responsive" style="display: <?= ($this->session->userdata('user_type') == 3) ? 'block' : 'none'; ?>">
-                        <table class="table table-hover table-striped" id="dataTable5">
+                        <table class="table table-hover table-striped" id="dataTable8">
                             <thead>
                                 <tr>
                                     <th>Agent</th>
@@ -90,32 +125,6 @@
                                 <?php if (!empty($accounting_liquidations)): ?>
                                     <?php foreach ($accounting_liquidations as $liquidation): ?>
                                         
-                                        <tr onclick="window.location.href='<?= site_url('agentvessel/view/' . $liquidation->id); ?>'"> 
-                                            <td><?= $liquidation->supplier; ?></td>
-                                            <td><?= $liquidation->vessel_name; ?></td>
-                                            <td><?= $liquidation->voyno; ?></td>
-                                            <td><?= $liquidation->port; ?></td>
-                                        </tr>
-                                    <?php endforeach; ?>
-                                <?php endif ?>
-                            </tbody>
-                        </table>
-                        
-                    </div>
-                    <!-- table view for TAD -->
-                    <div class="table-responsive" style="display: <?= ($this->session->userdata('user_type') == 4) ? 'block' : 'none'; ?>">
-                        <table class="table table-hover table-striped" id="dataTable6">
-                            <thead>
-                                <tr>
-                                    <th>Agent</th>
-                                    <th>Vessel</th>
-                                    <th>Voyage</th>
-                                    <th>Port</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <?php if (!empty($tad_liquidations)): ?>                                   
-                                    <?php foreach ($tad_liquidations as $liquidation): ?>
                                         <tr onclick="window.location.href='<?= site_url('agentvessel/view/' . $liquidation->id); ?>'"> 
                                             <td><?= $liquidation->supplier; ?></td>
                                             <td><?= $liquidation->vessel_name; ?></td>
@@ -155,7 +164,23 @@
                         </table>
                     </div>
                 </div>
-            </div>    
+            </div> 
+            <div style="display: <?= ($this->session->userdata('user_type') == 5) ? 'block' : 'none'; ?>">
+                <div class="accordion" id="user-accordion">
+                    <div class="accordion-item">
+                        <h2 class="accordion-header">
+                            <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                                <strong>For Liquidation</strong>
+                            </button>
+                        </h2>
+                        <div id="collapseOne" class="accordion-collapse collapse show" data-bs-parent="#user-accordion">
+                            <div class="accordion-body">
+                                
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
     <?php if($this->session->userdata('user_type') == 2): ?>

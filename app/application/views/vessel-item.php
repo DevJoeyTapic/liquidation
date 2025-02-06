@@ -305,7 +305,7 @@
                                                 <?php if ($item->user_id == $this->session->userdata('user_id') && $item->status == '1'): ?>
                                                     <tr>
                                                         <td class="col-3" id="item"><?= $item->item; ?></td>
-                                                        <td class="col" id="description">**description from another table in multiple entry </td>
+                                                        <td class="col" id="description"></td>
                                                         <td class="col-1 text-center" id="rfpno"><?= $item->rfp_no; ?></td>
                                                         <td class="col-2 rfpAmount" id="rfpAmount"><?= number_format($item->rfp_amount, 2); ?></td>
                                                         <td class="col-2"><?= $item->actual_amount ?></td>
@@ -329,7 +329,7 @@
                         </div>
                         <div class="d-flex justify-content-end">
                             <button type="button" class="btn btn-sm btn-danger me-2" id="removeBtn">Remove from Validation</button>
-                            <button type="button" class="btn btn-sm btn-primary" id="forValidationBtn">Submit for Validation</button>
+                            <!-- <button type="button" class="btn btn-sm btn-primary" id="forValidationBtn">Submit for Validation</button> -->
                         </div>
                     </div>
                     <div class="tab-pane fade" id="validated" role="tabpanel" aria-labelledby="validatedTab">
@@ -360,7 +360,7 @@
                                                 <?php if ($item->user_id == $this->session->userdata('user_id') && ($item->status == '2')): ?>
                                                     <tr>
                                                         <td class="col-3" id="item"><?= $item->item; ?></td>
-                                                        <td class="col" id="description">**description from another table in multiple entry </td>
+                                                        <td class="col" id="description"></td>
                                                         <td class="col-1 text-center" id="rfpno"><?= $item->rfp_no; ?></td>
                                                         <td class="col-2 rfpAmount" id="rfpAmount"><?= number_format($item->rfp_amount, 2); ?></td>
                                                         <td class="col-2"><?= $item->actual_amount ?></td>

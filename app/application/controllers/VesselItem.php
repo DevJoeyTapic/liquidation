@@ -56,35 +56,21 @@ class VesselItem extends CI_Controller {
         } else {
             echo json_encode(array('status' => 'error', 'message' => 'Failed to add item'));
         }
-        
     }
     
-    public function submit_voo_om($id) {
-        $item_id = $this->input->post('item_id');
-        $actual_amount = $this->input->post('actualAmount');
-        $variance = $this->input->post('variance');
-        $updatedId = $this->Liquidation_model->update_item_for_voo_om($id);
+    public function submit_for_validation($data) {
+        $data = array(
+            'item_id' => $this->input->post('item_id'),
+            'actualAmount' => $this->input->post('actualAmount'),
+            'variance' => $this->input->post('variance'),
+            'remarks' => $this->input->post('remarks')
+        );
+        $updatedId = $this->Liquidation_model->update_item_agent($data);
         if ($updatedId) {
             echo json_encode(array('status' => 'success', 'id' => $updatedId));
         } else {
-            echo json_encode(array('status' => 'error', 'message' => 'Failed to update
-             item'));
+            redirect('vesselitem');
         }
     }
-
-    public function submit_acctg($id) {
-        $item_id = $this->input->post('item_id');
-        $updatedId = $this->Liquidation_model->update_item_for_acctg($id);
-        if ($updatedId) {
-            echo json_encode(array('status' => 'success', 'id' => $updatedId));
-        } else {
-            echo json_encode(array('status' => 'error', 'message' => 'Failed to update
-             item'));
-        }
-    }
-
-
-    
-
 }
 ?>

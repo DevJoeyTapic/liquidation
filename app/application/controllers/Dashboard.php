@@ -31,8 +31,12 @@ class Dashboard extends CI_Controller {
                 $data['accounting_liquidations'] = $this->Liquidation_model->get_accounting_liquidations();
                 $this->load->view('dashboard', $data);
                 break;
-            case 4: // TAD
-                $data['tad_liquidations'] = $this->Liquidation_model->get_tad_liquidations();
+            case 4: // VOO/OM
+                $data['voo_om_liquidations'] = $this->Liquidation_model->get_voo_om_liquidations();
+                $this->load->view('dashboard', $data);
+                break;
+            case 5: // VOO/Agent
+                $data['agent_voo_liq_val'] = $this->Liquidation_model->get_voo_om_liquidations();
                 $this->load->view('dashboard', $data);
                 break;
             default:               
