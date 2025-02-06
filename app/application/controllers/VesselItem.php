@@ -58,19 +58,19 @@ class VesselItem extends CI_Controller {
         }
     }
     
-    public function submit_for_validation($data) {
-        $data = array(
-            'item_id' => $this->input->post('item_id'),
-            'actualAmount' => $this->input->post('actualAmount'),
-            'variance' => $this->input->post('variance'),
-            'remarks' => $this->input->post('remarks')
-        );
-        $updatedId = $this->Liquidation_model->update_item_agent($data);
-        if ($updatedId) {
-            echo json_encode(array('status' => 'success', 'id' => $updatedId));
+    public function submit_for_validation() {
+        $items = $this->input->post('items');  // Receives an array of items
+        if ($items) {
+            foreach ($items as $data) {
+                $updatedId = $this->Liquidation_model->update_item_agent($data);
+                // Handle the response as necessary, for example, you can log the updated ID or add any other logic
+            }
+    
+            echo json_encode(array('status' => 'success'));
         } else {
-            redirect('vesselitem');
+            echo json_encode(array('status' => 'error', 'message' => 'No data provided.'));
         }
     }
+    
 }
 ?>
