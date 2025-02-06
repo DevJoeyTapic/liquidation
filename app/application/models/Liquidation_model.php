@@ -72,10 +72,11 @@ class Liquidation_model extends CI_Model {
     
     public function get_liquidation_item($user_id, $id) {
         $sql = "SELECT 
-                i.id, i.user_id, i.supplier, i.transno, i.transno, i.item, i.rfp_no, i.currency, i.rfp_amount, i.actual_amount, i.`variance`, i.remarks, i.doc_ref, i.status, i.controlled, i.isNew
+                    i.*,
+                    l.`status` AS liqStatus
                 FROM tbl_agent_liquidation_items AS i
-                INNER JOIN tbl_agent_liquidation AS l
-                ON i.transno = l.transno
+                -- INNER JOIN liquidation_item_status AS s ON i.status = s.status
+                INNER JOIN tbl_agent_liquidation AS l ON i.transno = l.transno
                 WHERE i.user_id = ? AND l.id = ?";
         $query = $this->db->query($sql, array($user_id, $id));
         return $query->result();
@@ -122,6 +123,7 @@ class Liquidation_model extends CI_Model {
                WHERE id = ?";
         $this->db->query($sql, array($id));
     }
+    
     public function get_notes($liq_ref) {
         $sql = "SELECT * FROM notes_master
                 WHERE liq_ref = ?";

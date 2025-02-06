@@ -332,9 +332,153 @@
             </div>
         </div>
     </div>
+    <button onclick="toggleChat()" class="chat-toggle-btn btn btn-primary rounded-circle">
+        <i class="fas fa-comments"></i>
+        <span class="position-absolute start-100 translate-middle p-2 bg-danger border border-light rounded-circle">
+            <span class="visually-hidden">New alerts</span>
+        </span>
+    </button>
+    <div class="notes-window">
+        <div class="notes-header text-white p-3 text-center">
+            Notes
+        </div>
+        <div class="chat-messages p-3" id="notes-list">
+            <?php if (!empty($notes)): ?>
+                <?php foreach($notes as $note): ?>
+                    <?php if($note->sender == $this->session->userdata('fullname')): ?>
+                        <div class="sender">
+                            <div class="d-flex justify-content-between text-secondary">
+                                <div class="d-flex justify-content-end align-items-end">
+                                    <p class="small">
+                                        <?php
+                                            date_default_timezone_set('Asia/Singapore'); 
+                                            echo date('F j, Y H:i A', strtotime($note->timestamp));
+                                        ?>
+                                    </p>
+                                </div>
+                                <div>
+                                    <p class="small text-end"><strong><?= $note->sender; ?></strong></p>
+                                </div>
+                            </div>
+                            <div class=""> 
+                                <div class="imessage d-flex justify-content-end align-items-right">
+                                    <p class="from-me p-2">
+                                    <?= $note->notes; ?>
+                                    </p>
+                                    <div class="profile-notes right">
+                                        <img src="<?= base_url('assets/images/bg-ship.jpg'); ?>" class="rounded-circle">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    <?php else: ?>
+                        <div class="receiver">
+                            <div class="d-flex justify-content-between text-secondary">
+                                <div>
+                                    <p class="small"><strong><?= $note->sender; ?></strong></p>
+                                    <p class="small"><?= $note->sender; ?></p>
+                                </div>
+                                <div class="d-flex justify-content-end align-items-end">
+                                    <p class="small">
+                                        <?php
+                                            date_default_timezone_set('Asia/Singapore'); 
+                                            echo date('F j, Y H:i A', strtotime($note->timestamp));
+                                        ?>
+                                    </p>
+                                </div>
+                            </div>
+                            <div class="d-flex">
+                                <div class="imessage d-flex">
+                                    <div class="profile-notes">
+                                        <img src="<?= base_url('assets/images/bg-ship.jpg'); ?>" class="rounded-circle">
+                                    </div>
+                                    <p class="from-them p-2">
+                                    <?= $note->notes; ?>
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    <?php endif; ?>
+                <?php endforeach; ?>
+            <?php else: ?>
+                <p>No notes available.</p>
+            <?php endif; ?>
+        </div>
+        <form action="<?php echo site_url('vesselitem/view/' . $id );?>" method="POST">
+            <input type="hidden" name="liq_ref" value="<?php echo $id; ?>">
+            <input type="hidden" name="sender" value="<?php echo $this->session->userdata('username'); ?>">
+            <input type="hidden" name="timestamp" value="<?php echo date('Y-m-d H:i:s'); ?>">
+            <input type="text" class="form-control" name="notes" placeholder="Type a message...">
+        </form>
 
+
+
+    </div>
+    <?php if($this->session->userdata('user_type') == 3): ?>
+        <button onclick="toggleBreakdown()" class="breakdown-toggle-btn btn btn-warning rounded-circle">
+            <i class="fa-solid fa-money-bill-transfer"></i>
+            <!-- <span class="position-absolute start-100 translate-middle p-2 bg-danger border border-light rounded-circle">
+                <span class="visually-hidden">New alerts</span>
+            </span> -->
+        </button>
+        <div class="breakdown-window">
+            <div class="breakdown-header text-white p-3 text-center">
+                Credit Breakdown
+            </div>
+            <div class="breakdown-content p-3">                        
+                <div class="d-flex justify-content-between align-items-end">
+                    <h4><strong>Credit Breakdown:</strong></h4>
+                    <p class="text-danger small"><strong>CURRENCY:</strong> PHP</p>
+                </div>
+                <table class="table table-warning table-hover">
+                    <caption class="small">As of <span id="currentTime"></span></caption>
+                    <thead>
+                        <tr>
+                            <th class="col-3">Vessel/Voyage</th>
+                            <th class="col-3">Total</th>
+                            <th class="text-end col-6">Credited Amount</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr class="breakdown-row">
+                            <td>Vessel Name V123</td>
+                            <td>20,000.00</td>
+                            <td class="text-end">20,000.00</td>
+                        </tr>
+                        <tr class="breakdown-row">
+                            <td>Vessel Name V123</td>
+                            <td>20,000.00</td>
+                            <td class="text-end">20,000.00</td>
+                        </tr>
+                        <tr class="breakdown-row">
+                            <td>Vessel Name V123</td>
+                            <td>20,000.00</td>
+                            <td class="text-end">20,000.00</td>
+                        </tr>
+                    </tbody>
+                </table>
+                <h4 class="text-end bold">PHP 60,0000.00</h4>
+            </div>
+        </div>
+    <?php endif; ?>
     <!-- Modals -->
-
+    <script>
+        function toggleChat() {
+            const chat = document.querySelector('.notes-window');
+            chat.classList.toggle('open');
+        }
+        function toggleBreakdown() {
+            const chat = document.querySelector('.breakdown-window');
+            chat.classList.toggle('open');
+        }
+        function showTime() {
+            document.getElementById('currentTime').innerHTML = new Date().toUTCString();
+        }
+        showTime();
+        setInterval(function () {
+            showTime();
+        }, 1000);
+    </script>
     <script>
         $('#validateAllBtn').on('click', function() {
             $('.form-check-input').each(function() {
