@@ -222,80 +222,102 @@ $('#confirmValidationA').on('click', function() {
     return total;
     
   }
-  
   $(document).on("input", ".new-amount", function () {
     updateTotal();
   });
-  $("#removeBtn").on("click", function () {
-    const checkedRows = $("#dataTable3 .rowCheckbox:checked").closest("tr");
-    if (checkedRows.length > 0) {
-      checkedRows.each(function () {
-        const itemName = $(this).find("td:nth-child(1)").text();
-        const description = $(this).find("td:nth-child(2)").text();
-        const rfpNo = $(this).find("td:nth-child(3)").text();
-        const rfpAmount = $(this).find("td:nth-child(4)").text();
-        const actualAmount = $(this).find("td:nth-child(5) input").val();
-        const variance = $(this).find(".variance").text();
-        const remarks = $(this).find(".remarks").val();
-        const docref = $(this).find("td:nth-child(7)").text().trim() || "NONE";
-        const displayDocRef = docref === "NONE" ? docref : "attachment.pdf";
+  $("#submitBtn").on("click", function () {
+    const total = updateTotal(); // Store total for later use
+    // $(".actualAmount").val(total.toFixed(2));
 
-        const newRow = `<tr>
-                            <td>${itemName}</td>
-                            <td>${description}</td>
-                            <td class="text-center">${rfpNo}</td>
-                            <td>${rfpAmount}</td>
-                            <td>
-                              <input type="text" class="form-control form-control-sm actualAmount" id="actualAmount" value="${actualAmount}">
-                              <button class="btn btn-sm text-primary multiple-btn" data-bs-toggle="modal" data-bs-target="#multipleEntryModal">Multiple Entry</button>
-                            </td>
-                            <td>${variance}</td>
-                            <td ><textarea class="form-control form-control-sm remarks" rows="1" style="max-height: 150px" value="${remarks}"></textarea></td>
-                            <td class="text-center"><input type="file" class="form-control form-control-sm" multiple></td>
-                            <td class="text-center"><input type="checkbox" class="form-check-input rowCheckbox"></td>
-                          </tr>`;
-
-        $("#dataTable2 tbody").append(newRow);
-      });
-
-      checkedRows.remove();
-    }
-  });
-
-
-  // function toggleSubmit() {
-  //   const rfpAmountElement = $(this).closest("tr").find("#rfpAmount");
-  //   const rfpAmount = rfpAmountElement.length ? parseFloat(rfpAmountElement.text()) : 0;
-  //   if (anyChecked) {
-  //     $("#submitLiquidation").removeClass("disabled").prop("disabled", false);
-  //   } else {
-  //     $("#submitLiquidation").addClass("disabled").prop("disabled", true);
-  //   }
-  // }
-
-  $(document).on("input", "#actualAmount", function () {
-    // Use closest to target the rfpAmount in the same row
-    const rfpAmount = parseFloat(
-      $(this).closest("tr").find(".rfpAmount").text().replace(/,/g, '') // Remove commas for float conversion
-    );
-    const actualAmount = parseFloat($(this).val()) || 0;
-    const variance = rfpAmount - actualAmount;
-
-    $(this).closest("tr").find(".variance").text(variance.toFixed(2));
-
-    const checkbox = $(this).closest("tr").find(".rowCheckbox");
-
-    if (actualAmount) {
-      checkbox.prop("checked", true); // Check the checkbox if there is input
-      checkbox.prop("disabled", false); // Enable the checkbox
-      $("#submitLiquidation").removeClass("disabled").prop("disabled", false);
+    if (row) {
+      row.find(".actualAmount").val(total.toFixed(2));
+      const expectedAmount = parseFloat(
+        row
+          .find(".rfpAmount")
+          .text()
+          .replace(/[^0-9.-]+/g, "")
+      );
+      const variance = expectedAmount - total;
+      row.find(".variance").text(variance.toFixed(2)); // Update variance in the row
     } else {
-      checkbox.prop("checked", false); // Uncheck the checkbox if input is empty
-      checkbox.prop("disabled", true); // Disable the checkbox
-      $("#submitLiquidation").addClass("disabled").prop("disabled", true);
+      console.log("no active row found");
     }
   });
 
+  $(document).ready(function($) {
+    $(".variance").each(function() {
+      $(this).text("0.00");
+    });
+
+    $(document).on("input", "#actualAmount", function () {
+      const rfpAmount = parseFloat(
+        $(this).closest("tr").find(".rfpAmount").text().replace(/,/g, '') 
+      );
+      const actualAmount = parseFloat($(this).val()) || 0; 
+      const variance = rfpAmount - actualAmount;
+      const formattedVariance = variance.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+
+      $(this).closest("tr").find(".variance").text(formattedVariance); 
+    
+      const checkbox = $(this).closest("tr").find(".rowCheckbox");
+    
+      if (actualAmount) {
+        checkbox.prop("checked", true); 
+        checkbox.prop("disabled", false); 
+        $("#submitLiquidation").removeClass("disabled").prop("disabled", false);
+      } else {
+        checkbox.prop("checked", false); 
+        checkbox.prop("disabled", true); 
+        $("#submitLiquidation").addClass("disabled").prop("disabled", true);
+        $(this).closest("tr").find(".variance").text("0.00"); 
+      }
+    });
+
+    $(document).on('blur', '#actualAmount', function() {
+      const variance = parseFloat(
+        $(this).closest("tr").find(".variance").text().replace(/,/g, '') 
+      );
+      if (variance !== 0.00) {
+        Swal.fire({
+          title: 'Variance Remarks',
+          input: 'text',
+          inputLabel: 'Please provide a valid reason for variance.',
+          inputPlaceholder: 'Type your remarks here...',
+          showCancelButton: true,
+          confirmButtonText: 'Submit',
+          cancelButtonText: 'Cancel',
+          showLoaderOnConfirm: true,
+          preConfirm: (remarks) => {
+              if (!remarks || remarks.trim() === '') {
+                  Swal.showValidationMessage('Remarks are required.');
+                  return false; 
+              }
+              return remarks;
+          }
+      }).then((result) => {
+          if (result.isConfirmed) {
+            const remarks = result.value;
+        
+            const tableBody = $('#remarksTable tbody');
+            const newRow = $('<tr></tr>');
+        
+            const remarksCell = $('<td></td>');
+            remarksCell.append('<p>' + remarks + '</p>');
+            const fullname = $('#fullname').val(); 
+            remarksCell.append('<p class="small">' + fullname + '</p>');
+            const timestamp = new Date().toISOString().slice(0, 19).replace('T', ' ');
+            remarksCell.append('<p class="small" id="timestamp">' + timestamp + '</p>');
+        
+            newRow.append(remarksCell);
+        
+            tableBody.append(newRow);
+        
+            Swal.fire('Remarks submitted', remarks, 'success');
+          }
+        });
+      }
+    });
+  });
 
   $(".add").on("click", function () {
     const newInput = $(`
@@ -328,7 +350,7 @@ $('#confirmValidationA').on('click', function() {
     const rfpNo = row.find("td:nth-child(3)").text();
     const rfpAmt = parseFloat(
       row
-        .find("td:nth-child(4)")
+        .find("td:nth-child(5)")
         .text()
         .replace(/[^0-9.-]+/g, "")
     );
@@ -341,38 +363,6 @@ $('#confirmValidationA').on('click', function() {
     $("#actualAmountInput").val(total.toFixed(2)); // Set the total in the actual amount input
   });
 
-  $("#submitBtn").on("click", function () {
-    const total = updateTotal(); // Store total for later use
-    // $(".actualAmount").val(total.toFixed(2));
-
-    if (row) {
-      row.find(".actualAmount").val(total.toFixed(2));
-      const expectedAmount = parseFloat(
-        row
-          .find(".rfpAmount")
-          .text()
-          .replace(/[^0-9.-]+/g, "")
-      );
-      const variance = expectedAmount - total;
-      row.find(".variance").text(variance.toFixed(2)); // Update variance in the row
-    } else {
-      console.log("no active row found");
-    }
-  });
-
-  // function toggleSubmit() {
-  //   let anyChecked = $(".rowCheckbox:checked").length > 0;
-
-  //   // Toggle the button state based on the checkbox status
-  //   if (anyChecked) {
-  //     $("#submitLiquidation").removeClass("disabled").prop("disabled", false);
-  //   } else {
-  //     $("#submitLiquidation").addClass("disabled").prop("disabled", true);
-  //   }
-  // }
-
-
-  
   
   $("#addItem").on("click", function () {
     const newItem = $("#newItem").val();
@@ -417,7 +407,9 @@ $('#confirmValidationA').on('click', function() {
                 <input type="hidden" name="transno" value="${transno}">
                 <input type="hidden" name="isNew" value="${isNew}">
               </td>
-            </tr>`;
+            </tr>`;const rfpAmount = parseFloat(
+      $(this).closest("tr").find(".rfpAmount").text().replace(/,/g, '') 
+    );
   
           $("#dataTable2 tbody").append(newItemRow);
   
@@ -469,9 +461,98 @@ $('#confirmValidationA').on('click', function() {
       $('#status').prop('checked', false);
     }
   });
+
 });
 // Ensure no conflicting scripts are causing redirection issues
 document.addEventListener('DOMContentLoaded', function() {
+  let allFiles = [];
+  let currentPreviewFile = null;
+
+    $(document).ready(function() {
+        $('#uploadButton').click(() => new bootstrap.Modal(document.getElementById('uploadModal')).show());
+        $('#chooseFilesButton').click(() => $('#fileUpload').click());
+
+        $('#fileUpload').change(function() {
+            handleFiles($(this)[0].files);
+        });
+
+        $('#dropZone').on('dragover', function(e) {
+            e.preventDefault();
+            $(this).addClass('dragover');
+        }).on('dragleave', function() {
+            $(this).removeClass('dragover');
+        }).on('drop', function(e) {
+            e.preventDefault();
+            $(this).removeClass('dragover');
+            handleFiles(e.originalEvent.dataTransfer.files);
+        });
+    });
+
+    function handleFiles(files) {
+        for (let file of files) {
+            if (!allFiles.some(existingFile => existingFile.name === file.name)) {
+                allFiles.push(file);
+                addFileToList(file);
+            }
+        }
+    }
+
+    function addFileToList(file) {
+        const listItem = $('<li class="list-group-item d-flex justify-content-between align-items-center">')
+            .text(file.name)
+            .on('click', function() {
+                togglePreview(file);
+            });
+
+        const removeButton = $('<button class="btn btn-sm btn-danger">')
+            .html('<i class="fa fa-trash"></i>')
+            .on('click', function(e) {
+                e.stopPropagation();
+                removeFile(file);
+            });
+
+        listItem.append(removeButton);
+        $('#fileNamesList').append(listItem);
+    }
+
+    function showPreview(file) {
+        const filePreview = $('#filePreview').empty();
+        if (file.type.startsWith('image')) {
+            const reader = new FileReader();
+            reader.onload = function(event) {
+                filePreview.append($('<img>').attr('src', event.target.result));
+            };
+            reader.readAsDataURL(file);
+        } else {
+            filePreview.html('<p><strong>Preview not available for this file type.</strong></p>');
+        }
+    }
+
+    function togglePreview(file) {
+        if (currentPreviewFile === file) {
+            $('#filePreview').empty();
+            currentPreviewFile = null;
+        } else {
+            showPreview(file);
+            currentPreviewFile = file;
+        }
+    }
+
+    function removeFile(fileToRemove) {
+        allFiles = allFiles.filter(file => file.name !== fileToRemove.name);
+
+        $('#fileNamesList li').each(function() {
+            if ($(this).text().includes(fileToRemove.name)) {
+                $(this).remove();
+            }
+        });
+
+        if (currentPreviewFile === fileToRemove) {
+            $('#filePreview').empty();
+            currentPreviewFile = null;
+        }
+    }
+
 
   $('#validateAll').on('change', function() {
     if ($(this).is(':checked')) {

@@ -37,7 +37,7 @@ class Liquidation_model extends CI_Model {
                 FROM tbl_agent_liquidation AS l
                 INNER JOIN tbl_agent_liquidation_items AS i
                 ON l.transno = i.transno
-                WHERE i.`status` = 1 OR i.`status` = 2 AND l.`status` = 1
+                WHERE i.`status` = 2 OR i.`status` = 3 AND l.`status` = 1
                 GROUP BY l.transno, l.voyno";
         $query = $this->db->query($sql);
         return $query->result();
@@ -97,7 +97,7 @@ class Liquidation_model extends CI_Model {
 
     public function update_item_agent($data) {
         $sql ="UPDATE tbl_agent_liquidation_items
-               SET `status` = 1,
+               SET `status` = 2,
                actual_amount = ?,
                variance = ?,
                `remarks` = ?
@@ -122,6 +122,13 @@ class Liquidation_model extends CI_Model {
                SET `status` = 3
                WHERE id = ?";
         $this->db->query($sql, array($id));
+    }
+
+    public function get_item_remarks($item_id) {
+        $sql = "SELECT * FROM tbl_remarks
+                WHERE item_id = ?";
+        $query = $this->db->query($sql, array($item_id));
+        return $query->result();
     }
     
     public function get_notes($liq_ref) {
