@@ -325,6 +325,9 @@
                                         <tbody>
                                             <?php foreach ($liquidation_item as $item): ?>
                                                 <?php if ($item->user_id == $this->session->userdata('user_id') && $item->status == '2'): ?>
+                                                    <script>
+                                                        
+                                                    </script>
                                                     <tr>
                                                         <td class="col-3" id="item"><?= $item->item; ?></td>
                                                         <td class="col" id="description"></td>
