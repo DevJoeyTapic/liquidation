@@ -23,7 +23,7 @@ $(document).ready(function () {
                 
                 if (checkedRows.length > 0) {
                     checkedRows.each(function () {
-                        const actualAmount = $(this).find("td:nth-child(5) input").val();
+                        const actualAmount = $(this).find("td:nth-child(6) input").val();
                         const variance = $(this).find(".variance").text();
                         const remarks = $(this).find(".remarks").val();
                         const item_id = $(this).find("input[name='item_id']").val();
