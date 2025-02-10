@@ -16,3 +16,8 @@ $route['vesselitem'] = 'vesselitem/view';
 $route['agentvessel'] = 'agentvessel';
 $route['archive'] = 'vesselitem/archive';
 $route['add_item'] = 'vesselitem/add_item';
+
+// routes for file upload
+$route['upload'] = 'fileuploads/index';
+$route['delete/(:any)'] = "fileuploads/delete/$1";
+$route['upload/file_upload'] = 'fileuploads/file_upload';
