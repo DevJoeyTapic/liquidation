@@ -343,21 +343,16 @@ $('#confirmValidationA').on('click', function() {
     $(".addedFields").append(newInput);
   });
 
-  $(".multiple-btn").on("click", function () {
+  $('.multiple-btn').on('click', function() {
     row = $(this).closest("tr");
     $(".addedFields").empty();
     const itemName = row.find("td:first").text();
-    const rfpNo = row.find("td:nth-child(3)").text();
-    const rfpAmt = parseFloat(
-      row
-        .find("td:nth-child(5)")
-        .text()
-        .replace(/[^0-9.-]+/g, "")
-    );
-
+    const rfpNo = row.find("td:nth-child(4)").text();
+    const rfpAmt = parseFloat(row.find("td.rfpAmount").text().replace(/,/g, ''));
+    
     $("#itemName").text(itemName);
     $("#rfpNo").text(rfpNo);
-    $("#rfpAmt").text(rfpAmt.toFixed(2));
+    $("#rfpAmt").text(rfpAmt);
 
     const total = updateTotal(); // Get the total from new amounts
     $("#actualAmountInput").val(total.toFixed(2)); // Set the total in the actual amount input

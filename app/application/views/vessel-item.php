@@ -232,7 +232,7 @@
                                                 <th class="">Actual Amount</th>
                                                 <th class="">Variance</th>
                                                 <th class="col-1 text-center">Remarks</th>
-                                                <!-- <th class="col-1 text-center">Document</th> -->
+                                                <th class="col-1 text-center">Document</th>
                                                 <th class="col-1 text-center">Validate</th>
                                             </tr>
                                         </thead>
@@ -282,11 +282,11 @@
                                                                 <i class="fa-solid fa-message"></i>
                                                             </button>
                                                         </td>
-                                                        <!-- <td class="col-1 docRef text-center">
+                                                        <td class="col-1 docRef text-center">
                                                             <button class="btn btn-sm" type="button" id="uploadButton">
                                                                 <i class="fa-solid fa-upload"></i>
                                                             </button>
-                                                        </td> -->
+                                                        </td>
                                                         <td class="col-1 text-center validate">
                                                             <input type="checkbox" class="form-check-input rowCheckbox">
                                                             <input type="hidden" name="item_id" value="<?php echo $item->id; ?>">
@@ -492,6 +492,7 @@
 	<div class="modal fade" id="multipleEntryModal" tabindex="-1" aria-labelledby="multipleEntryModalLabel">
 		<div class="modal-dialog">
 			<div class="modal-content">
+
 				<div class="modal-header">
 					<h1 class="modal-title fs-5" id="multipleEntryModalLabel">Multiple Entry</h1>
 					<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
