@@ -18,6 +18,6 @@ $route['archive'] = 'vesselitem/archive';
 $route['add_item'] = 'vesselitem/add_item';
 
 // routes for file upload
-$route['index'] = 'fileuploads/index';
+$route['upload'] = 'fileuploads/index';
 $route['delete/(:any)'] = "fileuploads/delete/$1";
-$route['upload/file_upload'] = 'fileupload/file_upload';
+$route['upload/file_upload'] = 'fileuploads/file_upload';
