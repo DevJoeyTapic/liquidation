@@ -53,7 +53,7 @@ class FileUploads extends CI_Controller{
             }
 
         }
-        redirect('/');
+        redirect('/fileuploads');
     }
 
     public function delete($str){
