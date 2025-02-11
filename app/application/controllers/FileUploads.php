@@ -59,7 +59,7 @@ class FileUploads extends CI_Controller{
     public function delete($str){
         $this->load->model('FileUpload');
         $this->FileUpload->remove_Upload($str);
-        redirect('/');
+        redirect('/fileuploads');
      }
 
      public function flash_messages() {
