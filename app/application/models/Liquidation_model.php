@@ -130,7 +130,18 @@ class Liquidation_model extends CI_Model {
         $query = $this->db->query($sql, array($item_id));
         return $query->result();
     }
+
+    public function insert_item_remark($data) {
+        $this->db->insert('tbl_remarks', $data);
+        return $this->db->insert_id();
+    }
+
+    public function add_breakdown_cost($data) {
+        $this->db->insert('tbl_item_breakdown', $data);
+        return $this->db->insert_id();
+    }
     
+
     public function get_notes($liq_ref) {
         $sql = "SELECT * FROM notes_master
                 WHERE liq_ref = ?";

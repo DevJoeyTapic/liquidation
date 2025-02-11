@@ -40,7 +40,7 @@
                 <div class="data-table">
                     <!-- table view for voo/om -->
                     <div class="table-responsive" style="display: <?= ($this->session->userdata('user_type') == 4) ? 'block' : 'none'; ?>">
-                        <table class="table table-hover table-striped" id="dataTable5">
+                        <table class="table table-hover " id="dataTable5">
                             <thead>
                                 <tr>
                                     <th>Agent</th>
@@ -66,7 +66,7 @@
                     </div>
                     <!-- table view for accounting -->
                     <div class="table-responsive" style="display: <?= ($this->session->userdata('user_type') == 3) ? 'block' : 'none'; ?>">
-                        <table class="table table-hover table-striped" id="dataTable8">
+                        <table class="table table-hover " id="dataTable8">
                             <thead>
                                 <tr>
                                     <th>Agent</th>

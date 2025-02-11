@@ -16,3 +16,5 @@ $route['vesselitem'] = 'vesselitem/view';
 $route['agentvessel'] = 'agentvessel';
 $route['archive'] = 'vesselitem/archive';
 $route['add_item'] = 'vesselitem/add_item';
+$route['add_item_remark'] = 'vesselitem/add_item_remark';
+$route['get_item_remarks'] = 'vesselitem/get_item_remarks';
