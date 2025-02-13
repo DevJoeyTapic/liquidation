@@ -491,7 +491,7 @@
             </div>
         </div>
     <?php endif; ?>
-    <?php require_once(APPPATH . 'views/partials/modals.php'); ?>>
+    <?php require_once(APPPATH . 'views/partials/modals.php'); ?>
 
 
     <script>

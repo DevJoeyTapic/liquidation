@@ -44,8 +44,15 @@ class Liquidation_model extends CI_Model {
     }
 
     public function get_agent_liquidations($user_id) {
-        $sql = "SELECT * FROM tbl_agent_liquidation
-                WHERE user_id = ?";
+        $sql = "SELECT * 
+                FROM tbl_agent_liquidation l
+                WHERE l.user_id = ?
+                AND EXISTS (
+                    SELECT 1 
+                    FROM tbl_agent_liquidation_items i
+                    WHERE l.transno = i.transno AND l.supplier = i.supplier
+                );
+                ";
         $query = $this->db->query($sql, array($user_id));
         return $query->result();
     }

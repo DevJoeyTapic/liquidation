@@ -20,10 +20,13 @@ class VesselItem extends CI_Controller {
             $data['id'] = $id;
             $data['vessel_items'] = $this->Liquidation_model->get_vessel_items($data['id']);
             $data['liquidation_item'] = $this->Liquidation_model->get_liquidation_item($user_id, $id);
+            
             $data['notes'] = $this->Liquidation_model->get_notes($data['id']);
             $data['remarks_data'] = $this->Liquidation_model->get_item_remarks($data['id']);
 
             $this->load->view('vessel-item', $data);
+
+            
             
         } else {
             redirect('dashboard');
