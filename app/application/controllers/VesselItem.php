@@ -4,6 +4,7 @@ class VesselItem extends CI_Controller {
         parent::__construct();
         $this->load->database();
         $this->load->model('Liquidation_model');
+        $this->load->model('Breakdown_model');
         $this->load->library('session');    
 
         if (!$this->session->userdata('logged_in')) {
@@ -20,18 +21,21 @@ class VesselItem extends CI_Controller {
             $data['id'] = $id;
             $data['vessel_items'] = $this->Liquidation_model->get_vessel_items($data['id']);
             $data['liquidation_item'] = $this->Liquidation_model->get_liquidation_item($user_id, $id);
-            
-            $data['notes'] = $this->Liquidation_model->get_notes($data['id']);
-            $data['remarks_data'] = $this->Liquidation_model->get_item_remarks($data['id']);
 
+            $item_ids = array_column($data['liquidation_item'], 'id');  
+            if (!empty($item_ids)) {
+                $data['breakdown_cost'] = $this->Breakdown_model->get_breakdown_cost($item_ids);
+            } else {
+                $data['breakdown_cost'] = [];  
+            }
+    
+            // Load the view
             $this->load->view('vessel-item', $data);
-
-            
-            
         } else {
             redirect('dashboard');
         }
     }
+    
 
     public function archive($id) {
         if ($this->session->userdata('user_type') == 2) {
@@ -64,15 +68,43 @@ class VesselItem extends CI_Controller {
     
     public function submit_for_validation() {
         $items = $this->input->post('items');  // Receives an array of items
+        $data = array(
+            'description' => $this->input->post('description'),
+            'amount' => $this->input->post('amount'),
+            'item_id' => $this->input->post('item_id'),
+            'rfp_no' => $this->input->post('rfp_no'),
+            'currency' => $this->input->post('currency'),
+            'rfp_amount' => $this->input->post('rfp_amount'),
+            'variance' => $this->input->post('variance')
+        );
+
+        $insertedId = $this->Liquidation_model->update_item_agent($data);
+        if ($insertedId) {
+            echo json_encode(array(
+                'status' => 'success',
+                'id' => $insertedId,
+                'description' => $data['description'],
+                'amount' => $data['amount'],
+                'item_id' => $data['item_id'],
+                'rfp_no' => $data['rfp_no'],
+                'currency' => $data['currency'],
+                'rfp_amount' => $data['rfp_amount'],
+                'variance' => $data['variance']
+            ));
+        } else {
+            echo json_encode(array('status' => 'error', 'message' => 'Failed to add remark'));
+        }
+
         if ($items) {
             foreach ($items as $data) {
                 $updatedId = $this->Liquidation_model->update_item_agent($data);
             }
-    
             echo json_encode(array('status' => 'success'));
         } else {
             echo json_encode(array('status' => 'error', 'message' => 'No data provided.'));
         }
+
+        echo $this->db->last_query();
     }
 
     public function get_item_remarks($item_id) {

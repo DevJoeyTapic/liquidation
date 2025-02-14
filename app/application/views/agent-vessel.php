@@ -1,39 +1,4 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>WALLEM - L1QUID8</title>
-    <link rel="icon" type="image/png" href="images/liquidate.ico">
-
-    <!-- Google Font -->
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-      
-    <!-- DataTables -->
-    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
-    <link rel="stylesheet" href="https://cdn.datatables.net/1.13.5/css/jquery.dataTables.min.css">
-    <script src="https://cdn.datatables.net/1.13.5/js/jquery.dataTables.min.js"></script>
-
-    <!-- Bootstrap -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
-
-    <!-- FontAwesome -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" />
-
-    <!-- CSS files -->
-    <link rel="stylesheet" href="<?= base_url('assets/css/navbar.css'); ?>">
-    <link rel="stylesheet" href="<?= base_url('assets/css/global.css'); ?>">
-    <link rel="stylesheet" href="<?= base_url('assets/css/dashboard.css'); ?>">
-
-    <!-- Swal -->
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-
-    <!-- JS Files -->
-    <script src="<?= base_url('assets/js/dataTable.js'); ?>"></script>
-    <script src="<?= base_url('assets/js/main.js'); ?>"></script>
-
-</head>
+<?php require_once(APPPATH . 'views/layout/head.php'); ?>
 <body>
     <div class="container-fluid">
         <?php require_once(APPPATH . 'views/layout/header.php'); ?>
@@ -128,7 +93,7 @@
                                                         <th class="">Actual Amount</th>
                                                         <th class="">Variance</th>
                                                         <th class="col-1 text-center">Remarks</th>
-                                                        <!-- <th class="col-1 text-center">Document</th> -->
+                                                        <th class="col-1 text-center">Document</th>
                                                         <th class="col-1 text-center">Status</th>
                                                     </tr>
                                                 </thead>
@@ -147,8 +112,12 @@
                                                                 <td id="debit"><span class="label text-dark"><?= $item->rfp_amount; ?></td>
                                                                 <td id="credit"><span class="label text-dark"><?= $item->actual_amount; ?></td>
                                                                 <td><?= $item->variance; ?></td>
-                                                                <td class="col-1 text-center"><?= $item->remarks ?></td>
-                                                                <!-- <td><a href="https://drive.google.com/drive/folders/1WGxD2F_E9Sv9CiCYYiR2p6xfu9On5Ewt?usp=drive_link">link this to the gdrive folder</a></td> -->
+                                                                <td class="col-1 text-center">
+                                                                <button type="button" class="btn text-primary" data-bs-toggle="modal" data-bs-target="#showItemRemarksModal" id="showItemRemarks" data-item="<?= $item->id ?>">
+                                                            <i class="fa-solid fa-message"></i>
+                                                        </button>
+                                                                </td>
+                                                                <td><a href="https://drive.google.com/drive/folders/1WGxD2F_E9Sv9CiCYYiR2p6xfu9On5Ewt?usp=drive_link">link this to the gdrive folder</a></td>
                                                                 <td class="text-center">
                                                                     <?= $item->status ?>
                                                                     <input type="hidden" name="item_id" value="<?php echo $item->id; ?>">

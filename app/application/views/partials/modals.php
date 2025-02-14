@@ -8,7 +8,6 @@
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-                inpu
                 <div class="mb-2">
                     <p class="label">ITEM NAME:</p>
                     <p class="title" id="itemName"></p>
@@ -77,27 +76,30 @@
     </div>
 </div>
 
-<div class="modal fade" id="showItemRemarksModal" tabindex="-1" aria-hidden="true">
+<div class="modal fade" id="showItemRemarksModal" tabindex="-1" aria-hidden="true" style="max-height: 500px !important;">
     <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
         <div class="modal-content">
         <div class="modal-header">
             <h2 class="modal-title fs-5" id="showItemRemarksModalLabel">Variance Remarks</h2>
             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
-        <div class="modal-body">
+        <div class="modal-body" id="modal-body">
             <input type="hidden" id="fullname" value="<?= $this->session->userdata('fullname') ?>">
             <p class="bold">Remarks: </p>
             <table class="table table-hover" id="remarksTable">
                 <tbody>
                     <!-- item remarks goes here -->
+                    
                 </tbody>
             </table>
-            
+            <div id="scrollHere">
+
+            </div>
         </div>
         <div class="modal-footer">
 
             <div class="input-group d-flex justify-content-betwen align-items-center">
-                <input type="text" class="form-control" placeholder="Reply" id="newRemarkInput" autofocus>
+                <input type="text" class="form-control" placeholder="Reply" id="newRemarkInput">
                 <button class="btn btn-primary" id="addRemarkBtn">
                     <i class="fa-solid fa-paper-plane"></i>
                 </button>

@@ -73,6 +73,5 @@ $(document).ready(function () {
     paging: true,
     searching: true,
     pageLength: 10,
-  });
-  
+  });  
 });

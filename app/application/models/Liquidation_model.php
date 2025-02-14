@@ -103,17 +103,28 @@ class Liquidation_model extends CI_Model {
     }
 
     public function update_item_agent($data) {
-        $sql ="UPDATE tbl_agent_liquidation_items
-               SET `status` = 2,
-               actual_amount = ?,
-               variance = ?,
-               `remarks` = ?
-               WHERE id = ?";
+        $sql = "UPDATE tbl_agent_liquidation_items
+                SET `status` = 2,
+                    actual_amount = ?,
+                    variance = ?
+                WHERE id = ?";
         $this->db->query($sql, array(
             $data['actualAmount'],
             $data['variance'],
-            $data['remarks'],
             $data['item_id']
+        ));
+
+        $sql = "INSERT INTO tbl_item_breakdown
+                (description, amount, item_id, rfp_no, currency, rfp_amount, variance)
+                VALUES (?, ?, ?, ?, ?, ?, ?)";
+        $this->db->query($sql, array(
+            $data['description'],
+            $data['amount'],        
+            $data['item_id'],
+            $data['rfp_no'],
+            $data['currency'],
+            $data['rfp_amount'],
+            $data['variance']
         ));
     }
 
