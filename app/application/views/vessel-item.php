@@ -198,9 +198,14 @@
                                                         <td class="text-end">
                                                             <?php if($item->isNew == '1'): ?>  
                                                                 <input type="text" class="form-control form-control-sm actualAmount" id="actualAmount" name="actualAmount" value="<?= $item->actual_amount; ?>" disabled>
-                                                            <?php else: ?>  
-                                                                <input type="text" class="form-control form-control-sm actualAmount" id="actualAmount" name="actualAmount" value="<?= $item->actual_amount; ?>" required>
-                                                                <button class="btn btn-sm text-primary multiple-btn" data-bs-toggle="modal" data-bs-target="#multipleEntryModal" data-item="<?= $item->id ?>">Cost Breakdown</button>
+                                                            <?php else: ?> 
+                                                                <?php if($item->hasBreakdown == '1'): ?>
+                                                                    <input type="text" class="form-control form-control-sm actualAmount" id="actualAmount" name="actualAmount" value="<?= $item->actual_amount; ?>" disabled>
+                                                                    <button class="btn btn-sm text-primary multiple-btn" data-bs-toggle="modal" data-bs-target="#multipleEntryModal" data-item="<?= $item->id ?>">Cost Breakdown</button>
+                                                                <?php else: ?>
+                                                                    <input type="text" class="form-control form-control-sm actualAmount" id="actualAmount" name="actualAmount" value="<?= $item->actual_amount; ?>" required>
+                                                                    <button class="btn btn-sm text-primary multiple-btn" data-bs-toggle="modal" data-bs-target="#multipleEntryModal" data-item="<?= $item->id ?>">Cost Breakdown</button>
+                                                                <?php endif ?>
                                                             <?php endif ?>
                                                         </td>
                                                         <td class="variance" id="variance">
@@ -270,14 +275,6 @@
                                                 <?php endif; ?>
                                             <?php endforeach; ?>
                                         </tbody>
-                                        <tfoot>
-                                           <tr>
-                                            <th></th>
-                                            </tr>
-                                            <tr>
-                                                <td colspan="10"></td>
-                                            </tr>
-                                        </tfoot>
                                     </table>
                                 </div>
                             </div>
@@ -308,11 +305,16 @@
                                             <?php foreach ($liquidation_item as $item): ?>
                                                 <?php if ($item->user_id == $this->session->userdata('user_id') && $item->status == '2'): ?>
                                                     <tr>
-                                                        <td class="col-3" id="item"><?= $item->item; ?></td>
+                                                        <td class="col-3" id="item">
+                                                            <?= $item->item; ?>
+                                                            <?php if($item->controlled == 0): ?>
+                                                                <span class="badge rounded-pill text-bg-warning">Controlled</span>
+                                                            <?php endif; ?>
+                                                        </td>
                                                         <td class="col-1 text-center" id="rfpno"><?= $item->rfp_no; ?></td>
                                                         <td><?= $item->currency ?></td>
                                                         <td class="col-2 rfpAmount" id="rfpAmount"><?= number_format($item->rfp_amount, 2); ?></td>
-                                                        <td class="col-2"><?= $item->actual_amount ?></td>
+                                                        <td class="col-2"><?= number_format($item->actual_amount, 2) ?></td>
                                                         <td class="variance"><?= number_format($item->variance, 2) ?></td>
                                                         <td class="col-2 ">
                                                             <button type="button" class="btn text-primary" data-bs-toggle="modal" data-bs-target="#showItemRemarksModal" id="showItemRemarks" data-item="<?= $item->id ?>">

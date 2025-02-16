@@ -147,7 +147,7 @@
                                                 <tbody>
                                                     <?php if(!empty($vessel_items)): ?>
                                                         <?php foreach ($vessel_items as $item): ?>
-                                                            <?php if ($item->status == 2): ?>
+                                                            <?php if ($item->status == 1): ?>
                                                                 <tr>
                                                                     <td>
                                                                         <?= $item->item; ?>

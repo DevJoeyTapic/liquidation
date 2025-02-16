@@ -11,7 +11,7 @@ class Breakdown_model extends CI_Model {
     }
 
     public function get_breakdown_cost($item_id) { 
-        $sql = 'SELECT * FROM tbl_item_breakdown    
+        $sql = 'SELECT * FROM tbl_item_breakdown_temp   
                 WHERE item_id
                 IN ?';
         $query = $this->db->query($sql, array($item_id));

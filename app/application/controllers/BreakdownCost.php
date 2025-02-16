@@ -22,14 +22,8 @@
                 'rfp_amount' => $this->input->post('rfp_amount'),
                 'variance' => $this->input->post('variance')
             );
-            
-            
             $insertedId = $this->Breakdown_model->add_breakdown_cost($data);
-            if ($insertedId) {
-                echo json_encode(array('status' => 'success', 'id' => $insertedId, 'description' => $data['description'], 'amount' => $data['amount'], 'item_id' => $data['item_id'], 'rfp_no' => $data['rfp_no'], 'currency' => $data['currency'], 'rfp_amount' => $data['rfp_amount'], 'variance' => $data['variance']));
-            } else {
-                echo json_encode(array('status' => 'error', 'message' => 'Failed to add remark'));
-            }
+            echo $this->db->last_query();
         }
 
         public function get_breakdown_cost($item_id) { 

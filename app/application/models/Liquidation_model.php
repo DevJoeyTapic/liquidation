@@ -114,18 +114,9 @@ class Liquidation_model extends CI_Model {
             $data['item_id']
         ));
 
-        $sql = "INSERT INTO tbl_item_breakdown
-                (description, amount, item_id, rfp_no, currency, rfp_amount, variance)
-                VALUES (?, ?, ?, ?, ?, ?, ?)";
-        $this->db->query($sql, array(
-            $data['description'],
-            $data['amount'],        
-            $data['item_id'],
-            $data['rfp_no'],
-            $data['currency'],
-            $data['rfp_amount'],
-            $data['variance']
-        ));
+        $this->db->insert('tbl_item_breakdown', $data);
+        return $this->db->insert_id();
+
     }
 
     public function update_item_by_voo_om($id) {

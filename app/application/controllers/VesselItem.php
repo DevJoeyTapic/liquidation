@@ -68,33 +68,6 @@ class VesselItem extends CI_Controller {
     
     public function submit_for_validation() {
         $items = $this->input->post('items');  // Receives an array of items
-        $data = array(
-            'description' => $this->input->post('description'),
-            'amount' => $this->input->post('amount'),
-            'item_id' => $this->input->post('item_id'),
-            'rfp_no' => $this->input->post('rfp_no'),
-            'currency' => $this->input->post('currency'),
-            'rfp_amount' => $this->input->post('rfp_amount'),
-            'variance' => $this->input->post('variance')
-        );
-
-        $insertedId = $this->Liquidation_model->update_item_agent($data);
-        if ($insertedId) {
-            echo json_encode(array(
-                'status' => 'success',
-                'id' => $insertedId,
-                'description' => $data['description'],
-                'amount' => $data['amount'],
-                'item_id' => $data['item_id'],
-                'rfp_no' => $data['rfp_no'],
-                'currency' => $data['currency'],
-                'rfp_amount' => $data['rfp_amount'],
-                'variance' => $data['variance']
-            ));
-        } else {
-            echo json_encode(array('status' => 'error', 'message' => 'Failed to add remark'));
-        }
-
         if ($items) {
             foreach ($items as $data) {
                 $updatedId = $this->Liquidation_model->update_item_agent($data);
