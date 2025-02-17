@@ -54,6 +54,7 @@ $(document).ready(function () {
     paging: true,
     searching: true,
     pageLength: 10,
+    
   });
 
   // table for acctg for validation
@@ -68,10 +69,15 @@ $(document).ready(function () {
     pageLength: 10,
   }); 
 
+
   // table for acct validated
   var tableUsers = $("#tableUsers").DataTable({
     paging: true,
     searching: true,
     pageLength: 10,
   });  
+
+  
+  
+  
 });

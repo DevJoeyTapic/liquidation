@@ -72,18 +72,19 @@
                         </div>
                         <nav>
                             <div class="nav nav-tabs liquidation-tabs" id="nav-tab" role="tablist">
-                                <button class="nav-link active" id="pendingTab" data-bs-toggle="tab" data-bs-target="#pending" type="button" role="tab" aria-controls="pending" aria-selected="true"><i class="fa-regular fa-clock pe-2"></i>Item(s) for Validation</button>    
+                                <button class="nav-link active" id="pendingTab" data-bs-toggle="tab" data-bs-target="#pending" type="button" role="tab" aria-controls="pending" aria-selected="false"><i class="fa-solid fa-user-clock pe-2"></i>Pending Item(s) for Liquidation</button>    
+                                <button class="nav-link" id="forValidationTab" data-bs-toggle="tab" data-bs-target="#forValidation" type="button" role="tab" aria-controls="forValidation" aria-selected="true"><i class="fa-regular fa-clock pe-2"></i>Item(s) for Validation</button>    
                                 <button class="nav-link" id="validatedTab" data-bs-toggle="tab" data-bs-target="#validated" type="button" role="tab" aria-controls="validated" aria-selected="false"><i class="fa-solid fa-circle-check pe-2"></i>Validated Item(s)</button>            
                             </div>
                         </nav>
                         
-                        <div class="tab-content" id="nav-tabContent">          
+                        <div class="tab-content" id="nav-tabContent">
                             <div class="tab-pane fade show active" id="pending" role="tabpanel" aria-labelledby="pendingTab">
                                 <div class="row m-2"> 
                                     <div class="data-table">
-                                        <!-- items table for VOO/OM -->
+                                        <!-- table for unliquidated items (TAD) -->
                                         <div class="table-responsive" style="display: <?= ($this->session->userdata('user_type') == 4) ? 'block' : 'none'; ?>">
-                                            <table class="table  table-hover display" id="dataTable6">
+                                            <table class="table  table-hover display" id="dataTableLiquidationT">
                                                 <thead>
                                                     <tr>
                                                         <th class="">Items</th>
@@ -93,13 +94,12 @@
                                                         <th class="">Actual Amount</th>
                                                         <th class="">Variance</th>
                                                         <th class="col-1 text-center">Remarks</th>
-                                                        <th class="col-1 text-center">Document</th>
                                                         <th class="col-1 text-center">Status</th>
                                                     </tr>
                                                 </thead>
                                                 <tbody>
                                                     <?php foreach ($vessel_items as $item): ?>
-                                                        <?php if ($item->status == 2): ?>
+                                                        <?php if ($item->status == 1): ?>
                                                             <tr>
                                                                 <td>
                                                                     <?= $item->item; ?>
@@ -117,9 +117,10 @@
                                                             <i class="fa-solid fa-message"></i>
                                                         </button>
                                                                 </td>
-                                                                <td><a href="https://drive.google.com/drive/folders/1WGxD2F_E9Sv9CiCYYiR2p6xfu9On5Ewt?usp=drive_link">link this to the gdrive folder</a></td>
                                                                 <td class="text-center">
-                                                                    <?= $item->status ?>
+                                                                    <span class="badge text-bg-secondary">
+                                                                        <?= ($item->status == 1) ? 'Pending Agent' : '' ?>
+                                                                    </span>
                                                                     <input type="hidden" name="item_id" value="<?php echo $item->id; ?>">
                                                                 </td>
                                                             </tr>
@@ -128,9 +129,9 @@
                                                 </tbody>
                                             </table>
                                         </div> 
-                                        <!-- items table for accounting -->
+                                        <!-- table for unliquidated items (accounting) -->
                                         <div class="table-responsive" style="display: <?= ($this->session->userdata('user_type') == 3) ? 'block' : 'none'; ?>">
-                                            <table class="table  table-hover display" id="dataTable9">
+                                            <table class="table  table-hover display" id="dataTableLiquidationA">
                                                 <thead>
                                                     <tr>
                                                         <th class="col-3">Items</th>
@@ -140,7 +141,6 @@
                                                         <th class="col-2">Actual Amount</th>
                                                         <th class="col-2">Variance</th>
                                                         <th class="col-2">Remarks</th>
-                                                        <!-- <th class="col-2 text-center">Document</th> -->
                                                         <th class="col text-center">Validate</th>
                                                     </tr>
                                                 </thead>
@@ -165,7 +165,106 @@
                                                                             <i class="fa-solid fa-message"></i>
                                                                         </button>
                                                                     </td>
-                                                                    <!-- <td><a href="https://drive.google.com/drive/folders/1WGxD2F_E9Sv9CiCYYiR2p6xfu9On5Ewt?usp=drive_link">link this to the gdrive folder</a></td> -->
+                                                                    <td class="text-center">
+                                                                        <span class="badge text-bg-secondary">
+                                                                            <?= ($item->status == 1) ? 'Pending Agent' : '' ?>
+                                                                        </span>
+                                                                        <input type="hidden" name="item_id" value="<?php echo $item->id; ?>">
+                                                                    </td>
+                                                                </tr>
+                                                            <?php endif; ?>
+                                                        <?php endforeach; ?>
+                                                    <?php endif ?>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>              
+                                </div>
+                            </div>   
+                            <div class="tab-pane fade" id="forValidation" role="tabpanel" aria-labelledby="forValidationTab">
+                                <div class="row m-2"> 
+                                    <div class="data-table">
+                                        <!-- table for validation for VOO/OM -->
+                                        <div class="table-responsive" style="display: <?= ($this->session->userdata('user_type') == 4) ? 'block' : 'none'; ?>">
+                                            <table class="table  table-hover display" id="dataTableForValidationT">
+                                                <thead>
+                                                    <tr>
+                                                        <th class="">Items</th>
+                                                        <th class="">Description</th>
+                                                        <th class="col-1 text-center">RFP No.</th>
+                                                        <th class="">RFP Amount</th>
+                                                        <th class="">Actual Amount</th>
+                                                        <th class="">Variance</th>
+                                                        <th class="col-1 text-center">Remarks</th>
+                                                        <th class="col-1 text-center">Status</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <?php foreach ($vessel_items as $item): ?>
+                                                        <?php if ($item->status == 2): ?>
+                                                            <tr>
+                                                                <td>
+                                                                    <?= $item->item; ?>
+                                                                    <?php if($item->controlled == 0): ?>
+                                                                        <span class="badge rounded-pill text-bg-warning">Controlled</span>
+                                                                    <?php endif; ?>
+                                                                </td>
+                                                                <td></td>
+                                                                <td class="col-1 text-center"><?= $item->rfp_no; ?></td>
+                                                                <td id="debit"><span class="label text-dark"><?= $item->rfp_amount; ?></td>
+                                                                <td id="credit"><span class="label text-dark"><?= $item->actual_amount; ?></td>
+                                                                <td><?= $item->variance; ?></td>
+                                                                <td class="col-1 text-center">
+                                                                    <button type="button" class="btn text-primary" data-bs-toggle="modal" data-bs-target="#showItemRemarksModal" id="showItemRemarks" data-item="<?= $item->id ?>">
+                                                                        <i class="fa-solid fa-message"></i>
+                                                                    </button>
+                                                                </td>
+                                                                <td class="text-center">
+                                                                    <input type="checkbox" class="form-check-input rowCheckbox">
+                                                                    <input type="hidden" name="item_id" value="<?php echo $item->id; ?>">
+                                                                </td>
+                                                            </tr>
+                                                        <?php endif; ?>
+                                                    <?php endforeach; ?>
+                                                </tbody>
+                                            </table>
+                                        </div> 
+                                        <!-- table for validation for accounting -->
+                                        <div class="table-responsive" style="display: <?= ($this->session->userdata('user_type') == 3) ? 'block' : 'none'; ?>">
+                                            <table class="table  table-hover display" id="dataTableForValidationA">
+                                                <thead>
+                                                    <tr>
+                                                        <th class="col-3">Items</th>
+                                                        <th class="col">Description</th>
+                                                        <th class="col-1 text-center">RFP No.</th>
+                                                        <th class="col-2">RFP Amount</th>
+                                                        <th class="col-2">Actual Amount</th>
+                                                        <th class="col-2">Variance</th>
+                                                        <th class="col-2">Remarks</th>
+                                                        <th class="col text-center">Validate</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <?php if(!empty($vessel_items)): ?>
+                                                        <?php foreach ($vessel_items as $item): ?>
+                                                            <?php if ($item->status == 2): ?>
+                                                                <tr>
+                                                                    <td>
+                                                                        <?= $item->item; ?>
+                                                                        <?php if($item->controlled == 0): ?>
+                                                                            <span class="badge rounded-pill text-bg-warning">Controlled</span>
+                                                                        <?php endif; ?>
+                                                                    </td>
+                                                                    <td></td>
+                                                                    <td class="text-center"><?= $item->rfp_no; ?></td>
+                                                                    <td id="debit"><span class="label text-dark"><?= $item->rfp_amount; ?></td>
+                                                                    <td id="credit"><span class="label text-dark"><?= $item->actual_amount; ?></td>
+                                                                    <td><?= $item->variance; ?></td>
+                                                                    <td>
+                                                                        <button type="button" class="btn text-primary" data-bs-toggle="modal" data-bs-target="#showItemRemarksModal" id="showItemRemarks" data-item="<?= $item->id ?>">
+                                                                            <i class="fa-solid fa-message"></i>
+                                                                        </button>
+                                                                    </td>
                                                                     <td class="text-center">
                                                                         <input type="checkbox" class="form-check-input rowCheckbox">
                                                                         <input type="hidden" name="item_id" value="<?php echo $item->id; ?>">
@@ -200,9 +299,9 @@
                                 </div>
                                 <div class="row m-2">
                                     <div class="data-table">
-                                        <!-- table for voo/om validated -->
+                                        <!-- table for validated items (TAD) -->
                                         <div class="table-responsive" style="display: <?= ($this->session->userdata('user_type') == 4) ? 'block' : 'none'; ?>">
-                                            <table class="table  table-hover display" id="dataTable7">
+                                            <table class="table  table-hover display" id="dataTableValidatedT">
                                                 <thead>
                                                     <tr>
                                                         <th class="col-3">Items</th>
@@ -212,7 +311,6 @@
                                                         <th class="col-2">Actual Amount</th>
                                                         <th class="col-2">Variance</th>
                                                         <th class="col-2">Remarks</th>
-                                                        <th class="col-2 text-center">Document</th>
                                                         <th class="col text-center">Status</th>
                                                     </tr>
                                                 </thead>
@@ -231,18 +329,25 @@
                                                                 <td id="debit"><span class="label text-dark"><?= $item->rfp_amount; ?></td>
                                                                 <td id="credit"><span class="label text-dark"><?= $item->actual_amount; ?></td>
                                                                 <td><?= $item->variance; ?></td>
-                                                                <td><?= $item->remarks ?></td>
-                                                                <td><a href="https://drive.google.com/drive/folders/1WGxD2F_E9Sv9CiCYYiR2p6xfu9On5Ewt?usp=drive_link">link this to the gdrive folder</a></td>
-                                                                <td class="text-center"><?= $item->status ?></td>
+                                                                <td>
+                                                                    <button type="button" class="btn text-primary" data-bs-toggle="modal" data-bs-target="#showItemRemarksModal" id="showItemRemarks" data-item="<?= $item->id ?>">
+                                                                        <i class="fa-solid fa-message"></i>
+                                                                    </button>
+                                                                </td>
+                                                                <td class="text-center">
+                                                                    <span class="badge text-bg-secondary">
+                                                                        <?= ($item->status == 3) ? 'Validated' : '' ?>
+                                                                    </span>
+                                                                </td>
                                                             </tr>
                                                         <?php endif; ?>
                                                     <?php endforeach; ?>
                                                 </tbody>
                                             </table>
                                         </div>    
-                                        <!-- table for accounting validated-->
+                                        <!-- table for validated items (accounting) -->
                                         <div class="table-responsive" style="display: <?= ($this->session->userdata('user_type') == 3) ? 'block' : 'none'; ?>">
-                                            <table class="table  table-hover display" id="dataTable10">
+                                            <table class="table  table-hover display" id="dataTableValidatedA">
                                                 <thead>
                                                     <tr>
                                                         <th class="col-3">Items</th>
@@ -252,7 +357,6 @@
                                                         <th class="col-2">Actual Amount</th>
                                                         <th class="col-2">Variance</th>
                                                         <th class="col-2">Remarks</th>
-                                                        <th class="col-2 text-center">Document</th>
                                                         <th class="col text-center">Status</th>
                                                     </tr>
                                                 </thead>
@@ -271,16 +375,34 @@
                                                                 <td id="debit"><span class="label text-dark"><?= $item->rfp_amount; ?></td>
                                                                 <td id="credit"><span class="label text-dark"><?= $item->actual_amount; ?></td>
                                                                 <td><?= $item->variance; ?></td>
-                                                                <td><?= $item->remarks ?></td>
-                                                                <td><a href="https://drive.google.com/drive/folders/1WGxD2F_E9Sv9CiCYYiR2p6xfu9On5Ewt?usp=drive_link">link this to the gdrive folder</a></td>
-                                                                <td class="text-center"><?= $item->status ?></td>
+                                                                <td>
+                                                                    <button type="button" class="btn text-primary" data-bs-toggle="modal" data-bs-target="#showItemRemarksModal" id="showItemRemarks" data-item="<?= $item->id ?>">
+                                                                        <i class="fa-solid fa-message"></i>
+                                                                    </button>
+                                                                </td>
+                                                                    <td class="text-center">
+                                                                    <span class="badge text-bg-secondary">
+                                                                        <?= ($item->status == 3) ? 'Validated' : '' ?>
+                                                                    </span>
+                                                                </td>
                                                             </tr>
                                                         <?php endif; ?>
                                                     <?php endforeach; ?>
                                                 </tbody>
                                             </table>
                                         </div>  
-                                        
+                                        <?php if($this->session->userdata('user_type') == '3'): ?>
+                                            <div class="row mt-3">
+                                                <div class="col d-flex gap-2 justify-content-end align-items-end">
+                                                    <button class="btn btn-success" id="validateAllBtn">
+                                                        Check All
+                                                    </button>
+                                                    <button class="btn btn-primary" id="<?= ($this->session->userdata('user_type') == 3) ? 'confirmValidationA' : 'confirmValidationV'; ?>">
+                                                        Confirm
+                                                    </button>
+                                                </div>
+                                            </div>
+                                        <? endif ?>   
                                     </div>
                                 </div>
                             </div>
@@ -295,61 +417,6 @@
                                 <hr>
                             </div>
                             <ul id="fileNamesList" class="list-group mt-2 p-0">
-                                <li class="list-group-item mx-3">
-                                    <i class="fa-solid fa-file-pdf"></i>
-                                    <span><?= $item->item ?></span>
-                                    <span>Liquidation.pdf</span>
-                                </li>
-                                <li class="list-group-item mx-3">
-                                    <i class="fa-solid fa-file-pdf"></i>
-                                    <span><?= $item->item ?></span>
-                                    <span>Liquidation.pdf</span>
-                                </li>
-                                <li class="list-group-item mx-3">
-                                    <i class="fa-solid fa-file-pdf"></i>
-                                    <span><?= $item->item ?></span>
-                                    <span>Liquidation.pdf</span>
-                                </li>
-                                <li class="list-group-item mx-3">
-                                    <i class="fa-solid fa-file-pdf"></i>
-                                    <span><?= $item->item ?></span>
-                                    <span>Liquidation.pdf</span>
-                                </li>
-                                <li class="list-group-item mx-3">
-                                    <i class="fa-solid fa-file-pdf"></i>
-                                    <span><?= $item->item ?></span>
-                                    <span>Liquidation.pdf</span>
-                                </li>
-                                <li class="list-group-item mx-3">
-                                    <i class="fa-solid fa-file-pdf"></i>
-                                    <span><?= $item->item ?></span>
-                                    <span>Liquidation.pdf</span>
-                                </li>
-                                <li class="list-group-item mx-3">
-                                    <i class="fa-solid fa-file-pdf"></i>
-                                    <span><?= $item->item ?></span>
-                                    <span>Liquidation.pdf</span>
-                                </li>
-                                <li class="list-group-item mx-3">
-                                    <i class="fa-solid fa-file-pdf"></i>
-                                    <span><?= $item->item ?></span>
-                                    <span>Liquidation.pdf</span>
-                                </li>
-                                <li class="list-group-item mx-3">
-                                    <i class="fa-solid fa-file-pdf"></i>
-                                    <span><?= $item->item ?></span>
-                                    <span>Liquidation.pdf</span>
-                                </li>
-                                <li class="list-group-item mx-3">
-                                    <i class="fa-solid fa-file-pdf"></i>
-                                    <span><?= $item->item ?></span>
-                                    <span>Liquidation.pdf</span>
-                                </li>
-                                <li class="list-group-item mx-3">
-                                    <i class="fa-solid fa-file-pdf"></i>
-                                    <span><?= $item->item ?></span>
-                                    <span>Liquidation.pdf</span>
-                                </li>
                                 <li class="list-group-item mx-3">
                                     <i class="fa-solid fa-file-pdf"></i>
                                     <span><?= $item->item ?></span>
@@ -515,6 +582,41 @@
             $('.form-check-input').each(function() {
                 $(this).prop('checked', !$(this).prop('checked'));
             });
+        });
+    </script>
+    <script>
+        $(document).ready(function() {
+            var dataTableLiquidationT = $("#dataTableLiquidationT").DataTable({
+                paging: true,
+                searching: true,
+                pageLength: 10,
+            });
+            var dataTableLiquidationA = $("#dataTableLiquidationA").DataTable({
+                paging: true,
+                searching: true,
+                pageLength: 10,
+            });
+            var dataTableForValidationT = $("#dataTableForValidationT").DataTable({
+                paging: true,
+                searching: true,
+                pageLength: 10,
+            });
+            var dataTableForValidationA = $("#dataTableForValidationA").DataTable({
+                paging: true,
+                searching: true,
+                pageLength: 10,
+            });
+            var dataTableValidatedT = $("#dataTableValidatedT").DataTable({
+                paging: true,
+                searching: true,
+                pageLength: 10,
+            });
+            var dataTableValidatedA = $("#dataTableValidatedA").DataTable({ 
+                paging: true,
+                searching: true,
+                pageLength: 10,
+            });
+
         });
     </script>
 </body>

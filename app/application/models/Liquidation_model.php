@@ -14,11 +14,12 @@ class Liquidation_model extends CI_Model {
                     l.vessel_name,
                     l.voyno,
                     l.`port`,
-                    l.`status`
+                    l.`status`,
+                    i.`status` as item_status
                 FROM tbl_agent_liquidation AS l
                 INNER JOIN tbl_agent_liquidation_items AS i
                 ON l.transno = i.transno
-                WHERE i.`status` = 2 or i.`status` = 3 AND l.`status` = 1
+                WHERE (i.`status` = 2 or i.`status` = 3 or i.`status` = 1) AND l.`status` = 1
                 GROUP BY l.transno, l.voyno";
         $query = $this->db->query($sql);
         return $query->result();
@@ -57,8 +58,11 @@ class Liquidation_model extends CI_Model {
         return $query->result();
     }
     public function get_vessel_data($id) {
-        $sql = "SELECT * FROM tbl_agent_liquidation
-                WHERE id = ?";
+        $sql = "SELECT l.*, i.`status` AS item_status
+                FROM tbl_agent_liquidation AS l
+                JOIN tbl_agent_liquidation_items AS i
+                ON l.transno = i.transno
+                WHERE l.id = ?";
         $query = $this->db->query($sql, array($id));
         return $query->result();
     }
