@@ -64,13 +64,22 @@
                 </div> 
             <?php endif; ?>
 
-            <div style="display: <?= ($this->session->userdata('user_type') == 3) ? 'block' : 'none'; ?>">
+            <div class="col-11 mx-auto" style="display: <?= ($this->session->userdata('user_type') == 3) ? 'block' : 'none'; ?>">
                 <?php
-                    $count = 0; // Initialize the counter
+                    $countLiquidation = 0; // Initialize the counter
                     if (!empty($accounting_liquidations)): ?>
                         <?php foreach ($accounting_liquidations as $liquidation): ?>
                             <?php if($liquidation->item_status == 2 || $liquidation->item_status == 3): ?>
-                                <?php $count++; // Increment counter for matching status ?>
+                                <?php $countLiquidation++; // Increment counter for matching status ?>
+                            <?php endif; ?>
+                        <?php endforeach; ?>
+                    <?php endif; ?>
+                <?php 
+                    $countUnliquidated = 0;
+                    if (!empty($accounting_liquidations)): ?>
+                        <?php foreach ($accounting_liquidations as $liquidation): ?>
+                            <?php if($liquidation->item_status == 1 || $liquidation->item_status == 2 || $liquidation->item_status == 3): ?>
+                                <?php $countUnliquidated++; // Increment counter for matching status ?>
                             <?php endif; ?>
                         <?php endforeach; ?>
                     <?php endif; ?>
@@ -79,7 +88,13 @@
                         <div class="accordion-item">
                             <h4 class="accordion-header">
                                 <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTwo" aria-expanded="true" aria-controls="collapseTwo">
-                                    <p class="bold">For Validation</p>
+                                    <div class="btn">
+                                        <p class="bold">For Validation</p>
+                                        <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
+                                            <?= $countLiquidation; ?>
+                                            <span class="visually-hidden">unread messages</span>
+                                        </span>
+                                    </div>
                                 </button>
                             </h4>
                             <div id="collapseTwo" class="accordion-collapse collapse show">
@@ -123,7 +138,13 @@
                         <div class="accordion-item">
                             <h4 class="accordion-header">
                                 <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
-                                    <p class="bold">Pending Liquidation (Unliquidated)</p>
+                                    <div class="btn">
+                                        <p class="bold">Pending Liquidation (Unliquidated)</p>
+                                        <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
+                                            <?= $countUnliquidated; ?>
+                                            <span class="visually-hidden">unread messages</span>
+                                        </span>
+                                    </div>
                                 </button>
                             </h4>
                             <div id="collapseOne" class="accordion-collapse collapse show">

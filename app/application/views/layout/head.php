@@ -37,6 +37,7 @@
     <!-- JS Files -->
     <script src="<?= base_url('assets/js/dataTable.js'); ?>"></script>
     <script src="<?= base_url('assets/js/main.js'); ?>"></script>
+    <script src="<?= base_url('assets/js/validate.js'); ?>"></script> 
 
 
     <style>

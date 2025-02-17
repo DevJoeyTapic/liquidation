@@ -283,7 +283,7 @@
                                                 <button class="btn btn-success" id="validateAllBtn">
                                                     Check All
                                                 </button>
-                                                <button class="btn btn-primary" id="<?= ($this->session->userdata('user_type') == 3) ? 'confirmValidationA' : 'confirmValidationV'; ?>">
+                                                <button class="btn btn-primary" id="confirmValidationA">
                                                     Confirm
                                                 </button>
                                             </div>
@@ -335,7 +335,7 @@
                                                                     </button>
                                                                 </td>
                                                                 <td class="text-center">
-                                                                    <span class="badge text-bg-secondary">
+                                                                    <span class="badge text-bg-success">
                                                                         <?= ($item->status == 3) ? 'Validated' : '' ?>
                                                                     </span>
                                                                 </td>
@@ -381,7 +381,7 @@
                                                                     </button>
                                                                 </td>
                                                                     <td class="text-center">
-                                                                    <span class="badge text-bg-secondary">
+                                                                    <span class="badge text-bg-success">
                                                                         <?= ($item->status == 3) ? 'Validated' : '' ?>
                                                                     </span>
                                                                 </td>
@@ -391,18 +391,6 @@
                                                 </tbody>
                                             </table>
                                         </div>  
-                                        <?php if($this->session->userdata('user_type') == '3'): ?>
-                                            <div class="row mt-3">
-                                                <div class="col d-flex gap-2 justify-content-end align-items-end">
-                                                    <button class="btn btn-success" id="validateAllBtn">
-                                                        Check All
-                                                    </button>
-                                                    <button class="btn btn-primary" id="<?= ($this->session->userdata('user_type') == 3) ? 'confirmValidationA' : 'confirmValidationV'; ?>">
-                                                        Confirm
-                                                    </button>
-                                                </div>
-                                            </div>
-                                        <? endif ?>   
                                     </div>
                                 </div>
                             </div>
