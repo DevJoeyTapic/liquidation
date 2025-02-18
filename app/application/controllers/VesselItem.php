@@ -77,7 +77,7 @@ class VesselItem extends CI_Controller {
             echo json_encode(array('status' => 'error', 'message' => 'No data provided.'));
         }
 
-        echo $this->db->last_query();
+        
     }
 
     public function get_item_remarks($item_id) {

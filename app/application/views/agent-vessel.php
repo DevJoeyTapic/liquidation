@@ -83,7 +83,7 @@
                                 <div class="row m-2"> 
                                     <div class="data-table">
                                         <!-- table for unliquidated items (TAD) -->
-                                        <div class="table-responsive" style="display: <?= ($this->session->userdata('user_type') == 4) ? 'block' : 'none'; ?>">
+                                        <div class="table-responsive" style="display: <?= ($this->session->userdata('user_type') == 5) ? 'block' : 'none'; ?>">
                                             <table class="table  table-hover display" id="dataTableLiquidationT">
                                                 <thead>
                                                     <tr>
@@ -99,7 +99,7 @@
                                                 </thead>
                                                 <tbody>
                                                     <?php foreach ($vessel_items as $item): ?>
-                                                        <?php if ($item->status == 1): ?>
+                                                        <?php if ($item->status == 0): ?>
                                                             <tr>
                                                                 <td>
                                                                     <?= $item->item; ?>
@@ -109,8 +109,8 @@
                                                                 </td>
                                                                 <td></td>
                                                                 <td class="col-1 text-center"><?= $item->rfp_no; ?></td>
-                                                                <td id="debit"><span class="label text-dark"><?= $item->rfp_amount; ?></td>
-                                                                <td id="credit"><span class="label text-dark"><?= $item->actual_amount; ?></td>
+                                                                <td id="debit"><?= $item->rfp_amount; ?></td>
+                                                                <td id="credit"><?= $item->actual_amount; ?></td>
                                                                 <td><?= $item->variance; ?></td>
                                                                 <td class="col-1 text-center">
                                                                 <button type="button" class="btn text-primary" data-bs-toggle="modal" data-bs-target="#showItemRemarksModal" id="showItemRemarks" data-item="<?= $item->id ?>">
@@ -118,9 +118,21 @@
                                                         </button>
                                                                 </td>
                                                                 <td class="text-center">
-                                                                    <span class="badge text-bg-secondary">
-                                                                        <?= ($item->status == 1) ? 'Pending Agent' : '' ?>
-                                                                    </span>
+                                                                <span class="badge 
+                                                                    <?= ($item->status == 0) ? 'text-bg-secondary' : '' ?>
+                                                                    <?= ($item->status == 1) ? 'text-bg-primary' : '' ?>
+                                                                    <?= ($item->status == 2) ? 'text-bg-info' : '' ?>
+                                                                    <?= ($item->status == 3) ? 'text-bg-success' : '' ?>
+                                                                    <?= ($item->status == 4) ? 'text-bg-danger' : '' ?>
+                                                                    <?= ($item->status == 5) ? 'text-bg-warning' : '' ?>
+                                                                ">
+                                                                    <?= ($item->status == 0) ? 'Pending Agent' : '' ?>
+                                                                    <?= ($item->status == 1) ? 'Pending Voo/OM' : '' ?>
+                                                                    <?= ($item->status == 2) ? 'Pending Accounting' : '' ?>
+                                                                    <?= ($item->status == 3) ? 'Validated' : '' ?>
+                                                                    <?= ($item->status == 4) ? 'For Re-validation' : '' ?>
+                                                                    <?= ($item->status == 5) ? 'Revalidated' : '' ?>
+                                                                </span>
                                                                     <input type="hidden" name="item_id" value="<?php echo $item->id; ?>">
                                                                 </td>
                                                             </tr>
@@ -130,7 +142,7 @@
                                             </table>
                                         </div> 
                                         <!-- table for unliquidated items (accounting) -->
-                                        <div class="table-responsive" style="display: <?= ($this->session->userdata('user_type') == 3) ? 'block' : 'none'; ?>">
+                                        <div class="table-responsive" style="display: <?= ($this->session->userdata('user_type') == 3) || ($this->session->userdata('user_type') == 4) ? 'block' : 'none'; ?>">
                                             <table class="table  table-hover display" id="dataTableLiquidationA">
                                                 <thead>
                                                     <tr>
@@ -147,7 +159,7 @@
                                                 <tbody>
                                                     <?php if(!empty($vessel_items)): ?>
                                                         <?php foreach ($vessel_items as $item): ?>
-                                                            <?php if ($item->status == 1): ?>
+                                                            <?php if ($item->status == 0): ?>
                                                                 <tr>
                                                                     <td>
                                                                         <?= $item->item; ?>
@@ -157,8 +169,8 @@
                                                                     </td>
                                                                     <td></td>
                                                                     <td class="text-center"><?= $item->rfp_no; ?></td>
-                                                                    <td id="debit"><span class="label text-dark"><?= $item->rfp_amount; ?></td>
-                                                                    <td id="credit"><span class="label text-dark"><?= $item->actual_amount; ?></td>
+                                                                    <td id="debit"><?= $item->rfp_amount; ?></td>
+                                                                    <td id="credit"><?= $item->actual_amount; ?></td>
                                                                     <td><?= $item->variance; ?></td>
                                                                     <td>
                                                                         <button type="button" class="btn text-primary" data-bs-toggle="modal" data-bs-target="#showItemRemarksModal" id="showItemRemarks" data-item="<?= $item->id ?>">
@@ -166,8 +178,14 @@
                                                                         </button>
                                                                     </td>
                                                                     <td class="text-center">
-                                                                        <span class="badge text-bg-secondary">
-                                                                            <?= ($item->status == 1) ? 'Pending Agent' : '' ?>
+                                                                        <span class="badge 
+                                                                            <?= ($item->status == 0) ? 'text-bg-secondary' : '' ?>
+                                                                            <?= ($item->status == 1) ? 'text-bg-primary' : '' ?>
+                                                                            <?= ($item->status == 2) ? 'text-bg-success' : '' ?>
+                                                                        ">
+                                                                            <?= ($item->status == 0) ? 'Pending Agent' : '' ?>
+                                                                            <?= ($item->status == 1) ? 'Pending Voo/OM' : '' ?>
+                                                                            <?= ($item->status == 2) ? 'Pending Accounting' : '' ?>
                                                                         </span>
                                                                         <input type="hidden" name="item_id" value="<?php echo $item->id; ?>">
                                                                     </td>
@@ -185,7 +203,7 @@
                                 <div class="row m-2"> 
                                     <div class="data-table">
                                         <!-- table for validation for VOO/OM -->
-                                        <div class="table-responsive" style="display: <?= ($this->session->userdata('user_type') == 4) ? 'block' : 'none'; ?>">
+                                        <div class="table-responsive" style="display: <?= ($this->session->userdata('user_type') == 5) ? 'block' : 'none'; ?>">
                                             <table class="table  table-hover display" id="dataTableForValidationT">
                                                 <thead>
                                                     <tr>
@@ -196,12 +214,12 @@
                                                         <th class="">Actual Amount</th>
                                                         <th class="">Variance</th>
                                                         <th class="col-1 text-center">Remarks</th>
-                                                        <th class="col-1 text-center">Status</th>
+                                                        <th class="col-1 text-center">Validate</th>
                                                     </tr>
                                                 </thead>
                                                 <tbody>
                                                     <?php foreach ($vessel_items as $item): ?>
-                                                        <?php if ($item->status == 2): ?>
+                                                        <?php if ($item->status == 1): ?>
                                                             <tr>
                                                                 <td>
                                                                     <?= $item->item; ?>
@@ -211,8 +229,8 @@
                                                                 </td>
                                                                 <td></td>
                                                                 <td class="col-1 text-center"><?= $item->rfp_no; ?></td>
-                                                                <td id="debit"><span class="label text-dark"><?= $item->rfp_amount; ?></td>
-                                                                <td id="credit"><span class="label text-dark"><?= $item->actual_amount; ?></td>
+                                                                <td id="debit"><span class=" text-dark"><?= $item->rfp_amount; ?></td>
+                                                                <td id="credit"><span class=" text-dark"><?= $item->actual_amount; ?></td>
                                                                 <td><?= $item->variance; ?></td>
                                                                 <td class="col-1 text-center">
                                                                     <button type="button" class="btn text-primary" data-bs-toggle="modal" data-bs-target="#showItemRemarksModal" id="showItemRemarks" data-item="<?= $item->id ?>">
@@ -257,8 +275,8 @@
                                                                     </td>
                                                                     <td></td>
                                                                     <td class="text-center"><?= $item->rfp_no; ?></td>
-                                                                    <td id="debit"><span class="label text-dark"><?= $item->rfp_amount; ?></td>
-                                                                    <td id="credit"><span class="label text-dark"><?= $item->actual_amount; ?></td>
+                                                                    <td id="debit"><?= $item->rfp_amount; ?></td>
+                                                                    <td id="credit"><?= $item->actual_amount; ?></td>
                                                                     <td><?= $item->variance; ?></td>
                                                                     <td>
                                                                         <button type="button" class="btn text-primary" data-bs-toggle="modal" data-bs-target="#showItemRemarksModal" id="showItemRemarks" data-item="<?= $item->id ?>">
@@ -288,6 +306,18 @@
                                                 </button>
                                             </div>
                                         </div>
+                                    <? endif ?>         
+                                    <?php if($this->session->userdata('user_type') == '5'): ?>
+                                        <div class="row mt-3">
+                                            <div class="col d-flex gap-2 justify-content-end align-items-end">
+                                                <button class="btn btn-success" id="validateAllBtn">
+                                                    Check All
+                                                </button>
+                                                <button class="btn btn-primary" id="otpBtn">
+                                                    OK To Pay
+                                                </button>
+                                            </div>
+                                        </div>
                                     <? endif ?>                
                                 </div>
                             </div>
@@ -300,7 +330,7 @@
                                 <div class="row m-2">
                                     <div class="data-table">
                                         <!-- table for validated items (TAD) -->
-                                        <div class="table-responsive" style="display: <?= ($this->session->userdata('user_type') == 4) ? 'block' : 'none'; ?>">
+                                        <div class="table-responsive" style="display: <?= ($this->session->userdata('user_type') == 5) ? 'block' : 'none'; ?>">
                                             <table class="table  table-hover display" id="dataTableValidatedT">
                                                 <thead>
                                                     <tr>
@@ -316,7 +346,7 @@
                                                 </thead>
                                                 <tbody>
                                                     <?php foreach ($vessel_items as $item): ?>
-                                                        <?php if ($item->status == 3): ?>
+                                                        <?php if ($item->status == 3 || $item->status == 5): ?>
                                                             <tr>
                                                                 <td>
                                                                     <?= $item->item; ?>
@@ -326,8 +356,8 @@
                                                                 </td>
                                                                 <td></td>
                                                                 <td class="text-center"><?= $item->rfp_no; ?></td>
-                                                                <td id="debit"><span class="label text-dark"><?= $item->rfp_amount; ?></td>
-                                                                <td id="credit"><span class="label text-dark"><?= $item->actual_amount; ?></td>
+                                                                <td id="debit"><?= $item->rfp_amount; ?></td>
+                                                                <td id="credit"><?= $item->actual_amount; ?></td>
                                                                 <td><?= $item->variance; ?></td>
                                                                 <td>
                                                                     <button type="button" class="btn text-primary" data-bs-toggle="modal" data-bs-target="#showItemRemarksModal" id="showItemRemarks" data-item="<?= $item->id ?>">
@@ -335,8 +365,20 @@
                                                                     </button>
                                                                 </td>
                                                                 <td class="text-center">
-                                                                    <span class="badge text-bg-success">
+                                                                    <span class="badge 
+                                                                        <?= ($item->status == 0) ? 'text-bg-secondary' : '' ?>
+                                                                        <?= ($item->status == 1) ? 'text-bg-primary' : '' ?>
+                                                                        <?= ($item->status == 2) ? 'text-bg-success' : '' ?>
+                                                                        <?= ($item->status == 3) ? 'text-bg-success' : '' ?>
+                                                                        <?= ($item->status == 4) ? 'text-bg-danger' : '' ?>
+                                                                        <?= ($item->status == 5) ? 'text-bg-warning' : '' ?>
+                                                                    ">
+                                                                        <?= ($item->status == 0) ? 'Pending Agent' : '' ?>
+                                                                        <?= ($item->status == 1) ? 'Pending Voo/OM' : '' ?>
+                                                                        <?= ($item->status == 2) ? 'Pending Accounting' : '' ?>
                                                                         <?= ($item->status == 3) ? 'Validated' : '' ?>
+                                                                        <?= ($item->status == 4) ? 'For Re-validation' : '' ?>
+                                                                        <?= ($item->status == 5) ? 'Revalidated' : '' ?>
                                                                     </span>
                                                                 </td>
                                                             </tr>
@@ -346,7 +388,7 @@
                                             </table>
                                         </div>    
                                         <!-- table for validated items (accounting) -->
-                                        <div class="table-responsive" style="display: <?= ($this->session->userdata('user_type') == 3) ? 'block' : 'none'; ?>">
+                                        <div class="table-responsive" style="display: <?= ($this->session->userdata('user_type') == 3) || ($this->session->userdata('user_type') == 4) ? 'block' : 'none'; ?>">
                                             <table class="table  table-hover display" id="dataTableValidatedA">
                                                 <thead>
                                                     <tr>
@@ -362,7 +404,7 @@
                                                 </thead>
                                                 <tbody>
                                                     <?php foreach ($vessel_items as $item): ?>
-                                                        <?php if ($item->status == 3): ?>
+                                                        <?php if ($item->status == 3 || $item->status == 5): ?>
                                                             <tr>
                                                                 <td>
                                                                     <?= $item->item; ?>
@@ -372,17 +414,29 @@
                                                                 </td>
                                                                 <td></td>
                                                                 <td class="text-center"><?= $item->rfp_no; ?></td>
-                                                                <td id="debit"><span class="label text-dark"><?= $item->rfp_amount; ?></td>
-                                                                <td id="credit"><span class="label text-dark"><?= $item->actual_amount; ?></td>
+                                                                <td id="debit"><?= $item->rfp_amount; ?></td>
+                                                                <td id="credit"><?= $item->actual_amount; ?></td>
                                                                 <td><?= $item->variance; ?></td>
                                                                 <td>
                                                                     <button type="button" class="btn text-primary" data-bs-toggle="modal" data-bs-target="#showItemRemarksModal" id="showItemRemarks" data-item="<?= $item->id ?>">
                                                                         <i class="fa-solid fa-message"></i>
                                                                     </button>
                                                                 </td>
-                                                                    <td class="text-center">
-                                                                    <span class="badge text-bg-success">
+                                                                <td class="text-center">
+                                                                    <span class="badge 
+                                                                        <?= ($item->status == 0) ? 'text-bg-secondary' : '' ?>
+                                                                        <?= ($item->status == 1) ? 'text-bg-primary' : '' ?>
+                                                                        <?= ($item->status == 2) ? 'text-bg-success' : '' ?>
+                                                                        <?= ($item->status == 3) ? 'text-bg-success' : '' ?>
+                                                                        <?= ($item->status == 4) ? 'text-bg-danger' : '' ?>
+                                                                        <?= ($item->status == 5) ? 'text-bg-warning' : '' ?>
+                                                                    ">
+                                                                        <?= ($item->status == 0) ? 'Pending Agent' : '' ?>
+                                                                        <?= ($item->status == 1) ? 'Pending Voo/OM' : '' ?>
+                                                                        <?= ($item->status == 2) ? 'Pending Accounting' : '' ?>
                                                                         <?= ($item->status == 3) ? 'Validated' : '' ?>
+                                                                        <?= ($item->status == 4) ? 'For Re-validation' : '' ?>
+                                                                        <?= ($item->status == 5) ? 'Revalidated' : '' ?>
                                                                     </span>
                                                                 </td>
                                                             </tr>
@@ -564,13 +618,6 @@
         setInterval(function () {
             showTime();
         }, 1000);
-    </script>
-    <script>
-        $('#validateAllBtn').on('click', function() {
-            $('.form-check-input').each(function() {
-                $(this).prop('checked', !$(this).prop('checked'));
-            });
-        });
     </script>
     <script>
         $(document).ready(function() {

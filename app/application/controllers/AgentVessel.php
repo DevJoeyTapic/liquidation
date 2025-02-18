@@ -21,7 +21,7 @@ class AgentVessel extends CI_Controller {
     }
 
     public function view($id) {
-        if ($this->session->userdata('user_type') == 3 || $this->session->userdata('user_type') == 4) {
+        if ($this->session->userdata('user_type') == 3 || $this->session->userdata('user_type') == 4 || $this->session->userdata('user_type') == 5) {
             $data['id'] = $id;
             $data['vessel_data'] = $this->Liquidation_model->get_vessel_data($id);
             $data['vessel_items'] = $this->Liquidation_model->get_vessel_items($data['vessel_data'][0]->transno);

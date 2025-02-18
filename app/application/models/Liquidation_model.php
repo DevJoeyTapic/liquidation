@@ -5,7 +5,7 @@ class Liquidation_model extends CI_Model {
         $this->load->database();
     }
 
-    public function get_accounting_liquidations() {
+    public function get_for_validation() {
         $sql = "SELECT
                     l.id,
                     l.user_id,
@@ -19,27 +19,16 @@ class Liquidation_model extends CI_Model {
                 FROM tbl_agent_liquidation AS l
                 INNER JOIN tbl_agent_liquidation_items AS i
                 ON l.transno = i.transno
-                WHERE (i.`status` = 2 or i.`status` = 3 or i.`status` = 1) AND l.`status` = 1
+                WHERE (i.`status` = 0 or i.`status` = 1 or i.`status` = 2 or i.`status` = 3 or i.`status` = 4 or i.`status` = 5) AND l.`status` = 1
                 GROUP BY l.transno, l.voyno";
         $query = $this->db->query($sql);
         return $query->result();
     }
 
-    public function get_voo_om_liquidations() {
-        $sql = "SELECT
-                l.id,
-                l.user_id,
-                l.supplier,
-                l.transno,
-                l.vessel_name,
-                l.voyno,
-                l.`port`,
-                l.`status`
-                FROM tbl_agent_liquidation AS l
-                INNER JOIN tbl_agent_liquidation_items AS i
-                ON l.transno = i.transno
-                WHERE i.`status` = 2 OR i.`status` = 3 AND l.`status` = 1
-                GROUP BY l.transno, l.voyno";
+    public function get_revalidated_liquidations() {
+        $sql = "SELECT *
+                FROM tbl_agent_liquidation_items
+                WHERE STATUS = 4";
         $query = $this->db->query($sql);
         return $query->result();
     }
@@ -107,25 +96,23 @@ class Liquidation_model extends CI_Model {
     }
 
     public function update_item_agent($data) {
-        $sql = "UPDATE tbl_agent_liquidation_items
-                SET `status` = 2,
-                    actual_amount = ?,
-                    variance = ?
-                WHERE id = ?";
-        $this->db->query($sql, array(
-            $data['actualAmount'],
-            $data['variance'],
-            $data['item_id']
-        ));
-
-        $this->db->insert('tbl_item_breakdown', $data);
-        return $this->db->insert_id();
-
+        if (!empty($data['actualAmount']) && !empty($data['variance']) && !empty($data['item_id'])) {
+            $sql = "UPDATE tbl_agent_liquidation_items
+                    SET `status` = 1,
+                        actual_amount = ?,
+                        variance = ?
+                    WHERE id = ?";
+            $this->db->query($sql, array(
+                $data['actualAmount'],
+                $data['variance'],
+                $data['item_id']
+            ));
+        }
     }
 
-    public function update_item_by_voo_om($id) {
+    public function revalidate_item($id) {
         $sql ="UPDATE tbl_agent_liquidation_items
-               SET `status` = 2
+               SET `status` = 5
                WHERE id = ?";
         $this->db->query($sql, array($id));
     }

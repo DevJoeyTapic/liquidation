@@ -2,12 +2,18 @@ $('document').ready(function() {
     let baseUrl = 'http://192.168.192.251:3000'
     let row;
     
-    $('#confirmValidationA').on('click', function() {
-        const checkedRows = $("#dataTableForValidationA .rowCheckbox:checked").closest("tr");
+    $('#revalidateAllBtn').on('click', function() {
+        $('.form-check-input').each(function() {
+            $(this).prop('checked', !$(this).prop('checked'));
+        });
+    });
+    $('#revalidateBtn').on('click', function() {
+        let baseUrl = 'http://192.168.192.251:3000'
+        const checkedRows = $("#dataForRevalidation .rowCheckbox:checked").closest("tr");
         if (checkedRows.length > 0) {
             Swal.fire({
-                title: 'Submit Validation Item/s',
-                text: 'Are you sure you want to validate the selected liquidation item/s?',
+                title: 'Revalidate Item/s',
+                text: 'Are you sure you want to revalidate the selected liquidation item/s?',
                 icon: 'warning',
                 showCancelButton: true,
                 confirmButtonText: 'Yes',
@@ -17,36 +23,36 @@ $('document').ready(function() {
                     // Collect data for all selected rows
                     const itemsData = [];
                     checkedRows.each(function () {
-                        const itemName = $(this).find("td:nth-child(1)").text();
-                        const description = $(this).find("td:nth-child(2)").text();
-                        const rfpNo = $(this).find("td:nth-child(3)").text();
-                        const rfpAmount = $(this).find("td:nth-child(4)").text();
-                        const actualAmount = $(this).find("td:nth-child(5) input").val();
-                        const variance = $(this).find(".variance").text();
-                        const remarks = $(this).find(".remarks").val();
+                        const agent = $(this).find("td:nth-child(1)").text();
+                        const itemName = $(this).find("td:nth-child(2)").text();
+                        const description = $(this).find("td:nth-child(3)").text();
+                        const rfpNo = $(this).find("td:nth-child(4)").text();
+                        const rfpAmount = $(this).find("td:nth-child(5)").text();
+                        const actualAmount = $(this).find("td:nth-child(6)").text();
+                        const variance = $(this).find("td:nth-child(7)").text();
                         const item_id = $(this).find('input[name="item_id"]').val();
     
                         itemsData.push({
+                            agent,
                             itemName,
                             description,
                             rfpNo,
                             rfpAmount,
                             actualAmount,
                             variance,
-                            remarks,
                             item_id
                         });
                     });
     
                     // AJAX request to submit all selected items
                     $.ajax({
-                        url: baseUrl + '/agentvessel/acctg_validate_bulk',
+                        url: baseUrl + '/revalidate/submit_for_revalidation',
                         method: 'POST',
                         data: { items: itemsData }, // Send data for all selected rows
                         success: function(response) {
                             Swal.fire({
-                                title: 'Validation Successful!',
-                                text: 'Selected items have been validated.',
+                                title: 'Revalidation Successful!',
+                                text: 'Selected items have been revalidated.',
                                 icon: 'success'
                             }).then(() => {
                                 location.reload(); // Reload page after successful submission
@@ -55,7 +61,7 @@ $('document').ready(function() {
                         error: function() {
                             Swal.fire({
                                 title: 'Error!',
-                                text: 'There was an error submitting the validation.',
+                                text: 'There was an error submitting the revalidation.',
                                 icon: 'error'
                             });
                         }
@@ -66,9 +72,9 @@ $('document').ready(function() {
         else {
             Swal.fire({
                 title: 'No Items Selected!',
-                text: 'Please select at least one item to submit for accounting.',
+                text: 'Please select at least one item to submit for revalidation.',
                 icon: 'info'
             });
         }
     });
-})
+});

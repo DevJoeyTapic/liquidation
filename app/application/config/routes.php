@@ -20,4 +20,4 @@ $route['add_item_remark'] = 'vesselitem/add_item_remark';
 $route['get_item_remarks'] = 'vesselitem/get_item_remarks';
 $route['sample/(:any)'] = 'breakdowncost/get_breakdown_cost/$1';
 $route['vesselitem/view/(:any)/(:any)'] = 'vesselitem/view/$1/$2';
-
+$route['revalidate'] = 'revalidate';

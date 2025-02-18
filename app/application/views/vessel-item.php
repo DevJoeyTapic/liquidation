@@ -169,8 +169,7 @@
                                         </thead>
                                         <tbody>
                                             <?php foreach ($liquidation_item as $item): ?>
-                                                
-                                                <?php if ($item->user_id == $this->session->userdata('user_id') && $item->status == '1'): ?>
+                                                <?php if ($item->user_id == $this->session->userdata('user_id') && $item->status == '0'): ?>
                                                     
                                                     <tr id="item-<?= $item->id ?>">
                                                         <td class="item " id="item">
@@ -303,7 +302,7 @@
                                         </thead>
                                         <tbody>
                                             <?php foreach ($liquidation_item as $item): ?>
-                                                <?php if ($item->user_id == $this->session->userdata('user_id') && $item->status == '2'): ?>
+                                                <?php if ($item->user_id == $this->session->userdata('user_id') && $item->status == '1' || $item->status == '2' || $item->status == '3' || $item->status == '4' || $item->status == '5'): ?>
                                                     <tr>
                                                         <td class="col-3" id="item">
                                                             <?= $item->item; ?>
@@ -324,7 +323,23 @@
                                                         <td class="docRef text-center">
                                                             <?= !empty($item->doc_ref) ? '<a href="' . $item->doc_ref . '" target="_blank"><span class="badge bg-primary">open file</span></a>' : '<span class="badge bg-danger">not provided</span>' ?>
                                                         </td>
-                                                        <td class="text-center validate small"><?= ($item->status == '1') ? 'Pending VOO/OM' : (($item->status == '2') ? 'Pending Accounting' : 'Status Unknown') ?>
+                                                        <td class="text-center validate">
+                                                            <span class="badge 
+                                                                <?= ($item->status == 0) ? 'text-bg-secondary' : '' ?>
+                                                                <?= ($item->status == 1) ? 'text-bg-primary' : '' ?>
+                                                                <?= ($item->status == 2) ? 'text-bg-success' : '' ?>
+                                                                <?= ($item->status == 3) ? 'text-bg-success' : '' ?>
+                                                                <?= ($item->status == 4) ? 'text-bg-danger' : '' ?>
+                                                                <?= ($item->status == 5) ? 'text-bg-warning' : '' ?>
+                                                            ">
+                                                                <?= ($item->status == 0) ? 'Pending Agent' : '' ?>
+                                                                <?= ($item->status == 1) ? 'Pending Voo/OM' : '' ?>
+                                                                <?= ($item->status == 2) ? 'Pending Accounting' : '' ?>
+                                                                <?= ($item->status == 3) ? 'Validated' : '' ?>
+                                                                <?= ($item->status == 4) ? 'For Revalidation' : '' ?>
+                                                                <?= ($item->status == 5) ? 'Revalidated' : '' ?>
+                                                            </span>
+
                                                         </td>
                                                         
                                                     </tr>
