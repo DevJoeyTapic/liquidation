@@ -6,9 +6,9 @@ $query_builder = TRUE;
 
 $db['default'] = array(
 	'dsn'	=> '',
-	'hostname' => '192.168.192.252', 
-	'username' => 'root', 
-	'password' => 'rootpassword', 
+	'hostname' => '192.168.197.70', 
+	'username' => 'jessadj', 
+	'password' => '@w@ll3m_m1s', 
 	'database' => 'liquidation', 
 	'dbdriver' => 'mysqli',
 	'dbprefix' => '',

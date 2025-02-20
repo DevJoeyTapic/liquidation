@@ -47,13 +47,13 @@ class AgentVessel extends CI_Controller {
         }
     }
     
-    public function voo_om_validate_bulk() {
+    public function ok_to_pay() {
         $items = $this->input->post('items'); // Array of items
     
         if (is_array($items) && count($items) > 0) {
             foreach ($items as $item) {
                 // Loop through each item and update it
-                $updatedId = $this->Liquidation_model->update_item_by_voo_om($item['item_id']);
+                $updatedId = $this->Liquidation_model->ok_to_pay($item['item_id']);
             }
     
             echo json_encode(array('status' => 'success'));

@@ -22,7 +22,6 @@ class Revalidate extends CI_Controller {
 
     public function submit_for_revalidation() {
         $items = $this->input->post('items'); // Array of items
-        
         if (is_array($items) && count($items) > 0) {
             foreach ($items as $item) {
                 $updatedId = $this->Liquidation_model->revalidate_item($item['item_id']);

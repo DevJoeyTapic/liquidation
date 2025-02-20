@@ -64,6 +64,8 @@
                     </div>
                 </div>
             </div>
+            <?php require_once(APPPATH . 'views/partials/liquidation-overview.php'); ?>
+
             <div class="row">
                 <div class="col-9">
                     <div class="cont">
@@ -298,6 +300,9 @@
                                     <?php if($this->session->userdata('user_type') == '3'): ?>
                                         <div class="row mt-3">
                                             <div class="col d-flex gap-2 justify-content-end align-items-end">
+                                                <button class="btn btn-danger" id="amendBtn">
+                                                    Amend
+                                                </button>
                                                 <button class="btn btn-success" id="validateAllBtn">
                                                     Check All
                                                 </button>
@@ -310,6 +315,9 @@
                                     <?php if($this->session->userdata('user_type') == '5'): ?>
                                         <div class="row mt-3">
                                             <div class="col d-flex gap-2 justify-content-end align-items-end">
+                                                <button class="btn btn-danger" id="amendBtn">
+                                                    Amend
+                                                </button>
                                                 <button class="btn btn-success" id="validateAllBtn">
                                                     Check All
                                                 </button>
@@ -346,7 +354,7 @@
                                                 </thead>
                                                 <tbody>
                                                     <?php foreach ($vessel_items as $item): ?>
-                                                        <?php if ($item->status == 3 || $item->status == 5): ?>
+                                                        <?php if ($item->status == 2 ||$item->status == 3 || $item->status == 5): ?>
                                                             <tr>
                                                                 <td>
                                                                     <?= $item->item; ?>
@@ -653,6 +661,20 @@
             });
 
         });
+    </script>
+    <script>
+        $(document).ready(function() {
+            $('#validateAllBtn').on('click', function() {
+                $('.form-check-input').each(function() {
+                    $(this).prop('checked', !$(this).prop('checked'));
+                });
+                $('.form-check-input').trigger('change');
+            });
+            $('.rowCheckbox').on('change', function() {
+                const checkedRows = $("#dataTableForValidationT .rowCheckbox:checked").closest("tr");
+                alert(checkedRows.length);
+            });
+        })
     </script>
 </body>
 </html>

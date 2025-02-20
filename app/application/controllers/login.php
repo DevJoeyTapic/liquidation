@@ -11,11 +11,12 @@ class Login extends CI_Controller {
     }
 
     public function index() {
-        if ($this->session->userdata('logged_in')) {
+        if ($this->session->userdata('logged_in') && $this->session->userdata('user_type') != 1) {
             redirect('dashboard');
         }
-        
-        $this->load->view('login');
+        else {
+            $this->load->view('login');
+        }
     }
 
     public function authenticate() {
@@ -38,7 +39,7 @@ class Login extends CI_Controller {
 
             switch($user->user_type) {
                 case 1:
-                    redirect('admin');
+                    redirect('login');
                     break;
                 case 2:
                     redirect('dashboard');
@@ -50,7 +51,7 @@ class Login extends CI_Controller {
                     redirect('revalidate');
                     break;
                 case 5:
-                    redirect('login');
+                    redirect('dashboard');
                     break;
             }
         } else {

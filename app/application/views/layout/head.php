@@ -40,6 +40,7 @@
     <script src="<?= base_url('assets/js/submit-liquidation.js'); ?>"></script>
     <script src="<?= base_url('assets/js/validate.js'); ?>"></script> 
     <script src="<?= base_url('assets/js/revalidate.js'); ?>"></script>
+    <script src="<?= base_url('assets/js/otp.js'); ?>"></script>
 
     <style>
         #filePreview {

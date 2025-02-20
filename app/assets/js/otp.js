@@ -1,9 +1,13 @@
 $('document').ready(function() {
     let baseUrl = 'http://192.168.192.251:3000'
     let row;
-    
-    $('#confirmValidationA').on('click', function() {
-        const checkedRows = $("#dataTableForValidationA .rowCheckbox:checked").closest("tr");
+    $('.rowCheckbox').on('change', function() {
+        const checkedRows = $("#dataTableForValidationT .rowCheckbox:checked").closest("tr");
+        alert(checkedRows.length);
+    });
+    $('#otpBtn').on('click', function() {
+        const checkedRows = $("#dataTableForValidationT .rowCheckbox:checked").closest("tr");
+        alert(checkedRows.length);
         if (checkedRows.length > 0) {
             Swal.fire({
                 title: 'Submit Validation Item/s',
@@ -40,10 +44,11 @@ $('document').ready(function() {
     
                     // AJAX request to submit all selected items
                     $.ajax({
-                        url: baseUrl + '/agentvessel/acctg_validate_bulk',
+                        url: baseUrl + '/agentvessel/ok_to_pay',
                         method: 'POST',
                         data: { items: itemsData }, // Send data for all selected rows
                         success: function(response) {
+                            console.log(response);
                             Swal.fire({
                                 title: 'Validation Successful!',
                                 text: 'Selected items have been validated.',
@@ -52,7 +57,8 @@ $('document').ready(function() {
                                 location.reload(); // Reload page after successful submission
                             });
                         },
-                        error: function() {
+                        error: function(response) {
+                        console.log(response);
                             Swal.fire({
                                 title: 'Error!',
                                 text: 'There was an error submitting the validation.',
