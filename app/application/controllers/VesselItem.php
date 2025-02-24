@@ -4,6 +4,7 @@ class VesselItem extends CI_Controller {
         parent::__construct();
         $this->load->database();
         $this->load->model('Liquidation_model');
+        $this->load->model('VesselItem_model');
         $this->load->model('Breakdown_model');
         $this->load->library('session');    
 
@@ -20,7 +21,7 @@ class VesselItem extends CI_Controller {
             // Get data related to the vessel item
             $data['id'] = $id;
             $data['vessel_items'] = $this->Liquidation_model->get_vessel_items($data['id']);
-            $data['liquidation_item'] = $this->Liquidation_model->get_liquidation_item($user_id, $id);
+            $data['liquidation_item'] = $this->VesselItem_model->get_liquidation_items($user_id, $id);
 
             $item_ids = array_column($data['liquidation_item'], 'id');  
             if (!empty($item_ids)) {

@@ -11,11 +11,11 @@
                 if ($item->user_id == $this->session->userdata('user_id')): 
                     $count++;
                 endif;
-                if ($status == 3):
+                if ($status == 4):
                     $liquidated++;
                     
                 endif;
-                if ($status != 3):
+                if ($status != 4):
                     $remaining++;
                 endif;
             endforeach;
@@ -40,11 +40,11 @@
                     if ($item->user_id == $this->session->userdata('user_id')): 
                         $count++;
                     endif;
-                    if ($status == 3):
+                    if ($status == 4):
                         $liquidated++;
                         
                     endif;
-                    if ($status != 3):
+                    if ($status != 4):
                         $remaining++;
                     endif;
                 endforeach;

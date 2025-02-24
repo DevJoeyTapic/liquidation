@@ -37,7 +37,6 @@
     <!-- JS Files -->
     <script src="<?= base_url('assets/js/dataTable.js'); ?>"></script>
     <script src="<?= base_url('assets/js/main.js'); ?>"></script>
-    <script src="<?= base_url('assets/js/submit-liquidation.js'); ?>"></script>
     <script src="<?= base_url('assets/js/validate.js'); ?>"></script> 
     <script src="<?= base_url('assets/js/revalidate.js'); ?>"></script>
     <script src="<?= base_url('assets/js/otp.js'); ?>"></script>

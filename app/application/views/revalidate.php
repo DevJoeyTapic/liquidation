@@ -59,12 +59,14 @@
             <?php if($this->session->userdata('user_type') == '4'): ?>
                 <div class="row mt-3">
                     <div class="col d-flex gap-2 justify-content-end align-items-end">
-                        
+                        <button class="btn btn-danger" id="revalidateBtn">
+                            Re-validate
+                        </button>
                         <button class="btn btn-success" id="revalidateAllBtn">
                             Check All
                         </button>
-                        <button class="btn btn-primary" id="revalidateBtn">
-                            Re-validate
+                        <button class="btn btn-primary" id="payToAgentBtn">
+                            Pay To Agent
                         </button>
                     </div>
                 </div>

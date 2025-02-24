@@ -7,14 +7,14 @@ $(document).ready(function () {
   });
 
   // table for agent editing
-  var table2 = $("#dataTable2").DataTable({
+  var table2 = $("#pendingTableAg").DataTable({
     paging: true,
     searching: true,
     pageLength: 10,
   });
 
   // table for agent for validation
-  var table3 = $("#dataTable3").DataTable({
+  var table3 = $("#liquidatedTableAg").DataTable({
     paging: true,
     searching: true,
     pageLength: 10,

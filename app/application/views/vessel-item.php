@@ -71,6 +71,8 @@
                     <div class="nav nav-tabs liquidation-tabs" id="nav-tab" role="tablist">
                         <button class="nav-link active" id="pendingTab" data-bs-toggle="tab" data-bs-target="#pending" type="button" role="tab" aria-controls="pending" aria-selected="true"><i class="fa-regular fa-clock pe-2"></i>Pending Item(s) Liquidation</button>    
                         <button class="nav-link" id="forValidationTab" data-bs-toggle="tab" data-bs-target="#forValidation" type="button" role="tab" aria-controls="forValidation" aria-selected="false"><i class="fa-solid fa-user-clock pe-2"></i>Liquidated Item(s) for Validation</button>
+                        <button class="nav-link" id="completedTab" data-bs-toggle="tab" data-bs-target="#completed" type="button" role="tab" aria-controls="completed" aria-selected="false"><i class="fa-solid fa-circle-check pe-2"></i>Completed Item(s)</button>
+                        <button class="nav-link" id="forAmendmentTab" data-bs-toggle="tab" data-bs-target="#forAmendment" type="button" role="tab" aria-controls="forAmendment" aria-selected="false"><i class="fa-solid fa-user-pen pe-2"></i></i>For Amendment Item(s)</button>
                     </div>
                 </nav>
                 <div class="tab-content" id="nav-tabContent">
@@ -89,7 +91,7 @@
                                 </div>
                                 
                                 <div class="table-reponsive">
-                                    <table class="table table-hover display" id="dataTable2">
+                                    <table class="table table-hover display" id="pendingTableAg">
                                         <thead>
                                             <tr>
                                                 <th class="">Items</th>
@@ -166,48 +168,6 @@
                                                             <input type="hidden" name="item_id" value="<?php echo $item->id; ?>">
                                                         </td>
                                                     </tr>
-                                                    <!-- <tr class="child-row" style="display: none;">
-                                                        <td style="min-width: 100%;">
-                                                            <?php if (!empty($breakdown_cost)): ?>
-                                                               
-                                                                <?php foreach ($breakdown_cost as $cost): ?>
-                                                                    <?php if ($cost['item_id'] == $item->id): ?>
-                                                                        
-                                                                        
-                                                                        <tr class="table-info">
-                                                                            <td class="bold">
-                                                                                <?= isset($cost['id']) ? $cost['id'] : 'N/A'; ?>. &nbsp; 
-                                                                                <?= isset($cost['description']) ? $cost['description'] : 'N/A'; ?>
-                                                                            </td>
-                                                                            <td class="text-center"><?= isset($cost['rfp_no']) ? $cost['rfp_no'] : 'N/A'; ?></td>
-                                                                            <td><?= isset($cost['currency']) ? $cost['currency'] : 'N/A'; ?></td>
-                                                                            <td><?= isset($cost['rfp_amount']) ? $cost['rfp_amount'] : 'N/A'; ?></td>
-                                                                            <td>
-                                                                                <input type="text" class="form-control form-control-sm actualAmount" id="actualAmount" name="actualAmount" value="<?= isset($cost['amount']) ? $cost['amount'] : 'N/A'; ?>" disabled>
-                                                                            </td>
-                                                                            <td><?= isset($cost['variance']) ? $cost['variance'] : 'N/A'; ?></td>
-                                                                            <td></td>
-                                                                            <td></td>
-                                                                            <td></td>
-                                                                        </tr>
-                                                                    <?php endif; ?> 
-                                                                <?php endforeach; ?>
-                                                            <?php else: ?>
-                                                                <p>No breakdown cost available.</p>
-                                                            <?php endif; ?>
-
-                                                        </td>
-                                                        <td></td>
-                                                        <td></td>
-                                                        <td></td>
-                                                        <td></td>
-                                                        <td></td>
-                                                        <td></td>
-                                                        <td></td>
-                                                        <td></td>
-                                                        <td></td>
-                                                    </tr> -->
-                                                    
                                                 <?php endif; ?>
                                             <?php endforeach; ?>
                                         </tbody>
@@ -223,7 +183,7 @@
                         <div class="row m-2"> 
                             <div class="data-table">
                                 <div class="table-reponsive">
-                                    <table class="table table-hover display" id="dataTable3">
+                                    <table class="table table-hover display" id="liquidatedTableAg">
                                         <thead>
                                             <tr>
                                                 <th class="col-3">Items</th>
@@ -239,7 +199,7 @@
                                         </thead>
                                         <tbody>
                                             <?php foreach ($liquidation_item as $item): ?>
-                                                <?php if ($item->user_id == $this->session->userdata('user_id') && $item->status == '1' || $item->status == '2' || $item->status == '3' || $item->status == '4' || $item->status == '5'): ?>
+                                                <?php if ($item->user_id == $this->session->userdata('user_id') && $item->status == '1' || $item->status == '2' || $item->status == '3' || $item->status == '5' || $item->status == '6' || $item->status == '7'): ?>
                                                     <tr>
                                                         <td class="col-3" id="item">
                                                             <?= $item->item; ?>
@@ -261,22 +221,101 @@
                                                             <?= !empty($item->doc_ref) ? '<a href="' . $item->doc_ref . '" target="_blank"><span class="badge bg-primary">open file</span></a>' : '<span class="badge bg-danger">not provided</span>' ?>
                                                         </td>
                                                         <td class="text-center validate">
-                                                            <span class="badge 
-                                                                <?= ($item->status == 0) ? 'text-bg-secondary' : '' ?>
-                                                                <?= ($item->status == 1) ? 'text-bg-primary' : '' ?>
-                                                                <?= ($item->status == 2) ? 'text-bg-success' : '' ?>
-                                                                <?= ($item->status == 3) ? 'text-bg-success' : '' ?>
-                                                                <?= ($item->status == 4) ? 'text-bg-danger' : '' ?>
-                                                                <?= ($item->status == 5) ? 'text-bg-warning' : '' ?>
-                                                            ">
-                                                                <?= ($item->status == 0) ? 'Pending Agent' : '' ?>
-                                                                <?= ($item->status == 1) ? 'Pending Voo/OM' : '' ?>
-                                                                <?= ($item->status == 2) ? 'Pending Accounting' : '' ?>
-                                                                <?= ($item->status == 3) ? 'Validated' : '' ?>
-                                                                <?= ($item->status == 4) ? 'For Revalidation' : '' ?>
-                                                                <?= ($item->status == 5) ? 'Revalidated' : '' ?>
-                                                            </span>
+                                                        <?php
+                                                                // Define the status-to-badge mapping
+                                                                $status_to_class = [
+                                                                    '0' => 'bg-secondary', // Unliquidated
+                                                                    '1' => 'bg-dark', // Liquidated
+                                                                    '2' => 'bg-primary', // OK To Pay
+                                                                    '3' => 'bg-info', // Validated
+                                                                    '4' => 'bg-success', // Pay To Agent
+                                                                    '5' => 'bg-danger', // Return To AP
+                                                                    '6' => 'bg-warning', // Return To AP
+                                                                    '7' => 'bg-light text-dark', // Return To Agent by AP
+                                                                    '8' => 'bg-danger', // Amend
+                                                                ];
 
+                                                                // Determine the badge class based on the item's status
+                                                                $badge_class = isset($status_to_class[$item->status]) ? $status_to_class[$item->status] : '';
+                                                            ?>
+                                                            <span class="badge <?= $badge_class; ?>">
+                                                                <?= htmlspecialchars($item->desc_status); ?>
+                                                            </span>
+                                                        </td>
+
+                                                        
+                                                    </tr>
+                                                <?php endif; ?>
+                                            <?php endforeach; ?>
+                                            <!-- see main.js #submitLiquidation click -->
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="tab-pane fade" id="completed" role="tabpanel" aria-labelledby="completedTab">
+                        <div class="row m-2"> 
+                            <div class="data-table">
+                                <div class="table-reponsive">
+                                    <table class="table table-hover display" id="completeTableAg">
+                                        <thead>
+                                            <tr>
+                                                <th class="col-3">Items</th>
+                                                <th class="col-1 text-center">RFP No.</th>
+                                                <th><?= $item->currency ?></th>
+                                                <th class="col-2">RFP Amount</th>
+                                                <th class="col-2">Actual Amount</th>
+                                                <th class="col-2">Variance</th>
+                                                <th class="col-2">Remarks</th>
+                                                <th class="col-2 text-center">Document</th>
+                                                <th>Status</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <?php foreach ($liquidation_item as $item): ?>
+                                                <?php if ($item->user_id == $this->session->userdata('user_id') && $item->status == '4'): ?>
+                                                    <tr>
+                                                        <td class="col-3" id="item">
+                                                            <?= $item->item; ?>
+                                                            <?php if($item->controlled == 0): ?>
+                                                                <span class="badge rounded-pill text-bg-warning">Controlled</span>
+                                                            <?php endif; ?>
+                                                        </td>
+                                                        <td class="col-1 text-center" id="rfpno"><?= $item->rfp_no; ?></td>
+                                                        <td><?= $item->currency ?></td>
+                                                        <td class="col-2 rfpAmount" id="rfpAmount"><?= number_format($item->rfp_amount, 2); ?></td>
+                                                        <td class="col-2"><?= number_format($item->actual_amount, 2) ?></td>
+                                                        <td class="variance"><?= number_format($item->variance, 2) ?></td>
+                                                        <td class="col-2 ">
+                                                            <button type="button" class="btn text-primary" data-bs-toggle="modal" data-bs-target="#showItemRemarksModal" id="showItemRemarks" data-item="<?= $item->id ?>">
+                                                                <i class="fa-solid fa-message"></i>
+                                                            </button>
+                                                        </td>
+                                                        <td class="docRef text-center">
+                                                            <?= !empty($item->doc_ref) ? '<a href="' . $item->doc_ref . '" target="_blank"><span class="badge bg-primary">open file</span></a>' : '<span class="badge bg-danger">not provided</span>' ?>
+                                                        </td>
+                                                        <td class="text-center validate">
+                                                            <?php
+                                                                // Define the status-to-badge mapping
+                                                                $status_to_class = [
+                                                                    '0' => 'bg-secondary', // Unliquidated
+                                                                    '1' => 'bg-dark', // Liquidated
+                                                                    '2' => 'bg-primary', // OK To Pay
+                                                                    '3' => 'bg-info', // Validated
+                                                                    '4' => 'bg-success', // Pay To Agent
+                                                                    '5' => 'bg-danger', // Return To AP
+                                                                    '6' => 'bg-warning', // Return To AP
+                                                                    '7' => 'bg-light text-dark', // Return To Agent by AP
+                                                                    '8' => 'bg-danger', // Amend
+                                                                ];
+
+                                                                // Determine the badge class based on the item's status
+                                                                $badge_class = isset($status_to_class[$item->status]) ? $status_to_class[$item->status] : '';
+                                                            ?>
+                                                            <span class="badge <?= $badge_class; ?>">
+                                                                <?= htmlspecialchars($item->desc_status); ?>
+                                                            </span>
                                                         </td>
                                                         
                                                     </tr>
@@ -289,7 +328,80 @@
                             </div>
                         </div>
                     </div>
+                    <div class="tab-pane fade" id="forAmendment" role="tabpanel" aria-labelledby="forAmendmentTab">
+                        <div class="row m-2"> 
+                            <div class="data-table">
+                                <div class="table-reponsive">
+                                    <table class="table table-hover display" id="forAmendmentTableAg">
+                                        <thead>
+                                            <tr>
+                                                <th class="col-3">Items</th>
+                                                <th class="col-1 text-center">RFP No.</th>
+                                                <th><?= $item->currency ?></th>
+                                                <th class="col-2">RFP Amount</th>
+                                                <th class="col-2">Actual Amount</th>
+                                                <th class="col-2">Variance</th>
+                                                <th class="col-2">Remarks</th>
+                                                <th class="col-2 text-center">Document</th>
+                                                <th>Status</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <?php foreach ($liquidation_item as $item): ?>
+                                                <?php if ($item->user_id == $this->session->userdata('user_id') && $item->status == '7' || $item->status == '8'): ?>
+                                                    <tr>
+                                                        <td class="col-3" id="item">
+                                                            <?= $item->item; ?>
+                                                            <?php if($item->controlled == 0): ?>
+                                                                <span class="badge rounded-pill text-bg-warning">Controlled</span>
+                                                            <?php endif; ?>
+                                                        </td>
+                                                        <td class="col-1 text-center" id="rfpno"><?= $item->rfp_no; ?></td>
+                                                        <td><?= $item->currency ?></td>
+                                                        <td class="col-2 rfpAmount" id="rfpAmount"><?= number_format($item->rfp_amount, 2); ?></td>
+                                                        <td class="col-2"><?= number_format($item->actual_amount, 2) ?></td>
+                                                        <td class="variance"><?= number_format($item->variance, 2) ?></td>
+                                                        <td class="col-2 ">
+                                                            <button type="button" class="btn text-primary" data-bs-toggle="modal" data-bs-target="#showItemRemarksModal" id="showItemRemarks" data-item="<?= $item->id ?>">
+                                                                <i class="fa-solid fa-message"></i>
+                                                            </button>
+                                                        </td>
+                                                        <td class="docRef text-center">
+                                                            <?= !empty($item->doc_ref) ? '<a href="' . $item->doc_ref . '" target="_blank"><span class="badge bg-primary">open file</span></a>' : '<span class="badge bg-danger">not provided</span>' ?>
+                                                        </td>
+                                                        <td class="text-center validate">
+                                                            <?php
+                                                                // Define the status-to-badge mapping
+                                                                $status_to_class = [
+                                                                    '0' => 'bg-secondary', // Unliquidated
+                                                                    '1' => 'bg-dark', // Liquidated
+                                                                    '2' => 'bg-primary', // OK To Pay
+                                                                    '3' => 'bg-info', // Validated
+                                                                    '4' => 'bg-success', // Pay To Agent
+                                                                    '5' => 'bg-danger', // Return To AP
+                                                                    '6' => 'bg-warning', // Return To AP
+                                                                    '7' => 'bg-light text-dark', // Return To Agent by AP
+                                                                    '8' => 'bg-danger', // Amend
+                                                                ];
 
+                                                                // Determine the badge class based on the item's status
+                                                                $badge_class = isset($status_to_class[$item->status]) ? $status_to_class[$item->status] : '';
+                                                            ?>
+                                                            <span class="badge <?= $badge_class; ?>">
+                                                                <?= htmlspecialchars($item->desc_status); ?>
+                                                            </span>
+                                                        </td>
+                                                        
+                                                    </tr>
+                                                <?php endif; ?>
+                                            <?php endforeach; ?>
+                                            <!-- see main.js #submitLiquidation click -->
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
 		</div>
@@ -460,6 +572,31 @@
                 }
             });
         });
+    </script>
+    <script>
+        $(document).ready(function() {
+            $('#pendingTableAg').DataTable({
+                paging: true,
+                searching: true,
+                pageLength: 10,
+            });
+            $('#liquidatedTableAg').DataTable({
+                paging: true,
+                searching: true,
+                pageLength: 10,
+            });
+            $('#completeTableAg').DataTable({
+                paging: true,
+                searching: true,
+                pageLength: 10,
+            });
+            $('#forAmendmentTableAg').DataTable({
+                paging: true,
+                searching: true,
+                pageLength: 10,
+            });
+        });
+
     </script>
     
     
