@@ -122,7 +122,7 @@
 </div>
 <?php endif; ?>
 <?php if($this->session->userdata('user_type') == 2): ?>
-    <div class="modal fade" id="uploadModal" tabindex="-1" aria-hidden="true">
+<div class="modal fade" id="uploadModal" tabindex="-1" aria-hidden="true">
     <div class="modal-dialog modal-xl">
         <div class="modal-content">
             <div class="modal-header">
@@ -140,7 +140,7 @@
                 <div id="filePreview" class="mt-3"></div>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary" id="uploadBtn">Upload</button>
             </div>
         </div>
     </div>
