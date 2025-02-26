@@ -4,6 +4,7 @@ class AgentVessel extends CI_Controller {
         parent::__construct();
         $this->load->database();
         $this->load->model('Liquidation_model');
+        $this->load->model('AgentVessel_model');
         $this->load->library('session');    
 
         if (!$this->session->userdata('logged_in')) {
@@ -32,33 +33,51 @@ class AgentVessel extends CI_Controller {
             redirect('dashboard');
         }
     }
-    public function acctg_validate_bulk() {
-        $items = $this->input->post('items'); // Array of items
-        
-        if (is_array($items) && count($items) > 0) {
-            foreach ($items as $item) {
-                // Loop through each item and update it
-                $updatedId = $this->Liquidation_model->update_item_by_acctg($item['item_id']);
+    
+    
+    public function ok_to_pay() {
+        $items = $this->input->post('items');  // Receives an array of items
+        if ($items) {
+            foreach ($items as $data) {
+                $updatedId = $this->AgentVessel_model->ok_to_pay($data);
             }
-            
             echo json_encode(array('status' => 'success'));
         } else {
-            echo json_encode(array('status' => 'error', 'message' => 'No items to update.'));
+            echo json_encode(array('status' => 'error', 'message' => 'No data provided.'));
         }
     }
     
-    public function ok_to_pay() {
-        $items = $this->input->post('items'); // Array of items
-    
-        if (is_array($items) && count($items) > 0) {
-            foreach ($items as $item) {
-                // Loop through each item and update it
-                $updatedId = $this->Liquidation_model->ok_to_pay($item['item_id']);
+    public function for_amendment_tad() {
+        $items = $this->input->post('items');  // Receives an array of items
+        if ($items) {
+            foreach ($items as $data) {
+                $updatedId = $this->AgentVessel_model->for_amendment_tad($data);
             }
-    
             echo json_encode(array('status' => 'success'));
         } else {
-            echo json_encode(array('status' => 'error', 'message' => 'No items to update.'));
+            echo json_encode(array('status' => 'error', 'message' => 'No data provided.'));
+        }
+    }
+    public function for_amendment_acctg() {
+        $items = $this->input->post('items');  // Receives an array of items
+        if ($items) {
+            foreach ($items as $data) {
+                $updatedId = $this->AgentVessel_model->for_amendment_acctg($data);
+            }
+            echo json_encode(array('status' => 'success'));
+        } else {
+            echo json_encode(array('status' => 'error', 'message' => 'No data provided.'));
+        }
+    }
+    public function submit_to_am() {
+        $items = $this->input->post('items');  // Receives an array of items
+        if ($items) {
+            foreach ($items as $data) {
+                $updatedId = $this->AgentVessel_model->submit_to_am($data);
+            }
+            echo json_encode(array('status' => 'success'));
+        } else {
+            echo json_encode(array('status' => 'error', 'message' => 'No data provided.'));
         }
     }
     

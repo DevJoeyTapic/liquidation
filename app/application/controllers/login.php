@@ -39,7 +39,7 @@ class Login extends CI_Controller {
 
             switch($user->user_type) {
                 case 1:
-                    redirect('login');
+                    redirect('admin');
                     break;
                 case 2:
                     redirect('dashboard');

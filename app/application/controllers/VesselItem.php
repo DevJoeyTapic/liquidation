@@ -55,7 +55,7 @@ class VesselItem extends CI_Controller {
             'supplier' => $this->input->post('supplier'),
             'transno' => $this->input->post('transno'),
             'item' => $this->input->post('newItem'),
-            'remarks' => $this->input->post('newRemarks'),
+            'currency' => $this->input->post('currency'),
             'actual_amount' => $this->input->post('newAmount'),
             'isNew' => $this->input->post('isNew')
         );
@@ -71,14 +71,24 @@ class VesselItem extends CI_Controller {
         $items = $this->input->post('items');  // Receives an array of items
         if ($items) {
             foreach ($items as $data) {
-                $updatedId = $this->Liquidation_model->update_item_agent($data);
+                $updatedId = $this->VesselItem_model->update_item_agent($data);
             }
             echo json_encode(array('status' => 'success'));
         } else {
             echo json_encode(array('status' => 'error', 'message' => 'No data provided.'));
         }
-
         
+    }
+    public function submit_for_amendment() {
+        $items = $this->input->post('items');  // Receives an array of items
+        if ($items) {
+            foreach ($items as $data) {
+                $updatedId = $this->VesselItem_model->update_item_agent($data);
+            }
+            echo json_encode(array('status' => 'success'));
+        } else {
+            echo json_encode(array('status' => 'error', 'message' => 'No data provided.'));
+        }
     }
 
     public function get_item_remarks($item_id) {

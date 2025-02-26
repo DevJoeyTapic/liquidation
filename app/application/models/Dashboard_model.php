@@ -146,7 +146,7 @@ class Dashboard_model extends CI_Model {
                 ON l.transno = i.transno
                 JOIN tbl_liq_item_status AS s
                 ON i.`status` = s.id
-                WHERE (i.`status` = 2 or i.`status` = 3) AND l.`status` = 1
+                WHERE (i.`status` = 2) AND l.`status` = 1
                 GROUP BY l.transno, l.voyno
                 ORDER BY id desc";
         $query = $this->db->query($sql);

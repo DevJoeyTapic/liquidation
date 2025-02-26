@@ -55,13 +55,20 @@
                 </div>
                 <div class="row m-2 gap-2">
                     <div class="col p-0">
+                        <label for="currency">Currency: </label>
+                        <select class="form-control form-control-sm mb-2" id="currency" name="currency">
+                            <option value="USD">USD</option>
+                            <option value="PHP">PHP</option>
+                        </select>
+                    </div>
+                    <div class="col p-0">
                         <label for="amount">Amount: </label>
                         <input type="text" class="form-control form-control-sm mb-2" placeholder="0.00" id="newAmount">
                     </div>
                 </div>
                 <div class="row m-2">
-                    <label for="remarks">Remarks: </label>
-                    <textarea class="form-control form-control-sm mb-2" rows="3" style="max-height: 150px;" id="newRemarks"></textarea>
+                    <label for="itemName p-0">Remarks: </label>
+                    <input type="text" class="form-control form-control-sm mb-2" id="remarks">
                 </div>
                 <div class="row m-2">
                     <label for="docref">Upload:</label>
@@ -75,6 +82,7 @@
         </div>
     </div>
 </div>
+
 <?php endif; ?>
 
 

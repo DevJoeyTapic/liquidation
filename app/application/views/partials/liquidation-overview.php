@@ -48,8 +48,8 @@
                         $remaining++;
                     endif;
                 endforeach;
-                $liqpercent = intval(($liquidated / $count) * 100);
-                $remainingP = intval(($remaining / $count) * 100);
+                $liqpercent = number_format(($liquidated / $count) * 100, 2);
+                $remainingP = number_format(($remaining / $count) * 100, 2);
 
             ?>
                 <li class="mb-2"><strong>Total No. of Items: <?= $count; ?></strong></li>

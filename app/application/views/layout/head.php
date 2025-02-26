@@ -30,6 +30,7 @@
     <link rel="stylesheet" href="<?= base_url('assets/css/dashboard.css'); ?>">
     <link rel="stylesheet" href="<?= base_url('assets/css/admin.css'); ?>">
     <link rel="stylesheet" href="<?= base_url('assets/css/modals.css'); ?>">
+        
 
     <!-- Swal -->
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
@@ -37,9 +38,6 @@
     <!-- JS Files -->
     <script src="<?= base_url('assets/js/dataTable.js'); ?>"></script>
     <script src="<?= base_url('assets/js/main.js'); ?>"></script>
-    <script src="<?= base_url('assets/js/validate.js'); ?>"></script> 
-    <script src="<?= base_url('assets/js/revalidate.js'); ?>"></script>
-    <script src="<?= base_url('assets/js/otp.js'); ?>"></script>
 
     <style>
         #filePreview {

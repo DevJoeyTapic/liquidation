@@ -116,11 +116,14 @@
                                                             <?php if($item->controlled == 0): ?>
                                                                 <span class="badge rounded-pill text-bg-warning">Controlled</span>
                                                             <?php endif; ?>
+                                                            <?php if($item->isNew == '1'): ?>  
+                                                                <span class="badge rounded-pill text-bg-primary">NEW ITEM</span>
+                                                            <?php endif ?>
                                                         </td>
                                                         
                                                         <td class="text-center col-1 rfpno" id="rfpno">
                                                             <?php if($item->isNew == '1'): ?>  
-                                                                <span class="badge text-bg-primary">NEW ITEM</span>
+                                                                
                                                             <?php else: ?>  
                                                                 <?= $item->rfp_no; ?>
                                                             <?php endif ?>
@@ -128,14 +131,14 @@
                                                         <td class="currency"><?= $item->currency ?></td>
                                                         <td class="rfpAmount" id="rfpAmount">
                                                             <?php if($item->isNew == '1'): ?>  
-                                                                <span class="badge text-bg-primary">NEW ITEM</span>
+                                                                <?= number_format($item->actual_amount, 2); ?>
                                                             <?php else: ?>  
                                                                 <?= number_format($item->rfp_amount, 2); ?>
                                                             <?php endif ?>
                                                         </td>
                                                         <td class="text-end">
                                                             <?php if($item->isNew == '1'): ?>  
-                                                                <input type="text" class="form-control form-control-sm actualAmount" id="actualAmount" name="actualAmount" value="<?= $item->actual_amount; ?>" disabled>
+                                                                <input type="text" class="form-control form-control-sm actualAmount" id="actualAmount" name="actualAmount" value="<?= $item->actual_amount; ?>">
                                                             <?php else: ?> 
                                                                 <?php if($item->hasBreakdown == '1'): ?>
                                                                     <input type="text" class="form-control form-control-sm actualAmount" id="actualAmount" name="actualAmount" value="<?= $item->actual_amount; ?>" disabled>
@@ -148,9 +151,9 @@
                                                         </td>
                                                         <td class="variance" id="variance">
                                                             <?php if($item->isNew == '1'): ?>  
-                                                                <span class="badge text-bg-primary">NEW ITEM</span>
-                                                            <?php else: ?>
-
+                                                                <?= number_format($item->variance, 2); ?>
+                                                            <?php elseif($item->status == '8'|| $item->status == '7'): ?>
+                                                                <?= number_format($item->variance, 2); ?>
                                                             <?php endif ?>
                                                         </td>
                                                         <td class="col-1 text-center">
@@ -188,7 +191,7 @@
                                             <tr>
                                                 <th class="col-3">Items</th>
                                                 <th class="col-1 text-center">RFP No.</th>
-                                                <th><?= $item->currency ?></th>
+                                                <th>Currency</th>
                                                 <th class="col-2">RFP Amount</th>
                                                 <th class="col-2">Actual Amount</th>
                                                 <th class="col-2">Variance</th>
@@ -206,12 +209,33 @@
                                                             <?php if($item->controlled == 0): ?>
                                                                 <span class="badge rounded-pill text-bg-warning">Controlled</span>
                                                             <?php endif; ?>
+                                                            <?php if($item->isNew == '1'): ?>  
+                                                                <span class="badge rounded-pill text-bg-primary">NEW ITEM</span>
+                                                            <?php endif ?>
                                                         </td>
-                                                        <td class="col-1 text-center" id="rfpno"><?= $item->rfp_no; ?></td>
+                                                        <td class="col-1 text-center" id="rfpno">
+                                                            <?php if($item->isNew == '1'): ?>  
+                                                                
+                                                            <?php else: ?>
+                                                                <?= $item->rfp_no; ?>
+                                                            <?php endif ?>
+                                                        </td>
                                                         <td><?= $item->currency ?></td>
-                                                        <td class="col-2 rfpAmount" id="rfpAmount"><?= number_format($item->rfp_amount, 2); ?></td>
+                                                        <td class="col-2 rfpAmount" id="rfpAmount">
+                                                            <?php if($item->isNew == '1'): ?>  
+                                                                <?= number_format($item->actual_amount,2) ?>
+                                                            <?php else: ?>
+                                                                <?= number_format($item->actual_amount,2) ?>
+                                                            <?php endif ?>
+                                                        </td>
                                                         <td class="col-2"><?= number_format($item->actual_amount, 2) ?></td>
-                                                        <td class="variance"><?= number_format($item->variance, 2) ?></td>
+                                                        <td class="variance">
+                                                            <?php if($item->isNew == '1'): ?>  
+                                                                <?= number_format($item->variance, 2) ?>
+                                                            <?php else: ?>
+                                                                <?= number_format($item->variance, 2); ?>
+                                                            <?php endif ?>
+                                                        </td>
                                                         <td class="col-2 ">
                                                             <button type="button" class="btn text-primary" data-bs-toggle="modal" data-bs-target="#showItemRemarksModal" id="showItemRemarks" data-item="<?= $item->id ?>">
                                                                 <i class="fa-solid fa-message"></i>
@@ -263,7 +287,7 @@
                                             <tr>
                                                 <th class="col-3">Items</th>
                                                 <th class="col-1 text-center">RFP No.</th>
-                                                <th><?= $item->currency ?></th>
+                                                <th class="text-center">Currency</th>
                                                 <th class="col-2">RFP Amount</th>
                                                 <th class="col-2">Actual Amount</th>
                                                 <th class="col-2">Variance</th>
@@ -281,12 +305,24 @@
                                                             <?php if($item->controlled == 0): ?>
                                                                 <span class="badge rounded-pill text-bg-warning">Controlled</span>
                                                             <?php endif; ?>
+                                                            <?php if($item->isNew == '1'): ?>  
+                                                                <span class="badge rounded-pill text-bg-primary">NEW ITEM</span>
+                                                            <?php endif ?>
                                                         </td>
                                                         <td class="col-1 text-center" id="rfpno"><?= $item->rfp_no; ?></td>
                                                         <td><?= $item->currency ?></td>
-                                                        <td class="col-2 rfpAmount" id="rfpAmount"><?= number_format($item->rfp_amount, 2); ?></td>
+                                                        <td class="col-2 rfpAmount" id="rfpAmount">
+                                                            <?php if($item->isNew == '1'): ?>  
+                                                                <?= $item->actual_amount ?>
+                                                            <?php else: ?>
+                                                                <?= number_format($item->rfp_amount,2) ?>
+                                                            <?php endif ?>
+                                                            
+                                                        </td>
                                                         <td class="col-2"><?= number_format($item->actual_amount, 2) ?></td>
-                                                        <td class="variance"><?= number_format($item->variance, 2) ?></td>
+                                                        <td class="variance">
+                                                            <?= number_format($item->variance, 2); ?>
+                                                        </td>
                                                         <td class="col-2 ">
                                                             <button type="button" class="btn text-primary" data-bs-toggle="modal" data-bs-target="#showItemRemarksModal" id="showItemRemarks" data-item="<?= $item->id ?>">
                                                                 <i class="fa-solid fa-message"></i>
@@ -343,55 +379,65 @@
                                                 <th class="col-2">Variance</th>
                                                 <th class="col-2">Remarks</th>
                                                 <th class="col-2 text-center">Document</th>
-                                                <th>Status</th>
+                                                <th>Validate</th>
                                             </tr>
                                         </thead>
                                         <tbody>
                                             <?php foreach ($liquidation_item as $item): ?>
                                                 <?php if ($item->user_id == $this->session->userdata('user_id') && $item->status == '7' || $item->status == '8'): ?>
-                                                    <tr>
-                                                        <td class="col-3" id="item">
+                                                    
+                                                    <tr id="item-<?= $item->id ?>">
+                                                        <td class="item " id="item">
                                                             <?= $item->item; ?>
                                                             <?php if($item->controlled == 0): ?>
                                                                 <span class="badge rounded-pill text-bg-warning">Controlled</span>
                                                             <?php endif; ?>
+                                                            <?php if($item->isNew == '1'): ?>  
+                                                                <span class="badge rounded-pill text-bg-primary">NEW ITEM</span>
+                                                            <?php endif ?>
                                                         </td>
-                                                        <td class="col-1 text-center" id="rfpno"><?= $item->rfp_no; ?></td>
-                                                        <td><?= $item->currency ?></td>
-                                                        <td class="col-2 rfpAmount" id="rfpAmount"><?= number_format($item->rfp_amount, 2); ?></td>
-                                                        <td class="col-2"><?= number_format($item->actual_amount, 2) ?></td>
-                                                        <td class="variance"><?= number_format($item->variance, 2) ?></td>
-                                                        <td class="col-2 ">
+                                                        
+                                                        <td class="text-center col-1 rfpno" id="rfpno">
+                                                            <?= $item->rfp_no ?>
+                                                        </td>
+                                                        <td class="currency"><?= $item->currency ?></td>
+                                                        <td class="rfpAmount" id="rfpAmount">
+                                                            <?php if($item->isNew == '1'): ?>  
+                                                                <?= number_format($item->actual_amount, 2); ?>
+                                                            <?php else: ?>  
+                                                                <?= number_format($item->rfp_amount, 2) ?>
+                                                            <?php endif ?>
+                                                        </td>
+                                                        <td class="text-end">
+                                                            <?php if($item->isNew == '1'): ?>  
+                                                                <input type="text" class="form-control form-control-sm actualAmount" id="actualAmount" name="actualAmount" value="<?= $item->actual_amount; ?>">
+                                                            <?php else: ?> 
+                                                                <?php if($item->hasBreakdown == '1'): ?>
+                                                                    <input type="text" class="form-control form-control-sm actualAmount" id="actualAmount" name="actualAmount" value="<?= $item->actual_amount; ?>" disabled>
+                                                                    <button class="btn btn-sm text-primary multiple-btn" data-bs-toggle="modal" data-bs-target="#multipleEntryModal" data-item="<?= $item->id ?>">Cost Breakdown</button>
+                                                                <?php else: ?>
+                                                                    <input type="text" class="form-control form-control-sm actualAmount" id="actualAmount" name="actualAmount" value="<?= $item->actual_amount; ?>" required>
+                                                                    <button class="btn btn-sm text-primary multiple-btn" data-bs-toggle="modal" data-bs-target="#multipleEntryModal" data-item="<?= $item->id ?>">Cost Breakdown</button>
+                                                                <?php endif ?>
+                                                            <?php endif ?>
+                                                        </td>
+                                                        <td class="variance" id="<?= ($this->session->userdata('user_type') == 5 ? 'variance' : '') ?>">
+                                                            <?= number_format($item->variance, 2) ?>
+                                                        </td>
+                                                        <td class="col-1 text-center">
                                                             <button type="button" class="btn text-primary" data-bs-toggle="modal" data-bs-target="#showItemRemarksModal" id="showItemRemarks" data-item="<?= $item->id ?>">
                                                                 <i class="fa-solid fa-message"></i>
                                                             </button>
                                                         </td>
-                                                        <td class="docRef text-center">
-                                                            <?= !empty($item->doc_ref) ? '<a href="' . $item->doc_ref . '" target="_blank"><span class="badge bg-primary">open file</span></a>' : '<span class="badge bg-danger">not provided</span>' ?>
+                                                        <td class="col-1 docRef text-center">
+                                                            <button class="btn btn-sm" type="button" id="uploadButton">
+                                                                <i class="fa-solid fa-upload"></i>
+                                                            </button>
                                                         </td>
-                                                        <td class="text-center validate">
-                                                            <?php
-                                                                // Define the status-to-badge mapping
-                                                                $status_to_class = [
-                                                                    '0' => 'bg-secondary', // Unliquidated
-                                                                    '1' => 'bg-dark', // Liquidated
-                                                                    '2' => 'bg-primary', // OK To Pay
-                                                                    '3' => 'bg-info', // Validated
-                                                                    '4' => 'bg-success', // Pay To Agent
-                                                                    '5' => 'bg-danger', // Return To AP
-                                                                    '6' => 'bg-warning', // Return To AP
-                                                                    '7' => 'bg-light text-dark', // Return To Agent by AP
-                                                                    '8' => 'bg-danger', // Amend
-                                                                ];
-
-                                                                // Determine the badge class based on the item's status
-                                                                $badge_class = isset($status_to_class[$item->status]) ? $status_to_class[$item->status] : '';
-                                                            ?>
-                                                            <span class="badge <?= $badge_class; ?>">
-                                                                <?= htmlspecialchars($item->desc_status); ?>
-                                                            </span>
+                                                        <td class="col-1 text-center validate">
+                                                            <input type="checkbox" class="form-check-input rowCheckbox">
+                                                            <input type="hidden" name="item_id" value="<?php echo $item->id; ?>">
                                                         </td>
-                                                        
                                                     </tr>
                                                 <?php endif; ?>
                                             <?php endforeach; ?>
@@ -400,6 +446,9 @@
                                     </table>
                                 </div>
                             </div>
+                        </div>
+                        <div class="d-flex justify-content-end">
+                            <button type="button" class="btn btn-primary" id="submitAmended" >Submit</button>
                         </div>
                     </div>
                 </div>
@@ -579,6 +628,7 @@
                 paging: true,
                 searching: true,
                 pageLength: 10,
+                order: []
             });
             $('#liquidatedTableAg').DataTable({
                 paging: true,
@@ -595,6 +645,121 @@
                 searching: true,
                 pageLength: 10,
             });
+        });
+    </script>
+    <script>
+        $(document).ready(function() {
+            let baseUrl = 'http://192.168.192.251:3000';
+            $('#submitLiquidation').on('click', function() {
+                Swal.fire({
+                    title: 'Submit Liquidation Item/s',
+                    text: 'Are you sure you want to submit item/s for liquidation?',
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonText: 'Yes',
+                    cancelButtonText: 'Cancel'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        Swal.fire({
+                            title: "Item/s Submitted!",
+                            icon: "success"
+                        }).then(() => {
+                            const checkedRows = $("#pendingTableAg .rowCheckbox:checked").closest("tr");
+
+                            let dataToSubmit = [];
+
+                            if (checkedRows.length > 0) {
+                                checkedRows.each(function () {
+                                    const actualAmount = $(this).find("td:nth-child(5) input").val();
+                                    const variance = $(this).find(".variance").text();
+                                    const item_id = $(this).find("input[name='item_id']").val();
+
+                                    dataToSubmit.push({
+                                        actualAmount: actualAmount,
+                                        variance: variance,
+                                        item_id: item_id
+                                    });
+                                });
+
+                                $.ajax({
+                                    url: baseUrl + '/vesselitem/submit_for_validation', // Ensure baseUrl is defined
+                                    method: 'POST',
+                                    data: {
+                                        items: dataToSubmit // Sending all items in a single request
+                                    },
+                                    success: function(response) {
+                                        console.log(response);
+                                        location.reload();
+                                    },
+                                    error: function(error) {
+                                        Swal.fire({
+                                            title: 'Submission Error',
+                                            text: 'An error occurred while submitting the items. Please try again later.',
+                                            icon: 'error',
+                                            confirmButtonText: 'OK'
+                                        });
+                                    }
+                                });
+                            }
+                        });
+                    }
+                });
+            });
+            $('#submitAmended').on('click', function() {
+                Swal.fire({
+                    title: 'Submit Item/s for Amendment',
+                    text: 'Are you sure you want to submit item/s for amendment?',
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonText: 'Yes',
+                    cancelButtonText: 'Cancel'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        Swal.fire({
+                            title: "Item/s Submitted!",
+                            icon: "success"
+                        }).then(() => {
+                            const checkedRows = $("#forAmendmentTableAg .rowCheckbox:checked").closest("tr");
+
+                            let dataToSubmit = [];
+
+                            if (checkedRows.length > 0) {
+                                checkedRows.each(function () {
+                                    const actualAmount = $(this).find("td:nth-child(5) input").val();
+                                    const variance = $(this).find(".variance").text();
+                                    const item_id = $(this).find("input[name='item_id']").val();
+
+                                    dataToSubmit.push({
+                                        actualAmount: actualAmount,
+                                        variance: variance,
+                                        item_id: item_id
+                                    });
+                                });
+
+                                $.ajax({
+                                    url: baseUrl + '/vesselitem/submit_for_amendment', // Ensure baseUrl is defined
+                                    method: 'POST',
+                                    data: {
+                                        items: dataToSubmit // Sending all items in a single request
+                                    },
+                                    success: function(response) {
+                                        console.log(response);
+                                        location.reload();
+                                    },
+                                    error: function(error) {
+                                        Swal.fire({
+                                            title: 'Submission Error',
+                                            text: 'An error occurred while submitting the items. Please try again later.',
+                                            icon: 'error',
+                                            confirmButtonText: 'OK'
+                                        });
+                                    }
+                                });
+                            }
+                        });
+                    }
+                });
+            })
         });
 
     </script>

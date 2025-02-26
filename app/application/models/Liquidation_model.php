@@ -25,14 +25,6 @@ class Liquidation_model extends CI_Model {
         return $query->result();
     }
 
-    public function get_revalidated_liquidations() {
-        $sql = "SELECT *
-                FROM tbl_agent_liquidation_items
-                WHERE STATUS = 4";
-        $query = $this->db->query($sql);
-        return $query->result();
-    }
-
     public function get_agent_liquidations($user_id) {
         $sql = "SELECT * 
                 FROM tbl_agent_liquidation l
@@ -63,7 +55,11 @@ class Liquidation_model extends CI_Model {
         return null;
     }
     public function get_vessel_items($transno) {
-        $sql = "SELECT * FROM tbl_agent_liquidation_items
+        $sql = "SELECT
+                    i.*,
+                    s.`status` AS desc_status
+                FROM tbl_agent_liquidation_items AS i
+                INNER JOIN tbl_liq_item_status AS s ON i.`status` = s.id
                 WHERE transno = ?
                 ORDER BY id ASC";
         $query = $this->db->query($sql, array($transno));

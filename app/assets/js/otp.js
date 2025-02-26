@@ -1,13 +1,10 @@
 $('document').ready(function() {
     let baseUrl = 'http://192.168.192.251:3000'
-    let row;
     $('.rowCheckbox').on('change', function() {
         const checkedRows = $("#dataTableForValidationT .rowCheckbox:checked").closest("tr");
-        alert(checkedRows.length);
     });
     $('#otpBtn').on('click', function() {
         const checkedRows = $("#dataTableForValidationT .rowCheckbox:checked").closest("tr");
-        alert(checkedRows.length);
         if (checkedRows.length > 0) {
             Swal.fire({
                 title: 'Submit Validation Item/s',

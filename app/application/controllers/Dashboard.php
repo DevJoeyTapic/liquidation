@@ -40,7 +40,6 @@ class Dashboard extends CI_Controller {
             case 5: // TAD
                 $data['unliquidated_vessels'] = $this->Dashboard_model->get_unliquidated();
                 $data['pending_otp'] = $this->Dashboard_model->get_pendingOTP();
-                $data['for_amendment'] = $this->Dashboard_model->get_forAmendmentT();
                 $data['completed'] = $this->Dashboard_model->get_completed();
                 $this->load->view('dashboard', $data);
                 break;

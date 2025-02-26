@@ -4,82 +4,53 @@
         <?php require_once(APPPATH . 'views/layout/header.php'); ?>
 
         <div class="main-container bg-gradient">
-            <div class="search-result cont flex-column" style="display: <?= ($this->session->userdata('user_type') == 2) ? 'none' : 'none'; ?>">
-                <div class="data-table">
-                    <!-- table view for supercargo agent -->
-                    <div class="table-responsive" style="display: <?= ($this->session->userdata('user_type') == 2) ? 'block' : 'none'; ?>">
-                        <table class="table table-hover display" id="dataTable1">
-                            <thead>
-                                <tr>
-                                    <th>Vessel</th>
-                                    <th>Voyage</th>
-                                    <th>Port</th>
-                                    <th>Arrival</th>
-                                    <th>Departure</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <?php foreach ($agent_liquidations as $liquidation): ?>
-                                    <?php if ($liquidation->user_id == $this->session->userdata('user_id') && $liquidation->status !== '2'): ?>
-                                        <tr onclick="window.location.href='<?= site_url('vesselitem/view/' . $liquidation->id); ?>'"> 
-                                            <td><?= $liquidation->vessel_name; ?></td>
-                                            <td><?= $liquidation->voyno; ?></td>
-                                            <td><?= $liquidation->port; ?></td>
-                                            <td><?= $liquidation->eta; ?></td>
-                                            <td><?= $liquidation->etd; ?></td>
-                                        </tr>
-                                    <?php endif; ?>
-                                <?php endforeach; ?>
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-            </div> 
-
             <div class="col-11 mx-auto" style="display: <?= ($this->session->userdata('user_type') == 2 || $this->session->userdata('user_type') == 3 || $this->session->userdata('user_type') == 5) ? 'block' : 'none'; ?>">
-            <?php
-                function countLiquidations($liquidations, $statusArray) {
-                    $count = 0;
-                    if (!empty($liquidations)) {
-                        foreach ($liquidations as $liquidation) {
-                            if (in_array($liquidation->item_status, $statusArray)) {
-                                $count++;
+                <?php
+                    function countLiquidations($liquidations, $statusArray) {
+                        $count = 0;
+                        if (!empty($liquidations)) {
+                            foreach ($liquidations as $liquidation) {
+                                if (in_array($liquidation->item_status, $statusArray)) {
+                                    $count++;
+                                }
                             }
                         }
+                        return $count;
                     }
-                    return $count;
-                }
 
-                // For User Type 2 (Agent)
-                if ($this->session->userdata('user_type') == 2):
-                    // Counters for Agent Liquidations
-                    $countUnliquidatedAg = countLiquidations($unliquidated_vessels, [0]); // Unliquidated
-                    $countLiquidationAg = countLiquidations($pending_validation, [1, 2, 3, 5, 6, 7]); // For Validation
-                    $countCompletedAg = countLiquidations($completed, [4]); // Completed
-                    $countRevalidatedAg = countLiquidations($for_amendment, [7, 8]); // For Revalidation
-                endif; 
+                    // For User Type 2 (Agent)
+                    if ($this->session->userdata('user_type') == 2):
+                        // Counters for Agent Liquidations
+                        $countUnliquidatedAg = countLiquidations($unliquidated_vessels, [0]); // Unliquidated
+                        $countLiquidationAg = countLiquidations($pending_validation, [1, 2, 3, 5, 6, 7]); // For Validation
+                        $countCompletedAg = countLiquidations($completed, [4]); // Completed
+                        $countRevalidatedAg = countLiquidations($for_amendment, [7, 8]); // For Revalidation
+                    endif; 
 
-                if($this->session->userdata('user_type') == 3 || $this->session->userdata('user_type') == 5):
-                    $countUnliquidated = countLiquidations($unliquidated_vessels, [0]);
-                    $countCompleted = countLiquidations($completed, [4]);
-                endif;
+                    if($this->session->userdata('user_type') == 3 || $this->session->userdata('user_type') == 5):
+                        $countUnliquidated = countLiquidations($unliquidated_vessels, [0]);
+                        $countCompleted = countLiquidations($completed, [4]);
+                    endif;
 
-                // For User Type 3 (Accounting)
-                if ($this->session->userdata('user_type') == 3):
-                    // Counters for Accounting Liquidations
-                    $countLiquidationA = countLiquidations($pending_validation, [2]); // For Validation
-                    $countForAMValidationA = countLiquidations($pending_validation, [3]); // For AM Validation
-                    $countRevalidatedA = countLiquidations($for_amendment, [5, 7, 8]); // For Revalidation
-                endif;
+                    // For User Type 3 (Accounting)
+                    if ($this->session->userdata('user_type') == 3):
+                        // Counters for Accounting Liquidations
+                        $countLiquidationA = countLiquidations($pending_validation, [2]); // For Validation
+                        $countForAMValidationA = countLiquidations($pending_validation, [3]); // For AM Validation
+                        $countRevalidatedA = countLiquidations($for_amendment, [5, 7, 8]); // For Revalidation
+                    endif;
+                    if ($this->session->userdata('user_type') == 4):
+                        // Counters for AM Validation
+                        
+                    endif;
 
-                // For User Type 5 (TAD)
-                if ($this->session->userdata('user_type') == 5):
-                    // Counters for TAD Liquidations
-                    $countLiquidationT = countLiquidations($pending_otp, [1]); // For Validation
-                    $countForAPARAMValidationT = countLiquidations($pending_otp, [2,3,4]); // For AP/AR/AM Validation
-                    $countRevalidatedT = countLiquidations($for_amendment, [5, 6, 7, 8]); // For Revalidation
-                endif;
-            ?>
+                    // For User Type 5 (TAD)
+                    if ($this->session->userdata('user_type') == 5):
+                        // Counters for TAD Liquidations
+                        $countLiquidationT = countLiquidations($pending_otp, [1]); // For Validation
+                        $countForAPARAMValidationT = countLiquidations($pending_otp, [2,3,4]); // For AP/AR/AM Validation
+                    endif;
+                ?>
                 <!-- Pending Liquidation (Unliquidated) -->
                 <div class="mt-3">
                     <div class="accordion accordion-flush" id="unliquidated">
@@ -229,7 +200,7 @@
                                 <div class="accordion-body">
                                     <div class="data-table">
                                         <div class="table-responsive" style="display: <?= ($this->session->userdata('user_type') == 2 || $this->session->userdata('user_type') == 3 || $this->session->userdata('user_type') == 5) ? 'block' : 'none'; ?>">
-                                            <table class="table table-hover " id="dataTable8">
+                                            <table class="table table-hover " id="forValidationTable">
                                                 <thead>
                                                     <tr>
                                                         <th>Vessel</th>
@@ -399,7 +370,7 @@
                                                     <?php if($this->session->userdata('user_type') == 3): ?>
                                                         <?php if (!empty($pending_validation)): ?>
                                                             <?php foreach ($pending_validation as $liquidation): ?>
-                                                                <?php if($liquidation->item_status == 3): ?>
+                                                                <?php if($liquidation->item_status == 3 || $liquidation->status == 1): ?>
                                                                     <tr onclick="window.location.href='<?= site_url('agentvessel/view/' . $liquidation->id); ?>'"> 
                                                                         <td><?= $liquidation->vessel_name; ?></td>
                                                                         <td><?= $liquidation->voyno; ?></td>
@@ -783,6 +754,11 @@
         }
         $(document).ready(function() {
             $('#unliquidatedTable').DataTable({
+                paging: true,
+                searching: true,
+                pageLength: 10,
+            });
+            $('#forValidationTable').DataTable({
                 paging: true,
                 searching: true,
                 pageLength: 10,
