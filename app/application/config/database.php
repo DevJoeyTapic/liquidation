@@ -7,8 +7,13 @@ $query_builder = TRUE;
 $db['default'] = array(
 	'dsn'	=> '',
 	'hostname' => '192.168.197.70', 
+<<<<<<< HEAD
 	'username' => 'jessadj', 
 	'password' => '@w@ll3m_m1s', 
+=======
+	'username' => 'root', 
+	'password' => 'rootpassword', 
+>>>>>>> d32164c39d5d2888847dd400f1d18200b3b10daf
 	'database' => 'liquidation', 
 	'dbdriver' => 'mysqli',
 	'dbprefix' => '',

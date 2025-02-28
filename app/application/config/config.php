@@ -25,13 +25,15 @@ $config['error_views_path'] = '';
 $config['cache_path'] = '';
 $config['cache_query_string'] = FALSE;
 $config['encryption_key'] = '';
-$config['sess_driver'] = 'files';
+// Session save to database
+$config['sess_driver'] = 'database';  // set to use database
 $config['sess_cookie_name'] = 'ci_session';
 $config['sess_expiration'] = 7200;
-$config['sess_save_path'] =  APPPATH . 'cache/session/';
+$config['sess_save_path'] =  'ci_sessions'; // table in database
 $config['sess_match_ip'] = FALSE;
 $config['sess_time_to_update'] = 300;
 $config['sess_regenerate_destroy'] = FALSE;
+//
 $config['cookie_prefix']	= '';
 $config['cookie_domain']	= '';
 $config['cookie_path']		= '/';
@@ -49,3 +51,6 @@ $config['compress_output'] = FALSE;
 $config['time_reference'] = 'local';
 $config['rewrite_short_tags'] = FALSE;
 $config['proxy_ips'] = '';
+// Garbage Collection Settings (Default: 1% chance per request)
+$config['sess_gc_probability'] = 1;
+$config['sess_gc_divisor'] = 100;
