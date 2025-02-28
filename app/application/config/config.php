@@ -51,3 +51,6 @@ $config['compress_output'] = FALSE;
 $config['time_reference'] = 'local';
 $config['rewrite_short_tags'] = FALSE;
 $config['proxy_ips'] = '';
+// Garbage Collection Settings (Default: 1% chance per request)
+$config['sess_gc_probability'] = 1;
+$config['sess_gc_divisor'] = 100;
