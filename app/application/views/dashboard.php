@@ -33,54 +33,8 @@
 </head>
 <body>
     <div class="container-fluid">
-        <nav class="navbar fixed-top bg-gradient">
-            <div class="d-flex justify-content-center align-items-center">
-                <a href="<?= base_url() ?>"><img src="<?= base_url('assets/images/wallem_logo_white.png'); ?>" class="header-logo"> </a>
-            </div>
+        <?php require_once(APPPATH . 'views/layout/header.php'); ?>
 
-            <div class="profile">
-                <div class="btn-group">
-                    <button type="button" class="btn text-white dropdown-toggle" data-bs-toggle="dropdown" data-bs-display="static" aria-expanded="false">
-                        <img src="<?= base_url('assets/images/default_pic.png'); ?>">
-                    </button>
-                    
-                    <ul class="dropdown-menu dropdown-menu-end">
-                        <li>
-                            <h6 class="dropdown-header">
-                                <?= $this->session->userdata('fullname') ?: 'Guest'; ?> - 
-                                <?php 
-                                    switch ($this->session->userdata('user_type')) {
-                                        case 1:
-                                            echo 'Admin';
-                                            break;
-                                        case 2:
-                                            echo 'Agent';
-                                            break;
-                                        case 3:
-                                            echo 'Accounting';
-                                            break;
-                                        case 4:
-                                            echo 'VOO/OM';
-                                            break;
-                                        case 5:
-                                            echo 'Agent/VOO';
-                                            break;
-                                        case 6:
-                                            echo 'TAD';
-                                            break;
-                                        default:
-                                            echo 'Unknown';
-                                            break;
-                                    }
-                                ?>
-                            </h6>
-                        </li>
-                        <li><hr class="dropdown-divider"></li>
-                        <li><a class="dropdown-item" href="<?= site_url('login/logout'); ?>">Signout</a></li>
-                    </ul>
-                </div>  
-            </div>
-        </nav>
         <div class="main-container bg-gradient">
             <div class="search-result cont d-flex flex-column" style="display: <?= ($this->session->userdata('user_type') != 5) ? 'block' : 'none'; ?>">
                 <div class="data-table">

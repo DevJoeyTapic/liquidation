@@ -34,31 +34,43 @@
     <script src="<?= base_url('assets/js/main.js'); ?>"></script>
 
 
+    <style>
+        #filePreview {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            max-height: 450px;
+            padding: 10px;
+            text-align: center; /* Optional: Center text inside if needed */
+        }
 
+        #filePreview img {
+            max-width: 100%;
+            max-height: 450px;
+            border: 1px solid #ddd;
+            padding: 10px;
+        }
+
+        #dropZone {
+            border: 2px dashed #007bff;
+            padding: 40px;
+            text-align: center;
+            background-color: #f8f9fa;
+            position: relative;
+        }
+        #dropZone.dragover {
+            background-color: #e0f7ff;
+        }
+        #fileUpload {
+            display: none;
+        }
+    </style>
 
 
 </head>
 <body>
     <div class="container-fluid">
-        <nav class="navbar fixed-top bg-gradient">
-            <div class="d-flex justify-content-center align-items-center">
-                <a href="<?= base_url() ?>"><img src="<?= base_url('assets/images/wallem_logo_white.png'); ?>" class="header-logo"> </a>
-            </div>
-
-            <div class="profile">
-                <div class="btn-group">
-                    <button type="button" class="btn text-white dropdown-toggle" data-bs-toggle="dropdown" data-bs-display="static" aria-expanded="false">
-                        <img src="<?= base_url('assets/images/default_pic.png'); ?>">
-                    </button>
-                    
-                    <ul class="dropdown-menu dropdown-menu-end">
-                        <li><h6 class="dropdown-header"><?= $this->session->userdata('fullname') ?: 'Guest'; ?> - <?= $this->session->userdata('user_type') == 2 ? 'Supercargo Agent' : ($this->session->userdata('user_type') == 3 ? 'Accounting' : 'Unknown'); ?></h6></li>
-                        <li><hr class="dropdown-divider"></li>
-                        <li><a class="dropdown-item" href="<?= site_url('login/logout'); ?>">Signout</a></li>
-                    </ul>
-                </div>  
-            </div>
-        </nav>
+    <?php require_once(APPPATH . 'views/layout/header.php'); ?>>
 
         <div class="main-container bg-gradient">
             <div class="cont mb-3">
@@ -192,60 +204,65 @@
                     <div class="nav nav-tabs liquidation-tabs" id="nav-tab" role="tablist">
                         <button class="nav-link active" id="pendingTab" data-bs-toggle="tab" data-bs-target="#pending" type="button" role="tab" aria-controls="pending" aria-selected="true"><i class="fa-regular fa-clock pe-2"></i>Pending Item(s) Liquidation</button>    
                         <button class="nav-link" id="forValidationTab" data-bs-toggle="tab" data-bs-target="#forValidation" type="button" role="tab" aria-controls="forValidation" aria-selected="false"><i class="fa-solid fa-user-clock pe-2"></i>Liquidated Item(s) for Validation</button>
-                        <button class="nav-link" id="validatedTab" data-bs-toggle="tab" data-bs-target="#validated" type="button" role="tab" aria-controls="validated" aria-selected="false"><i class="fa-solid fa-circle-check pe-2"></i>Liquidated Item(s)</button>            
                     </div>
                 </nav>
                 <div class="tab-content" id="nav-tabContent">
                     <div class="tab-pane fade show active" id="pending" role="tabpanel" aria-labelledby="pendingTab">
                         <div class="row m-2"> 
                             <div class="data-table">
-                                <div class="d-flex justify-content-end mb-2">
+                                <div class="d-flex justify-content-end mb-2 gap-2">
                                     <button class="btn btn-success btn-sm" data-bs-toggle="modal" data-bs-target="#itemSubmissionModal">
                                         <i class="fa-solid fa-plus"></i>
                                         Add Item
+                                    </button>
+                                    <button type="button" class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#uploadModal">
+                                        <i class="fa-solid fa-upload"></i>    
+                                        upload liquidation documents
                                     </button>
                                 </div>
                                 <div class="table-reponsive">
                                     <table class="table table-hover display" id="dataTable2">
                                         <thead>
                                             <tr>
-                                                <th class="col-3">Items</th>
-                                                <th class="col">Description</th>
+                                                <th class="">Items</th>
+                                                <th class="">Description</th>
                                                 <th class="col-1 text-center">RFP No.</th>
-                                                <th class="col-2">RFP Amount</th>
-                                                <th class="col-2">Actual Amount</th>
-                                                <th class="col-2">Variance</th>
-                                                <th class="col-2">Remarks</th>
-                                                <th class="col-2 text-center">Document Reference</th>
-                                                <th class="col">Validate</th>
+                                                <th>Currency</th>
+                                                <th class="">RFP Amount</th>
+                                                <th class="">Actual Amount</th>
+                                                <th class="">Variance</th>
+                                                <th class="col-1 text-center">Remarks</th>
+                                                <th class="col-1 text-center">Document</th>
+                                                <th class="col-1 text-center">Validate</th>
                                             </tr>
                                         </thead>
                                         <tbody>
                                             <?php foreach ($liquidation_item as $item): ?>
-                                                <?php if ($item->user_id == $this->session->userdata('user_id') && $item->status == '0'): ?>
+                                                <?php if ($item->user_id == $this->session->userdata('user_id') && $item->status == '1'): ?>
                                                     <tr>
-                                                        <td class="col-3" id="item">
+                                                        <td class="" id="item">
                                                             <?= $item->item; ?>
                                                             <?php if($item->controlled == 0): ?>
                                                                 <span class="badge rounded-pill text-bg-warning">Controlled</span>
                                                             <?php endif; ?>
                                                         </td>
                                                         <td class="col" id="description"></td>
-                                                        <td class="col-1 text-center" id="rfpno">
+                                                        <td class="text-center col-1" id="rfpno">
                                                             <?php if($item->isNew == '1'): ?>  
                                                                 <span class="badge text-bg-primary">NEW ITEM</span>
                                                             <?php else: ?>  
                                                                 <?= $item->rfp_no; ?>
                                                             <?php endif ?>
                                                         </td>
-                                                        <td class="col-2 rfpAmount" id="rfpAmount">
+                                                        <td><?= $item->currency ?></td>
+                                                        <td class="rfpAmount" id="rfpAmount">
                                                             <?php if($item->isNew == '1'): ?>  
                                                                 <span class="badge text-bg-primary">NEW ITEM</span>
                                                             <?php else: ?>  
                                                                 <?= number_format($item->rfp_amount, 2); ?>
                                                             <?php endif ?>
                                                         </td>
-                                                        <td class="col-2 text-end">
+                                                        <td class="text-end">
                                                             <?php if($item->isNew == '1'): ?>  
                                                                 <input type="text" class="form-control form-control-sm actualAmount" id="actualAmount" name="actualAmount" value="<?= $item->actual_amount; ?>" disabled>
                                                             <?php else: ?>  
@@ -256,17 +273,21 @@
                                                         <td class="variance" id="variance">
                                                             <?php if($item->isNew == '1'): ?>  
                                                                 <span class="badge text-bg-primary">NEW ITEM</span>
+                                                            <?php else: ?>
+                                                                
                                                             <?php endif ?>
                                                         </td>
-                                                        <td class="col-2 ">
-                                                            <?php if($item->isNew == '1'): ?>  
-                                                                <textarea class="form-control form-control-sm remarks" rows="1" style="max-height: 150px" disabled><?= $item->remarks; ?></textarea></td>
-                                                            <?php else: ?>  
-                                                                <textarea class="form-control form-control-sm remarks" rows="1" style="max-height: 150px"><?= $item->remarks; ?></textarea></td>
-                                                            <?php endif ?>
-
-                                                        <td class="docRef"><input type="file" class="form-control form-control-sm" multiple></td>
-                                                        <td class="text-center validate">
+                                                        <td class="col-1 text-center">
+                                                            <button type="button" class="btn text-primary" data-bs-toggle="modal" data-bs-target="#showItemRemarksModal" data-item="<?= $item->item ?>">
+                                                                <i class="fa-solid fa-message"></i>
+                                                            </button>
+                                                        </td>
+                                                        <td class="col-1 docRef text-center">
+                                                            <button class="btn btn-sm" type="button" id="uploadButton">
+                                                                <i class="fa-solid fa-upload"></i>
+                                                            </button>
+                                                        </td>
+                                                        <td class="col-1 text-center validate">
                                                             <input type="checkbox" class="form-check-input rowCheckbox">
                                                             <input type="hidden" name="item_id" value="<?php echo $item->id; ?>">
                                                         </td>
@@ -292,76 +313,26 @@
                                                 <th class="col-3">Items</th>
                                                 <th>Description</th>
                                                 <th class="col-1 text-center">RFP No.</th>
+                                                <th><?= $item->currency ?></th>
                                                 <th class="col-2">RFP Amount</th>
                                                 <th class="col-2">Actual Amount</th>
                                                 <th class="col-2">Variance</th>
                                                 <th class="col-2">Remarks</th>
-                                                <th class="col-2 text-center">Document Reference</th>
-                                                <th>Action</th>
+                                                <th class="col-2 text-center">Document</th>
+                                                <th>Status</th>
                                             </tr>
                                         </thead>
                                         <tbody>
                                             <?php foreach ($liquidation_item as $item): ?>
-                                                <?php if ($item->user_id == $this->session->userdata('user_id') && $item->status == '1'): ?>
+                                                <?php if ($item->user_id == $this->session->userdata('user_id') && $item->status == '2'): ?>
+                                                    <script>
+                                                        
+                                                    </script>
                                                     <tr>
                                                         <td class="col-3" id="item"><?= $item->item; ?></td>
                                                         <td class="col" id="description"></td>
                                                         <td class="col-1 text-center" id="rfpno"><?= $item->rfp_no; ?></td>
-                                                        <td class="col-2 rfpAmount" id="rfpAmount"><?= number_format($item->rfp_amount, 2); ?></td>
-                                                        <td class="col-2"><?= $item->actual_amount ?></td>
-                                                        <td class="variance"><?= $item->variance ?></td>
-                                                        <td class="col-2 "><?= $item->remarks ?></td>
-                                                        <td class="docRef text-center">
-                                                            <?= !empty($item->doc_ref) ? '<a href="' . $item->doc_ref . '" target="_blank"><span class="badge bg-primary">open file</span></a>' : '<span class="badge bg-danger">not provided</span>' ?>
-                                                        </td>
-                                                        <td class="text-center validate">
-                                                            <input type="checkbox" class="form-check-input rowCheckbox">
-                                                            <input type="hidden" name="item_id" value="<?php echo $item->id; ?>">
-                                                        </td>
-                                                    </tr>
-                                                <?php endif; ?>
-                                            <?php endforeach; ?>
-                                            <!-- see main.js #submitLiquidation click -->
-                                        </tbody>
-                                    </table>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="d-flex justify-content-end">
-                            <button type="button" class="btn btn-sm btn-danger me-2" id="removeBtn">Remove from Validation</button>
-                            <!-- <button type="button" class="btn btn-sm btn-primary" id="forValidationBtn">Submit for Validation</button> -->
-                        </div>
-                    </div>
-                    <div class="tab-pane fade" id="validated" role="tabpanel" aria-labelledby="validatedTab">
-                        <div class="row m-2"> 
-                            <div class="data-table">
-                                <div class="d-flex justify-content-end">
-                                    
-                                </div>
-                                <div class="table-reponsive">
-                                    <table class="table table-hover display" id="dataTable4">
-                                    <thead>
-                                        
-                                                <tr>
-                                                    <th class="col-3">Items</th>
-                                                    <th>Description</th>
-                                                    <th class="col-1 text-center">RFP No.</th>
-                                                    <th class="col-2">RFP Amount</th>
-                                                    <th class="col-2">Actual Amount</th>
-                                                    <th class="col-2">Variance</th>
-                                                    <th class="col-2">Remarks</th>
-                                                    <th class="col-2 text-center">Document Reference</th>
-                                                    <th>Status</th>
-                                                </tr>
-                                           
-                                        </thead>
-                                        <tbody>
-                                            <?php foreach ($liquidation_item as $item): ?>
-                                                <?php if ($item->user_id == $this->session->userdata('user_id') && ($item->status == '2')): ?>
-                                                    <tr>
-                                                        <td class="col-3" id="item"><?= $item->item; ?></td>
-                                                        <td class="col" id="description"></td>
-                                                        <td class="col-1 text-center" id="rfpno"><?= $item->rfp_no; ?></td>
+                                                        <td><?= $item->currency ?></td>
                                                         <td class="col-2 rfpAmount" id="rfpAmount"><?= number_format($item->rfp_amount, 2); ?></td>
                                                         <td class="col-2"><?= $item->actual_amount ?></td>
                                                         <td class="variance"><?= $item->variance ?></td>
@@ -371,15 +342,18 @@
                                                         </td>
                                                         <td class="text-center validate small"><?= ($item->status == '1') ? 'Pending VOO/OM' : (($item->status == '2') ? 'Pending Accounting' : 'Status Unknown') ?>
                                                         </td>
+                                                        
                                                     </tr>
                                                 <?php endif; ?>
                                             <?php endforeach; ?>
+                                            <!-- see main.js #submitLiquidation click -->
                                         </tbody>
                                     </table>
                                 </div>
                             </div>
                         </div>
                     </div>
+
                 </div>
             </div>
 		</div>
@@ -514,40 +488,11 @@
             </div>
         </div>
     <?php endif; ?>
-  <!-- Modals -->
-  <div class="modal fade" id="changePasswordModal" tabindex="-1" aria-labelledby="changePasswordModalLabel" aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h1 class="modal-title fs-5" id="changePasswordModalLabel">Change Your Password</h1>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                    <form id="changePasswordForm" action="<?= site_url('login/change_password'); ?>" method="post">
-                        <div class="mb-3">
-                            <label for="currentUserPassword" class="form-label">Current Password</label>
-                            <input type="password" class="form-control" id="old_password" required>
-                        </div>
-                        <div class="mb-3">
-                            <label for="newUserPassword" class="form-label">New Password</label>
-                            <input type="password" class="form-control" id="new_password" required>
-                        </div>
-                        <div class="mb-3">
-                            <label for="confirmUserPassword" class="form-label">Confirm New Password</label>
-                            <input type="password" class="form-control" id="confirm_password" required>
-                        </div>
-                    </form>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-                    <button type="button" class="btn btn-primary">Update Password</button>
-                </div>
-            </div>
-        </div>
-    </div>
+    <!-- Modals -->
 	<div class="modal fade" id="multipleEntryModal" tabindex="-1" aria-labelledby="multipleEntryModalLabel">
 		<div class="modal-dialog">
 			<div class="modal-content">
+
 				<div class="modal-header">
 					<h1 class="modal-title fs-5" id="multipleEntryModalLabel">Multiple Entry</h1>
 					<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
@@ -579,24 +524,6 @@
 				<div class="modal-footer">
 					<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
 					<button type="button" class="btn btn-primary submit" data-bs-dismiss="modal" id="submitBtn">Submit</button>
-				</div>
-			</div>
-		</div>
-	</div>
-
-	<div class="modal fade" id="submissionConfirmationModal" tabindex="-1" aria-labelledby="submissionConfirmationModalLabel" aria-hidden="true">
-		<div class="modal-dialog">
-			<div class="modal-content">
-				<div class="modal-header">
-					<h1 class="modal-title fs-5" id="submissionConfirmationModalLabel">Confirmation</h1>
-					<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-				</div>
-				<div class="modal-body">
-					Are you sure you want to submit this item(s) liquidation for validation?
-				</div>
-				<div class="modal-footer">
-					<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-					<button type="button" class="btn btn-primary" id="confirmSubmit" data-bs-dismiss="modal">Confirm</button>
 				</div>
 			</div>
 		</div>
@@ -640,7 +567,60 @@
 			</div>
 		</div>
 	</div>
-	
+
+    <!-- Modal -->
+    <div class="modal fade" id="showItemRemarksModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+            <div class="modal-header">
+                <h2 class="modal-title fs-5" id="exampleModalLabel">Variance Remarks</h2>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <input type="hidden" id="fullname" value="<?= $this->session->userdata('fullname') ?>">
+                <p class="bold">Remarks: </p>
+                <table class="table table-hover" id="remarksTable">
+                    <tbody>
+                        <!-- item remarks goes here -->
+                        
+                    </tbody>
+                </table>
+                <div class="input-group d-flex justify-content-betwen align-items-center gap-3">
+                    <input type="text" class="form-control" placeholder="Reply" id="newRemarkInput">
+                    <i class="fa-solid fa-paper-plane"></i>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            </div>
+            </div>
+        </div>
+    </div>
+	<div class="modal fade" id="uploadModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-xl">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Upload Files</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <div id="dropZone">
+                        <p>Drag & Drop files or click to choose files</p>
+                        <button class="btn btn-sm btn-primary" id="chooseFilesButton"><i class="fa-solid fa-upload me-2"></i>Choose Files</button>
+                        <input type="file" id="fileUpload" multiple />
+                    </div>
+                    <p class="bold my-3">Uploaded Files: </p>
+                    <ul id="fileNamesList" class="list-group mt-3"></ul>
+                    <div id="filePreview" class="mt-3"></div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
     <script>
         function toggleChat() {
             const chat = document.querySelector('.notes-window');
@@ -650,13 +630,6 @@
             const chat = document.querySelector('.breakdown-window');
             chat.classList.toggle('open');
         }
-        function showTime() {
-            document.getElementById('currentTime').innerHTML = new Date().toUTCString();
-        }
-        showTime();
-        setInterval(function () {
-            showTime();
-        }, 1000);
     </script>
     <script>
        $('#markComplete').on('click', function(event) {
@@ -682,6 +655,52 @@
             });
         });
     </script>
+        <script>
+        // Show Swal when input field loses focus (blur event)
+        document.getElementById("actualAmount").addEventListener("blur", function() {
+            Swal.fire({
+                title: 'Variance Remarks',
+                input: 'text',
+                inputLabel: 'Please provide a valid reason for variance.',
+                inputPlaceholder: 'Type your remarks here...',
+                showCancelButton: true,
+                confirmButtonText: 'Submit',
+                cancelButtonText: 'Cancel',
+                showLoaderOnConfirm: true,
+                preConfirm: (remarks) => {
+                    // Check if remarks are entered (making the input required)
+                    if (!remarks || remarks.trim() === '') {
+                        Swal.showValidationMessage('Remarks are required.');
+                        return false; // Return false to prevent submission
+                    }
+                    return remarks;
+                }
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    const remarks = result.value;
+
+                    // Add the remark to the table
+                    const tableBody = document.getElementById("remarksTable").querySelector("tbody");
+                    const newRow = document.createElement("tr");
+
+                    const remarksCell = document.createElement("td");
+                    remarksCell.textContent = remarks;
+                    newRow.appendChild(remarksCell);
+
+                    tableBody.appendChild(newRow); // Add the new row to the table
+
+                    // Show confirmation message
+                    Swal.fire('Remarks submitted', remarks, 'success');
+                }
+            });
+        });
+    </script>
+    <script>
+
+    </script>
+
+
+    
 		
 </body>
 </html>

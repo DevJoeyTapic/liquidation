@@ -18,33 +18,33 @@ services:
     networks:
       - app_network
 
-  db:
-    image: mysql:8.0
-    container_name: mysql
-    restart: always
-    ports:
-      - "3306:3306" # Expose MySQL port
-    environment:
-      MYSQL_ROOT_PASSWORD: rootpassword
-      MYSQL_DATABASE: liquidation
-      # MYSQL_USER: root
-      MYSQL_PASSWORD: rootpassword
-    volumes:
-      - db_data:/var/lib/mysql
-    networks:
-      - app_network
+  # db:
+  #   image: mysql:8.0
+  #   container_name: mysql
+  #   restart: always
+  #   ports:
+  #     - "3306:3306" # Expose MySQL port
+  #   environment:
+  #     MYSQL_ROOT_PASSWORD: rootpassword
+  #     MYSQL_DATABASE: liquidation
+  #     # MYSQL_USER: root
+  #     MYSQL_PASSWORD: rootpassword
+  #   volumes:
+  #     - db_data:/var/lib/mysql
+  #   networks:
+  #     - app_network
   
-  phpmyadmin:
-    image: phpmyadmin/phpmyadmin
-    container_name: phpmyadmin
-    restart: always
-    ports:
-      - "8081:80"
-    environment:
-      PMA_HOST: db
-      MYSQL_ROOT_PASSWORD: rootpassword
-    networks:
-      - app_network      
+  # phpmyadmin:
+  #   image: phpmyadmin/phpmyadmin
+  #   container_name: phpmyadmin
+  #   restart: always
+  #   ports:
+  #     - "8081:80"
+  #   environment:
+  #     PMA_HOST: db
+  #     MYSQL_ROOT_PASSWORD: rootpassword
+  #   networks:
+  #     - app_network      
 
 volumes:
   db_data:

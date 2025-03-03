@@ -36,25 +36,7 @@
 </head>
 <body>
     <div class="container-fluid">
-        <nav class="navbar fixed-top bg-gradient">
-            <div class="d-flex justify-content-center align-items-center">
-                <a href="<?= base_url() ?>"><img src="<?= base_url('assets/images/wallem_logo_white.png'); ?>" class="header-logo"> </a>
-            </div>
-
-            <div class="profile">
-                <div class="btn-group">
-                    <button type="button" class="btn text-white dropdown-toggle" data-bs-toggle="dropdown" data-bs-display="static" aria-expanded="false">
-                        <img src="<?= base_url('assets/images/default_pic.png'); ?>">
-                    </button>
-                    
-                    <ul class="dropdown-menu dropdown-menu-end">
-                        <li><h6 class="dropdown-header"><?= $this->session->userdata('username') ?: 'Guest'; ?> - <?= $this->session->userdata('user_type') == 2 ? 'Supercargo Agent' : ($this->session->userdata('user_type') == 3 ? 'Accounting' : 'Unknown'); ?></h6></li>
-                        <li><hr class="dropdown-divider"></li>
-                        <li><a class="dropdown-item" href="<?= site_url('login/logout'); ?>">Signout</a></li>
-                    </ul>
-                </div>  
-            </div>
-        </nav>
+        <?php require_once(APPPATH . 'views/layout/header.php'); ?>
         <div class="main-container bg-gradient">
             <div class="cont mb-3">
                 <div class="row p-0">
@@ -124,8 +106,8 @@
                     </div>
                     <nav>
                         <div class="nav nav-tabs liquidation-tabs" id="nav-tab" role="tablist">
-                            <button class="nav-link active" id="pendingTab" data-bs-toggle="tab" data-bs-target="#pending" type="button" role="tab" aria-controls="pending" aria-selected="true"><i class="fa-regular fa-clock pe-2"></i>Pending Item(s) Liquidation</button>    
-                            <button class="nav-link" id="validatedTab" data-bs-toggle="tab" data-bs-target="#validated" type="button" role="tab" aria-controls="validated" aria-selected="false"><i class="fa-solid fa-circle-check pe-2"></i>Validated Item(s) Liquidation</button>            
+                            <button class="nav-link active" id="pendingTab" data-bs-toggle="tab" data-bs-target="#pending" type="button" role="tab" aria-controls="pending" aria-selected="true"><i class="fa-regular fa-clock pe-2"></i>Item(s) for Validation</button>    
+                            <button class="nav-link" id="validatedTab" data-bs-toggle="tab" data-bs-target="#validated" type="button" role="tab" aria-controls="validated" aria-selected="false"><i class="fa-solid fa-circle-check pe-2"></i>Validated Item(s)</button>            
                         </div>
                     </nav>
                     
@@ -138,20 +120,20 @@
                                         <table class="table table-striped table-hover display" id="dataTable6">
                                             <thead>
                                                 <tr>
-                                                    <th class="col-3">Items</th>
-                                                    <th class="col">Description</th>
+                                                    <th class="">Items</th>
+                                                    <th class="">Description</th>
                                                     <th class="col-1 text-center">RFP No.</th>
-                                                    <th class="col-2">RFP Amount</th>
-                                                    <th class="col-2">Actual Amount</th>
-                                                    <th class="col-2">Variance</th>
-                                                    <th class="col-2">Remarks</th>
-                                                    <th class="col-2 text-center">Document Reference</th>
-                                                    <th class="col text-center">Validate</th>
+                                                    <th class="">RFP Amount</th>
+                                                    <th class="">Actual Amount</th>
+                                                    <th class="">Variance</th>
+                                                    <th class="col-1 text-center">Remarks</th>
+                                                    <th class="col-1 text-center">Document</th>
+                                                    <th class="col-1 text-center">Status</th>
                                                 </tr>
                                             </thead>
                                             <tbody>
                                                 <?php foreach ($vessel_items as $item): ?>
-                                                    <?php if ($item->status == 1): ?>
+                                                    <?php if ($item->status == 2): ?>
                                                         <tr>
                                                             <td>
                                                                 <?= $item->item; ?>
@@ -160,14 +142,14 @@
                                                                 <?php endif; ?>
                                                             </td>
                                                             <td></td>
-                                                            <td class="text-center"><?= $item->rfp_no; ?></td>
+                                                            <td class="col-1 text-center"><?= $item->rfp_no; ?></td>
                                                             <td id="debit"><span class="label text-dark"><?= $item->rfp_amount; ?></td>
                                                             <td id="credit"><span class="label text-dark"><?= $item->actual_amount; ?></td>
                                                             <td><?= $item->variance; ?></td>
-                                                            <td><?= $item->remarks ?></td>
+                                                            <td class="col-1 text-center"><?= $item->remarks ?></td>
                                                             <td><a href="https://drive.google.com/drive/folders/1WGxD2F_E9Sv9CiCYYiR2p6xfu9On5Ewt?usp=drive_link">link this to the gdrive folder</a></td>
                                                             <td class="text-center">
-                                                                <input type="checkbox" class="form-check-input rowCheckbox">
+                                                                <?= $item->status ?>
                                                                 <input type="hidden" name="item_id" value="<?php echo $item->id; ?>">
                                                             </td>
                                                         </tr>
@@ -188,7 +170,7 @@
                                                     <th class="col-2">Actual Amount</th>
                                                     <th class="col-2">Variance</th>
                                                     <th class="col-2">Remarks</th>
-                                                    <th class="col-2 text-center">Document Reference</th>
+                                                    <th class="col-2 text-center">Document</th>
                                                     <th class="col text-center">Validate</th>
                                                 </tr>
                                             </thead>
@@ -222,17 +204,18 @@
                                         </table>
                                     </div>
                                 </div> 
-                                        
-                                <div class="row mt-3">
-                                    <div class="col d-flex gap-2 justify-content-end align-items-end">
-                                        <button class="btn btn-success" id="validateAllBtn">
-                                            Check All
-                                        </button>
-                                        <button class="btn btn-primary" id="<?= ($this->session->userdata('user_type') == 3) ? 'confirmValidationA' : 'confirmValidationV'; ?>">
-                                            Confirm
-                                        </button>
+                                <?php if($this->session->userdata('user_type') == '3'): ?>
+                                    <div class="row mt-3">
+                                        <div class="col d-flex gap-2 justify-content-end align-items-end">
+                                            <button class="btn btn-success" id="validateAllBtn">
+                                                Check All
+                                            </button>
+                                            <button class="btn btn-primary" id="<?= ($this->session->userdata('user_type') == 3) ? 'confirmValidationA' : 'confirmValidationV'; ?>">
+                                                Confirm
+                                            </button>
+                                        </div>
                                     </div>
-                                </div>                
+                                <? endif ?>                
                             </div>
                         </div>
                         <div class="tab-pane fade" id="validated" role="tabpanel" aria-labelledby="validatedTab">
@@ -255,13 +238,13 @@
                                                     <th class="col-2">Actual Amount</th>
                                                     <th class="col-2">Variance</th>
                                                     <th class="col-2">Remarks</th>
-                                                    <th class="col-2 text-center">Document Reference</th>
+                                                    <th class="col-2 text-center">Document</th>
                                                     <th class="col text-center">Status</th>
                                                 </tr>
                                             </thead>
                                             <tbody>
                                                 <?php foreach ($vessel_items as $item): ?>
-                                                    <?php if ($item->status == 2): ?>
+                                                    <?php if ($item->status == 3): ?>
                                                         <tr>
                                                             <td>
                                                                 <?= $item->item; ?>
@@ -295,7 +278,7 @@
                                                     <th class="col-2">Actual Amount</th>
                                                     <th class="col-2">Variance</th>
                                                     <th class="col-2">Remarks</th>
-                                                    <th class="col-2 text-center">Document Reference</th>
+                                                    <th class="col-2 text-center">Document</th>
                                                     <th class="col text-center">Status</th>
                                                 </tr>
                                             </thead>
@@ -414,53 +397,51 @@
 
 
     </div>
-    <?php if($this->session->userdata('user_type') == 3): ?>
-        <button onclick="toggleBreakdown()" class="breakdown-toggle-btn btn btn-warning rounded-circle">
-            <i class="fa-solid fa-money-bill-transfer"></i>
-            <!-- <span class="position-absolute start-100 translate-middle p-2 bg-danger border border-light rounded-circle">
-                <span class="visually-hidden">New alerts</span>
-            </span> -->
-        </button>
-        <div class="breakdown-window">
-            <div class="breakdown-header text-white p-3 text-center">
-                Credit Breakdown
-            </div>
-            <div class="breakdown-content p-3">                        
-                <div class="d-flex justify-content-between align-items-end">
-                    <h4><strong>Credit Breakdown:</strong></h4>
-                    <p class="text-danger small"><strong>CURRENCY:</strong> PHP</p>
-                </div>
-                <table class="table table-warning table-hover">
-                    <caption class="small">As of <span id="currentTime"></span></caption>
-                    <thead>
-                        <tr>
-                            <th class="col-3">Vessel/Voyage</th>
-                            <th class="col-3">Total</th>
-                            <th class="text-end col-6">Credited Amount</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr class="breakdown-row">
-                            <td>Vessel Name V123</td>
-                            <td>20,000.00</td>
-                            <td class="text-end">20,000.00</td>
-                        </tr>
-                        <tr class="breakdown-row">
-                            <td>Vessel Name V123</td>
-                            <td>20,000.00</td>
-                            <td class="text-end">20,000.00</td>
-                        </tr>
-                        <tr class="breakdown-row">
-                            <td>Vessel Name V123</td>
-                            <td>20,000.00</td>
-                            <td class="text-end">20,000.00</td>
-                        </tr>
-                    </tbody>
-                </table>
-                <h4 class="text-end bold">PHP 60,0000.00</h4>
-            </div>
+    <button onclick="toggleBreakdown()" class="breakdown-toggle-btn btn btn-warning rounded-circle">
+        <i class="fa-solid fa-money-bill-transfer"></i>
+        <!-- <span class="position-absolute start-100 translate-middle p-2 bg-danger border border-light rounded-circle">
+            <span class="visually-hidden">New alerts</span>
+        </span> -->
+    </button>
+    <div class="breakdown-window">
+        <div class="breakdown-header text-white p-3 text-center">
+            Credit Breakdown
         </div>
-    <?php endif; ?>
+        <div class="breakdown-content p-3">                        
+            <div class="d-flex justify-content-between align-items-end">
+                <h4><strong>Credit Breakdown:</strong></h4>
+                <p class="text-danger small"><strong>CURRENCY:</strong> PHP</p>
+            </div>
+            <table class="table table-warning table-hover">
+                <caption class="small">As of <span id="currentTime"></span></caption>
+                <thead>
+                    <tr>
+                        <th class="col-3">Vessel/Voyage</th>
+                        <th class="col-3">Total</th>
+                        <th class="text-end col-6">Credited Amount</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr class="breakdown-row">
+                        <td>Vessel Name V123</td>
+                        <td>20,000.00</td>
+                        <td class="text-end">20,000.00</td>
+                    </tr>
+                    <tr class="breakdown-row">
+                        <td>Vessel Name V123</td>
+                        <td>20,000.00</td>
+                        <td class="text-end">20,000.00</td>
+                    </tr>
+                    <tr class="breakdown-row">
+                        <td>Vessel Name V123</td>
+                        <td>20,000.00</td>
+                        <td class="text-end">20,000.00</td>
+                    </tr>
+                </tbody>
+            </table>
+            <h4 class="text-end bold">PHP 60,0000.00</h4>
+        </div>
+    </div>
     <!-- Modals -->
     <script>
         function toggleChat() {

@@ -14,6 +14,10 @@ $route['editUser'] = 'admin/editUser';
 $route['dashboard'] = 'dashboard';
 $route['vesselitem'] = 'vesselitem/view';
 $route['agentvessel'] = 'agentvessel';
-$route['archive'] = 'vesselitem/archive/(:any)';
+$route['archive'] = 'vesselitem/archive';
 $route['add_item'] = 'vesselitem/add_item';
-$route['update_item'] = 'vesselitem/update_item/(:any)';
+
+// routes for file upload
+$route['upload'] = 'fileuploads/index';
+$route['delete/(:any)'] = "fileuploads/delete/$1";
+$route['upload/file_upload'] = 'fileuploads/file_upload';
