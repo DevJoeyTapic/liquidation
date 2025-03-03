@@ -5,6 +5,16 @@
 
         <div class="main-container bg-gradient">
             <div class="col-11 mx-auto" style="display: <?= ($this->session->userdata('user_type') == 2 || $this->session->userdata('user_type') == 3 || $this->session->userdata('user_type') == 5) ? 'block' : 'none'; ?>">
+            <div class="justify-content-end text-end">
+                <button class="btn btn-primary btn-sm small">
+                    <i class="fa-solid fa-arrows-rotate pe-2" id="refreshData"></i>Refresh Data
+                </button>
+                <div>
+                    <p class="small text-secondary text-end">Last updated on <?php echo date('Y-m-d H:i:s'); ?></p>
+                </div>
+                
+            </div>
+
                 <?php
                     function countLiquidations($liquidations, $statusArray) {
                         $count = 0;
@@ -732,6 +742,13 @@
                 paging: true,
                 searching: true,
                 pageLength: 10,
+            });
+        });
+    </script>
+    <script>
+        $(document).ready(function() {
+            $('#refreshData').on('click', function() {
+                location.reload();
             });
         });
     </script>

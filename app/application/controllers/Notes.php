@@ -15,5 +15,19 @@
             $this->load->view('vessel-item', $data);
             echo json_encode($notes);
         }
+        public function add_notes() {
+            $data = array(
+                'liq_ref' => $this->input->post('liq_ref'),
+                'sender' => $this->input->post('sender'),
+                'notes' => $this->input->post('notes'),
+                'timestamp' => $this->input->post('timestamp')
+            );
+            $insertedId = $this->Notes_model->insert_notes($data);
+            if ($insertedId) {
+                echo json_encode(array('status' => 'success', 'id' => $insertedId));
+            } else {
+                echo json_encode(array('status' => 'error', 'message' => 'Failed to add remark'));
+            }
+        }
     }
 ?>

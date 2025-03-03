@@ -5,6 +5,7 @@ class AgentVessel extends CI_Controller {
         $this->load->database();
         $this->load->model('Liquidation_model');
         $this->load->model('AgentVessel_model');
+        $this->load->model('Notes_model');
         $this->load->library('session');    
 
         if (!$this->session->userdata('logged_in')) {
@@ -26,7 +27,7 @@ class AgentVessel extends CI_Controller {
             $data['id'] = $id;
             $data['vessel_data'] = $this->Liquidation_model->get_vessel_data($id);
             $data['vessel_items'] = $this->Liquidation_model->get_vessel_items($data['vessel_data'][0]->transno);
-            $data['notes'] = $this->Liquidation_model->get_notes($data['id']);
+            $data['notes'] = $this->Notes_model->get_notes($data['id']);
 
             $this->load->view('agent-vessel', $data);
         } else {

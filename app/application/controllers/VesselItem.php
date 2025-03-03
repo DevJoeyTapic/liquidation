@@ -6,6 +6,7 @@ class VesselItem extends CI_Controller {
         $this->load->model('Liquidation_model');
         $this->load->model('VesselItem_model');
         $this->load->model('Breakdown_model');
+        $this->load->model('Notes_model');
         $this->load->library('session');    
 
         if (!$this->session->userdata('logged_in')) {
@@ -22,6 +23,7 @@ class VesselItem extends CI_Controller {
             $data['id'] = $id;
             $data['vessel_items'] = $this->Liquidation_model->get_vessel_items($data['id']);
             $data['liquidation_item'] = $this->VesselItem_model->get_liquidation_items($user_id, $id);
+            $data['notes'] = $this->Notes_model->get_notes($data['id']);
 
             $item_ids = array_column($data['liquidation_item'], 'id');  
             if (!empty($item_ids)) {

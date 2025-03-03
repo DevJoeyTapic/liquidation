@@ -2,7 +2,6 @@ $(document).ready(function () {
   let baseUrl = 'http://192.168.192.251:3000'
 
   let row;
-
   function updateTotal() {
     let total = 0;
     $(".new-amount").each(function () {
@@ -70,9 +69,6 @@ $(document).ready(function () {
           }
         });
   });
-
-
-
 
   $(document).on("input", ".new-amount", function () {
     updateTotal();
@@ -385,6 +381,61 @@ $(document).ready(function () {
     });
   });
 
+  $("#addRemarkBtn").on('click', function() {
+    const item_id = $(this).data('item');
+    const remarks = $("#newRemarkInput").val();
+    const author = $("#fullname").val();
+    const timestamp = new Date(new Date().getTime() + 8 * 60 * 60 * 1000).toISOString().slice(0, 19).replace('T', ' ');
+    
+    console.log({
+      item_id: item_id,
+      remarks: remarks,
+      author: author,
+      timestamp: timestamp
+    }); 
+
+    if (!remarks || remarks.trim() === '') {
+      Swal.fire({
+        icon: 'error',
+        title: 'Error',
+        text: 'Please enter a remark before submitting'
+      });
+      return;
+    }
+
+    $.ajax({
+      url: baseUrl + '/vesselitem/add_item_remark', 
+      method: 'POST',
+      data: {
+        item_id: item_id,
+        remarks: remarks,
+        author: author,
+        timestamp: timestamp
+      },
+      success: function(response) {
+        console.log(response);
+        const remarksTableBody = $('#remarksTable tbody');
+        
+        remarksTableBody.find('tr td[colspan="3"]').parent().remove();
+        
+        const newRow = `<tr>
+                         <td>
+                           <p>${remarks}</p>
+                           <p class="small">${author}</p>
+                           <p class="small">${timestamp}</p>
+                         </td>
+                       </tr>`;
+        remarksTableBody.append(newRow);
+
+        // Clear the input field
+        $("#newRemarkInput").val('');
+      },
+      error: function(jqXHR, textStatus, errorThrown) {
+        console.error('Error:', textStatus, errorThrown);
+      }
+    });
+  });
+
   $("#addItem").on("click", function () {
     const newItem = $("#newItem").val();
     const newRemarks = $("#newRemarks").val();
@@ -481,7 +532,7 @@ $(document).ready(function () {
         alert('Error occurred while adding item');
       }
     });
-});
+  });
 
 
   $(document).on("click", "#updateUserBtn", function () {

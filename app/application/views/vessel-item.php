@@ -3,6 +3,14 @@
     <div class="container-fluid">
     <?php require_once(APPPATH . 'views/layout/header.php'); ?>
         <div class="main-container bg-gradient">
+            <div class="justify-content-end text-end mb-2">
+                <button class="btn btn-primary btn-sm small" id="refreshData">
+                    <i class="fa-solid fa-arrows-rotate pe-2"></i>Refresh Data
+                </button>
+                <div>
+                    <p class="small text-secondary text-end">Last updated on <?php echo date('Y-m-d H:i:s'); ?></p>
+                </div>
+            </div>
             <div class="cont mb-3">
                 <div class="row px-3 d-flex justify-content-start align-items-center">
                     <?php if (!empty($vessel_data)): ?>
@@ -634,6 +642,13 @@
             })
         });
 
+    </script>
+    <script>
+        $(document).ready(function() {
+            $('#refreshData').on('click', function() {
+                location.reload();
+            });
+        });
     </script>
     
     
