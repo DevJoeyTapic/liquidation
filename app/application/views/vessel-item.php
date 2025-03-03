@@ -1,16 +1,9 @@
 <?php require_once(APPPATH . 'views/layout/head.php'); ?>
 <body>
+    <?php require_once(APPPATH . 'views/partials/loading-screen.php'); ?>
     <div class="container-fluid">
     <?php require_once(APPPATH . 'views/layout/header.php'); ?>
         <div class="main-container bg-gradient">
-            <div class="justify-content-end text-end mb-2">
-                <button class="btn btn-primary btn-sm small" id="refreshData">
-                    <i class="fa-solid fa-arrows-rotate pe-2"></i>Refresh Data
-                </button>
-                <div>
-                    <p class="small text-secondary text-end">Last updated on <?php echo date('Y-m-d H:i:s'); ?></p>
-                </div>
-            </div>
             <div class="cont mb-3">
                 <div class="row px-3 d-flex justify-content-start align-items-center">
                     <?php if (!empty($vessel_data)): ?>
@@ -74,7 +67,17 @@
             <?php require_once(APPPATH . 'views/partials/liquidation-overview.php'); ?>
 
             <div class="cont">
-                <h5 class="mb-3">Item Liquidation</h5>
+                <div class="d-flex justify-content-between align-items-center mb-3">
+                    <h5 class="mb-3">Item Liquidation</h5>
+                    <div class="justify-content-end text-end mb-2">
+                        <button class="btn btn-primary btn-sm small" id="refreshData">
+                            <i class="fa-solid fa-arrows-rotate pe-2"></i>Refresh Data
+                        </button>
+                        <div>
+                            <p class="small text-secondary text-end">Last updated on <?php echo date('Y-m-d H:i:s'); ?></p>
+                        </div>
+                    </div>
+                </div>
                 <nav>
                     <div class="nav nav-tabs liquidation-tabs" id="nav-tab" role="tablist">
                         <button class="nav-link active" id="pendingTab" data-bs-toggle="tab" data-bs-target="#pending" type="button" role="tab" aria-controls="pending" aria-selected="true"><i class="fa-regular fa-clock pe-2"></i>Pending Item(s) Liquidation</button>    
@@ -641,17 +644,17 @@
                 });
             })
         });
-
     </script>
     <script>
         $(document).ready(function() {
-            $('#refreshData').on('click', function() {
+            $('#refreshData').click(function() {
                 location.reload();
+                $('.page-loader').removeClass('d-none');
+                setTimeout(function() {
+                    $('.page-loader').addClass('d-none');
+                }, 10000);
             });
         });
-    </script>
-    
-    
-		
+    </script>		
 </body>
 </html>

@@ -255,7 +255,7 @@ $(document).ready(function () {
                 url: baseUrl + '/vesselitem/add_item_remark',
                 method: 'POST',
                 data: {
-                    item_id: item_id, // Assuming item_id is available in this scope
+                    item_id: item_id,
                     remarks: remarks,
                     author: fullname,
                     timestamp: timestamp
@@ -381,61 +381,6 @@ $(document).ready(function () {
     });
   });
 
-  $("#addRemarkBtn").on('click', function() {
-    const item_id = $(this).data('item');
-    const remarks = $("#newRemarkInput").val();
-    const author = $("#fullname").val();
-    const timestamp = new Date(new Date().getTime() + 8 * 60 * 60 * 1000).toISOString().slice(0, 19).replace('T', ' ');
-    
-    console.log({
-      item_id: item_id,
-      remarks: remarks,
-      author: author,
-      timestamp: timestamp
-    }); 
-
-    if (!remarks || remarks.trim() === '') {
-      Swal.fire({
-        icon: 'error',
-        title: 'Error',
-        text: 'Please enter a remark before submitting'
-      });
-      return;
-    }
-
-    $.ajax({
-      url: baseUrl + '/vesselitem/add_item_remark', 
-      method: 'POST',
-      data: {
-        item_id: item_id,
-        remarks: remarks,
-        author: author,
-        timestamp: timestamp
-      },
-      success: function(response) {
-        console.log(response);
-        const remarksTableBody = $('#remarksTable tbody');
-        
-        remarksTableBody.find('tr td[colspan="3"]').parent().remove();
-        
-        const newRow = `<tr>
-                         <td>
-                           <p>${remarks}</p>
-                           <p class="small">${author}</p>
-                           <p class="small">${timestamp}</p>
-                         </td>
-                       </tr>`;
-        remarksTableBody.append(newRow);
-
-        // Clear the input field
-        $("#newRemarkInput").val('');
-      },
-      error: function(jqXHR, textStatus, errorThrown) {
-        console.error('Error:', textStatus, errorThrown);
-      }
-    });
-  });
-
   $("#addItem").on("click", function () {
     const newItem = $("#newItem").val();
     const newRemarks = $("#newRemarks").val();
@@ -463,70 +408,7 @@ $(document).ready(function () {
       success: function (response) {
         const data = JSON.parse(response);
         location.reload();
-        if (data.status === 'success') {
-          const newItemId = data.id;  // Use the returned ID from the server
-
-          const newItemRow = `
-            <tr>
-              <td>${newItem}</td>
-              <td><span class="badge text-bg-primary">NEW ITEM</span></td>
-              <td>${currency}</td>
-              <td><span class="badge text-bg-primary">NEW ITEM</span></td>
-              <td class="text-end">
-                <input type="text" class="form-control form-control-sm actualAmount" value="${newAmount}" disabled>
-              </td>
-              <td><span class="badge text-bg-primary">NEW ITEM</span></td>
-              <td class="text-center">
-                <button type="button" class="btn text-primary" data-bs-toggle="modal" data-bs-target="#showItemRemarksModal" id="showItemRemarks" data-item="${newItemId}">
-                    <i class="fa-solid fa-message"></i>
-                </button>
-              </td>
-              <td class="text-center">
-                <button class="btn btn-sm" type="button" id="uploadButton">
-                    <i class="fa-solid fa-upload"></i>
-                </button>
-              </td>
-              <td class="text-center">
-                <input type="checkbox" class="form-check-input rowCheckbox">
-                <input type="hidden" name="item_id" value="${newItemId}">
-                <input type="hidden" name="user_id" value="${user_id}">
-                <input type="hidden" name="supplier" value="${supplier}">
-                <input type="hidden" name="transno" value="${transno}">
-                <input type="hidden" name="isNew" value="${isNew}">
-              </td>
-            </tr>`;
-
-          $("#pendingTableAg tbody").append(newItemRow);
-          
-          // Clear input fields after adding item
-          $("#newItem").val('');
-          $("#newRemarks").val('');
-          $("#newAmount").val('');
-
-          // Call the second AJAX to add remarks after the new item is created
-          const fullname = $('#fullname').val(); 
-          const timestamp = new Date(new Date().getTime() + 8 * 60 * 60 * 1000).toISOString().slice(0, 19).replace('T', ' ');
-
-          $.ajax({
-              url: baseUrl + '/vesselitem/add_item_remark',
-              method: 'POST',
-              data: {
-                  item_id: newItemId, // Use the newly inserted item ID here
-                  remarks: remarks,
-                  author: fullname,
-                  timestamp: timestamp
-              },
-              success: function () {
-                  console.log('Remark successfully added for item ID: ' + newItemId);
-              },
-              error: function() {
-                  Swal.fire('Error', 'Failed to submit remarks. Please try again.', 'error');
-              }
-          });
-
-        } else {
-          alert(data.message);
-        }
+        
       },
       error: function () {
         alert('Error occurred while adding item');

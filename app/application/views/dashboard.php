@@ -1,13 +1,14 @@
 <?php require_once(APPPATH . 'views/layout/head.php'); ?>
 <body>
+    <?php require_once(APPPATH . 'views/partials/loading-screen.php'); ?>
     <div class="container-fluid">
         <?php require_once(APPPATH . 'views/layout/header.php'); ?>
 
         <div class="main-container bg-gradient">
             <div class="col-11 mx-auto" style="display: <?= ($this->session->userdata('user_type') == 2 || $this->session->userdata('user_type') == 3 || $this->session->userdata('user_type') == 5) ? 'block' : 'none'; ?>">
             <div class="justify-content-end text-end">
-                <button class="btn btn-primary btn-sm small">
-                    <i class="fa-solid fa-arrows-rotate pe-2" id="refreshData"></i>Refresh Data
+                <button class="btn btn-primary btn-sm small" id="refreshData">
+                    <i class="fa-solid fa-arrows-rotate pe-2" ></i>Refresh Data
                 </button>
                 <div>
                     <p class="small text-secondary text-end">Last updated on <?php echo date('Y-m-d H:i:s'); ?></p>
@@ -709,7 +710,6 @@
         </div>
     </div>
     <?php require_once(APPPATH . 'views/partials/breakdown-window.php'); ?>
-    <?php require_once(APPPATH . 'views/partials/modals.php'); ?>
 
 
     <script>
@@ -745,12 +745,6 @@
             });
         });
     </script>
-    <script>
-        $(document).ready(function() {
-            $('#refreshData').on('click', function() {
-                location.reload();
-            });
-        });
-    </script>
+
 </body>
 </html>

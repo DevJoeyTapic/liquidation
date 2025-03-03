@@ -30,6 +30,7 @@
     <link rel="stylesheet" href="<?= base_url('assets/css/dashboard.css'); ?>">
     <link rel="stylesheet" href="<?= base_url('assets/css/admin.css'); ?>">
     <link rel="stylesheet" href="<?= base_url('assets/css/modals.css'); ?>">
+    <link rel="stylesheet" href="<?= base_url('assets/css/toggle-switch.css'); ?>">
         
 
     <!-- Swal -->
@@ -69,6 +70,19 @@
         #fileUpload {
             display: none;
         }
+    </style>
+    <!-- loading screen css -->
+    <style>
+        .page-loader {
+            position: fixed;
+            top: 0;
+            height: 100vh;
+            width: 100vw;
+            z-index: 9999;
+            text-align: center;
+            vertical-align: middle;
+        }
+
     </style>
 
 

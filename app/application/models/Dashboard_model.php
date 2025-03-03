@@ -14,7 +14,7 @@ class Dashboard_model extends CI_Model {
                 ON l.transno = i.transno and l.supplier = i.supplier
                 JOIN tbl_liq_item_status AS s
                 ON i.`status` = s.id
-                WHERE l.user_id = 4 AND i.`status` = 0
+                WHERE l.user_id = ? AND i.`status` = 0
                 AND EXISTS (
                 SELECT 1
                 FROM tbl_agent_liquidation_items AS sub_i
@@ -34,7 +34,7 @@ class Dashboard_model extends CI_Model {
                 ON l.transno = i.transno and l.supplier = i.supplier
                 JOIN tbl_liq_item_status AS s
                 ON i.`status` = s.id
-                WHERE l.user_id = 4 AND i.`status` IN (1,2,3,5,6)
+                WHERE l.user_id = ? AND i.`status` IN (1,2,3,5,6)
                 AND EXISTS (
                 SELECT 1
                 FROM tbl_agent_liquidation_items AS sub_i
@@ -54,7 +54,7 @@ class Dashboard_model extends CI_Model {
                 ON l.transno = i.transno and l.supplier = i.supplier
                 JOIN tbl_liq_item_status AS s
                 ON i.`status` = s.id
-                WHERE l.user_id = 4 AND i.`status` = 4
+                WHERE l.user_id = ? AND i.`status` = 4
                 AND EXISTS (
                 SELECT 1
                 FROM tbl_agent_liquidation_items AS sub_i
@@ -74,7 +74,7 @@ class Dashboard_model extends CI_Model {
                 ON l.transno = i.transno and l.supplier = i.supplier
                 JOIN tbl_liq_item_status AS s
                 ON i.`status` = s.id
-                WHERE l.user_id = 4 AND i.`status` IN (7,8)
+                WHERE l.user_id = ? AND i.`status` IN (7,8)
                 AND EXISTS (
                 SELECT 1
                 FROM tbl_agent_liquidation_items AS sub_i

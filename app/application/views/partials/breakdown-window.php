@@ -1,3 +1,4 @@
+
 <button onclick="toggleBreakdown()" class="breakdown-toggle-btn btn btn-warning rounded-circle">
     <i class="fa-solid fa-money-bill-transfer"></i>
 </button>
@@ -8,7 +9,14 @@
     <div class="breakdown-content p-3">                        
         <div class="d-flex justify-content-between align-items-end">
             <h4><strong>Credit Breakdown:</strong></h4>
-            <p class="text-danger small"><strong>CURRENCY:</strong> PHP</p>
+            <div class="one-quarter" id="switch">
+                <input type="checkbox" class="checkbox" id="chk" />
+                <label class="label" for="chk">
+                <p class="p-0">PHP</p>
+                <p class="p-0">USD</p>
+                <div class="ball"></div>
+                </label>
+            </div>
         </div>
         <table class="table table-warning table-hover">
             <caption class="small">As of <span id="currentTime"></span></caption>
@@ -40,3 +48,19 @@
         <h4 class="text-end bold">PHP 60,0000.00</h4>
     </div>
 </div>
+<script>
+    $(document).ready(function() {
+        const checkbox = document.getElementById('chk');
+        const label = document.querySelector('.breakdown-window .label');
+
+        checkbox.addEventListener('change', function () {
+            if (checkbox.checked) {
+            label.classList.remove('bg-success');
+            label.classList.add('bg-primary');
+            } else {
+            label.classList.remove('bg-primary');
+            label.classList.add('bg-success');
+            }
+        });
+    });
+</script>

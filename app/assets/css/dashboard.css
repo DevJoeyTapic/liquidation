@@ -143,8 +143,6 @@ html::-webkit-scrollbar {
   transition: transform 0.3s ease-in-out;
   display: flex;
   flex-direction: column;
-  cursor: grab;
-
 }
 .breakdown-window::before {
   content: '';
@@ -173,10 +171,6 @@ html::-webkit-scrollbar {
   font-weight: bold;
   border-radius: 10px 10px 0 0;
   z-index: 1; 
-  cursor: grab;
-}
-.breakdown-header:active {
-  cursor: grabbing; /* Change cursor while dragging */
 }
 /* Notes Window */
 /* Chat container style */

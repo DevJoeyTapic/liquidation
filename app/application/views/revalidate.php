@@ -70,6 +70,8 @@
             <? endif ?>           
         </div>
     </div>
+    <?php require_once(APPPATH . 'views/partials/modals.php'); ?>
+
     <script>
         $(document).ready(function() {
             var dataTableForRevalidation = $("#dataForRevalidation").DataTable({ 
