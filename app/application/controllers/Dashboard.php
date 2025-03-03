@@ -5,7 +5,7 @@ class Dashboard extends CI_Controller {
 
     public function __construct() {
         parent::__construct();
-        $this->load->model('Liquidation_model');
+        $this->load->model('Dashboard_model');
         $this->load->model('Login_model');
         $this->load->library('session');
         $this->load->model('User_model');
@@ -24,19 +24,23 @@ class Dashboard extends CI_Controller {
                 break;
             case 2: // Agent
                 $user_id = $this->session->userdata('user_id');
-                $data['agent_liquidations'] = $this->Liquidation_model->get_agent_liquidations($user_id);
+                $data['unliquidated_vessels'] = $this->Dashboard_model->get_unliquidatedAg($user_id);
+                $data['pending_validation'] = $this->Dashboard_model->get_pendingValidationAg($user_id);
+                $data['completed'] = $this->Dashboard_model->get_completedAg($user_id);
+                $data['for_amendment'] = $this->Dashboard_model->get_forAmendmentAg($user_id);
                 $this->load->view('dashboard', $data);
                 break;
             case 3: // Accounting
-                $data['accounting_liquidations'] = $this->Liquidation_model->get_accounting_liquidations();
+                $data['unliquidated_vessels'] = $this->Dashboard_model->get_unliquidated();
+                $data['pending_validation'] = $this->Dashboard_model->get_pendingValidationAcc();
+                $data['for_amendment'] = $this->Dashboard_model->get_forAmendmentAcc();
+                $data['completed'] = $this->Dashboard_model->get_completed();
                 $this->load->view('dashboard', $data);
                 break;
-            case 4: // VOO/OM
-                $data['voo_om_liquidations'] = $this->Liquidation_model->get_voo_om_liquidations();
-                $this->load->view('dashboard', $data);
-                break;
-            case 5: // VOO/Agent
-                $data['agent_voo_liq_val'] = $this->Liquidation_model->get_voo_om_liquidations();
+            case 5: // TAD
+                $data['unliquidated_vessels'] = $this->Dashboard_model->get_unliquidated();
+                $data['pending_otp'] = $this->Dashboard_model->get_pendingOTP();
+                $data['completed'] = $this->Dashboard_model->get_completed();
                 $this->load->view('dashboard', $data);
                 break;
             default:               

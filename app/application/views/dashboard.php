@@ -1,135 +1,707 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ALS - Dashboard</title>
-    <link rel="icon" type="image/png" href="images/liquidate.ico">
-
-    <!-- Google Font -->
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-      
-    <!-- DataTables -->
-    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
-    <link rel="stylesheet" href="https://cdn.datatables.net/1.13.5/css/jquery.dataTables.min.css">
-    <script src="https://cdn.datatables.net/1.13.5/js/jquery.dataTables.min.js"></script>
-
-    <!-- JS Files -->
-    <script src="<?= base_url('assets/js/dataTable.js'); ?>"></script>
-    <script src="<?= base_url('assets/js/main.js'); ?>"></script>
-
-    <!-- Bootstrap -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
-
-    <!-- FontAwesome -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" />
-
-    <!-- CSS files -->
-    <link rel="stylesheet" href="<?= base_url('assets/css/navbar.css'); ?>">
-    <link rel="stylesheet" href="<?= base_url('assets/css/global.css'); ?>">
-    <link rel="stylesheet" href="<?= base_url('assets/css/dashboard.css'); ?>">
-
-</head>
+<?php require_once(APPPATH . 'views/layout/head.php'); ?>
 <body>
+    <?php require_once(APPPATH . 'views/partials/loading-screen.php'); ?>
     <div class="container-fluid">
         <?php require_once(APPPATH . 'views/layout/header.php'); ?>
 
         <div class="main-container bg-gradient">
-            <div class="search-result cont d-flex flex-column" style="display: <?= ($this->session->userdata('user_type') != 5) ? 'block' : 'none'; ?>">
-                <div class="data-table">
-                    <!-- table view for voo/om -->
-                    <div class="table-responsive" style="display: <?= ($this->session->userdata('user_type') == 4) ? 'block' : 'none'; ?>">
-                        <table class="table table-hover table-striped" id="dataTable5">
-                            <thead>
-                                <tr>
-                                    <th>Agent</th>
-                                    <th>Vessel</th>
-                                    <th>Voyage</th>
-                                    <th>Port</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <?php if (!empty($voo_om_liquidations)): ?>
-                                    <?php foreach ($voo_om_liquidations as $liquidation): ?>
-                                        
-                                        <tr onclick="window.location.href='<?= site_url('agentvessel/view/' . $liquidation->id); ?>'"> 
-                                            <td><?= $liquidation->supplier; ?></td>
-                                            <td><?= $liquidation->vessel_name; ?></td>
-                                            <td><?= $liquidation->voyno; ?></td>
-                                            <td><?= $liquidation->port; ?></td>
-                                        </tr>
-                                    <?php endforeach; ?>
-                                <?php endif ?>
-                            </tbody>
-                        </table>
-                    </div>
-                    <!-- table view for accounting -->
-                    <div class="table-responsive" style="display: <?= ($this->session->userdata('user_type') == 3) ? 'block' : 'none'; ?>">
-                        <table class="table table-hover table-striped" id="dataTable8">
-                            <thead>
-                                <tr>
-                                    <th>Agent</th>
-                                    <th>Vessel</th>
-                                    <th>Voyage</th>
-                                    <th>Port</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <?php if (!empty($accounting_liquidations)): ?>
-                                    <?php foreach ($accounting_liquidations as $liquidation): ?>
-                                        
-                                        <tr onclick="window.location.href='<?= site_url('agentvessel/view/' . $liquidation->id); ?>'"> 
-                                            <td><?= $liquidation->supplier; ?></td>
-                                            <td><?= $liquidation->vessel_name; ?></td>
-                                            <td><?= $liquidation->voyno; ?></td>
-                                            <td><?= $liquidation->port; ?></td>
-                                        </tr>
-                                    <?php endforeach; ?>
-                                <?php endif ?>
-                            </tbody>
-                        </table>
-                    </div>
-                    <!-- table view for supercargo agent -->
-                    <div class="table-responsive" style="display: <?= ($this->session->userdata('user_type') == 2) ? 'block' : 'none'; ?>">
-                        <table class="table table-hover display" id="dataTable1">
-                            <thead>
-                                <tr>
-                                    <th>Vessel</th>
-                                    <th>Voyage</th>
-                                    <th>Port</th>
-                                    <th>Arrival</th>
-                                    <th>Departure</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <?php foreach ($agent_liquidations as $liquidation): ?>
-                                    <?php if ($liquidation->user_id == $this->session->userdata('user_id') && $liquidation->status !== '2'): ?>
-                                        <tr onclick="window.location.href='<?= site_url('vesselitem/view/' . $liquidation->id); ?>'"> 
-                                            <td><?= $liquidation->vessel_name; ?></td>
-                                            <td><?= $liquidation->voyno; ?></td>
-                                            <td><?= $liquidation->port; ?></td>
-                                            <td><?= $liquidation->eta; ?></td>
-                                            <td><?= $liquidation->etd; ?></td>
-                                        </tr>
-                                    <?php endif; ?>
-                                <?php endforeach; ?>
-                            </tbody>
-                        </table>
+            <div class="col-11 mx-auto" style="display: <?= ($this->session->userdata('user_type') == 2 || $this->session->userdata('user_type') == 3 || $this->session->userdata('user_type') == 5) ? 'block' : 'none'; ?>">
+            <div class="justify-content-end text-end">
+                <button class="btn btn-primary btn-sm small" id="refreshData">
+                    <i class="fa-solid fa-arrows-rotate pe-2" ></i>Refresh Data
+                </button>
+                <div>
+                    <p class="small text-secondary text-end">Last updated on <?php echo date('Y-m-d H:i:s'); ?></p>
+                </div>
+                
+            </div>
+
+                <?php
+                    function countLiquidations($liquidations, $statusArray) {
+                        $count = 0;
+                        if (!empty($liquidations)) {
+                            foreach ($liquidations as $liquidation) {
+                                if (in_array($liquidation->item_status, $statusArray)) {
+                                    $count++;
+                                }
+                            }
+                        }
+                        return $count;
+                    }
+
+                    // For User Type 2 (Agent)
+                    if ($this->session->userdata('user_type') == 2):
+                        // Counters for Agent Liquidations
+                        $countUnliquidatedAg = countLiquidations($unliquidated_vessels, [0]); // Unliquidated
+                        $countLiquidationAg = countLiquidations($pending_validation, [1, 2, 3, 5, 6, 7]); // For Validation
+                        $countCompletedAg = countLiquidations($completed, [4]); // Completed
+                        $countRevalidatedAg = countLiquidations($for_amendment, [7, 8]); // For Revalidation
+                    endif; 
+
+                    if($this->session->userdata('user_type') == 3 || $this->session->userdata('user_type') == 5):
+                        $countUnliquidated = countLiquidations($unliquidated_vessels, [0]);
+                        $countCompleted = countLiquidations($completed, [4]);
+                    endif;
+
+                    // For User Type 3 (Accounting)
+                    if ($this->session->userdata('user_type') == 3):
+                        // Counters for Accounting Liquidations
+                        $countLiquidationA = countLiquidations($pending_validation, [2]); // For Validation
+                        $countForAMValidationA = countLiquidations($pending_validation, [3]); // For AM Validation
+                        $countRevalidatedA = countLiquidations($for_amendment, [5, 7, 8]); // For Revalidation
+                    endif;
+                    if ($this->session->userdata('user_type') == 4):
+                        // Counters for AM Validation
+                        
+                    endif;
+
+                    // For User Type 5 (TAD)
+                    if ($this->session->userdata('user_type') == 5):
+                        // Counters for TAD Liquidations
+                        $countLiquidationT = countLiquidations($pending_otp, [1]); // For Validation
+                        $countForAPARAMValidationT = countLiquidations($pending_otp, [2,3,4]); // For AP/AR/AM Validation
+                    endif;
+                ?>
+                <!-- Pending Liquidation (Unliquidated) -->
+                <div class="mt-3">
+                    <div class="accordion accordion-flush" id="unliquidated">
+                        <div class="accordion-item">
+                            <h4 class="accordion-header">
+                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                                    <div class="btn">
+                                        <p class="bold">Pending Liquidation (Unliquidated)</p>
+                                        <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
+                                            <?php if($this->session->userdata('user_type') == 2): ?>
+                                                <?= $countUnliquidatedAg; ?>
+                                            <?php elseif($this->session->userdata('user_type') == 3 || $this->session->userdata('user_type') == 5): ?>
+                                                <?= $countUnliquidated; ?>
+                                            <?php endif; ?>
+                                            <span class="visually-hidden">unread messages</span>
+                                        </span>
+                                    </div>
+                                </button>
+                            </h4>
+                            <div id="collapseOne" class="accordion-collapse collapse">
+                                <div class="accordion-body">
+                                
+                                    <div class="data-table">
+                                        <div class="table-responsive" style="display: <?= ($this->session->userdata('user_type') == 2 || $this->session->userdata('user_type') == 3 || $this->session->userdata('user_type') == 5) ? 'block' : 'none'; ?>">
+                                            <table class="table table-hover " id="unliquidatedTable">
+                                                <thead>
+                                                    <tr>
+                                                        <th>Vessel</th>
+                                                        <th>Voyage</th>
+                                                        <th>Port</th>
+                                                        <?php if($this->session->userdata('user_type') == 3 || $this->session->userdata('user_type') == 5): ?>
+                                                            <th>Agent</th>
+                                                        <?php endif; ?>
+                                                        <?php if($this->session->userdata('user_type') == 2): ?>
+                                                            <th>Arrival</th>
+                                                            <th>Departure</th>
+                                                        <?php endif; ?>
+                                                        <th>Status</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <?php if($this->session->userdata('user_type') == 2): ?>
+                                                        <?php if (!empty($unliquidated_vessels)): ?>
+                                                            <?php foreach ($unliquidated_vessels as $liquidation): ?>
+                                                                <?php if($liquidation->item_status == '0'): ?>
+                                                                <tr onclick="window.location.href='<?= site_url('vesselitem/view/' . $liquidation->id); ?>'"> 
+                                                                    <td><?= $liquidation->vessel_name; ?></td>
+                                                                    <td><?= $liquidation->voyno; ?></td>
+                                                                    <td><?= $liquidation->port; ?></td>
+                                                                    <td><?= $liquidation->eta; ?></td>
+                                                                    <td><?= $liquidation->etd; ?></td>
+                                                                    <td>
+                                                                        <?php
+                                                                            // Define the status-to-badge mapping
+                                                                            $status_to_class = [
+                                                                                '0' => 'bg-secondary', // Unliquidated
+                                                                                '1' => 'bg-dark', // Liquidated
+                                                                                '2' => 'bg-primary', // OK To Pay
+                                                                                '3' => 'bg-info', // Validated
+                                                                                '4' => 'bg-success', // Pay To Agent
+                                                                                '5' => 'bg-danger', // Return To AP
+                                                                                '6' => 'bg-warning', // Return To AP
+                                                                                '7' => 'bg-light text-dark', // Return To Agent by AP
+                                                                                '8' => 'bg-danger', // Amend
+                                                                            ];
+
+                                                                            // Determine the badge class based on the item's status
+                                                                            $badge_class = isset($status_to_class[$liquidation->item_status]) ? $status_to_class[$liquidation->item_status] : '';
+                                                                        ?>
+                                                                        <span class="badge <?= $badge_class; ?>">
+                                                                            <?= htmlspecialchars($liquidation->desc_status); ?>
+                                                                        </span>
+
+                                                                    </td>
+                                                                </tr>
+                                                            <?php endif; ?>
+                                                        <?php endforeach; ?>
+                                                    <?php endif ?>
+                                                        <?php elseif($this->session->userdata('user_type') == 3 || $this->session->userdata('user_type') == 5): ?>
+                                                            <?php if (!empty($unliquidated_vessels)): ?>
+                                                                <?php foreach ($unliquidated_vessels as $liquidation): ?>
+                                                                    <?php if($liquidation->item_status == '0'): ?>
+                                                                    <tr onclick="window.location.href='<?= site_url('agentvessel/view/' . $liquidation->id); ?>'"> 
+                                                                        <td><?= $liquidation->vessel_name; ?></td>
+                                                                        <td><?= $liquidation->voyno; ?></td>
+                                                                        <td><?= $liquidation->port; ?></td>
+                                                                        <td><?= $liquidation->supplier; ?></td>
+                                                                        <td>
+                                                                            <?php
+                                                                                // Define the status-to-badge mapping
+                                                                                $status_to_class = [
+                                                                                    '0' => 'bg-secondary', // Unliquidated
+                                                                                    '1' => 'bg-dark', // Liquidated
+                                                                                    '2' => 'bg-primary', // OK To Pay
+                                                                                    '3' => 'bg-info', // Validated
+                                                                                    '4' => 'bg-success', // Pay To Agent
+                                                                                    '5' => 'bg-danger', // Return To AP
+                                                                                    '6' => 'bg-warning', // Return To AP
+                                                                                    '7' => 'bg-light text-dark', // Return To Agent by AP
+                                                                                    '8' => 'bg-danger', // Amend
+                                                                                ];
+
+                                                                                // Determine the badge class based on the item's status
+                                                                                $badge_class = isset($status_to_class[$liquidation->item_status]) ? $status_to_class[$liquidation->item_status] : '';
+                                                                            ?>
+                                                                            <span class="badge <?= $badge_class; ?>">
+                                                                                <?= htmlspecialchars($liquidation->desc_status); ?>
+                                                                            </span>
+
+                                                                        </td>
+                                                                    </tr>
+                                                                <?php endif; ?>
+                                                            <?php endforeach; ?>
+                                                        <?php endif ?>
+                                                    <?php endif; ?>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
-            </div> 
-            <div style="display: <?= ($this->session->userdata('user_type') == 5) ? 'block' : 'none'; ?>">
-                <div class="accordion" id="user-accordion">
-                    <div class="accordion-item">
-                        <h2 class="accordion-header">
-                            <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
-                                <strong>For Liquidation</strong>
-                            </button>
-                        </h2>
-                        <div id="collapseOne" class="accordion-collapse collapse show" data-bs-parent="#user-accordion">
-                            <div class="accordion-body">
-                                
+                <!-- For Validation -->
+                <div class="mt-3">
+                    <div class="accordion accordion-flush" id="forValidation">
+                        <div class="accordion-item">
+                            <h4 class="accordion-header">
+                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTwo" aria-expanded="true" aria-controls="collapseTwo">
+                                    <div class="btn">
+                                        <p class="bold"><?= ($this->session->userdata('user_type') == 3) ? 'For Validation' : 'For Validation / Pending OTP'; ?></p>
+                                        <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
+                                            <?php if($this->session->userdata('user_type') == 2): ?>
+                                                <?= $countLiquidationAg; ?>
+                                            <?php elseif($this->session->userdata('user_type') == 3): ?>
+                                                <?= $countLiquidationA; ?>
+                                            <?php elseif($this->session->userdata('user_type') == 5): ?>
+                                                <?= $countLiquidationT; ?>
+                                            <?php endif; ?>
+                                            <span class="visually-hidden">unread messages</span>
+                                        </span>
+                                    </div>
+                                </button>
+                            </h4>
+                            <div id="collapseTwo" class="accordion-collapse collapse">
+                                <div class="accordion-body">
+                                    <div class="data-table">
+                                        <div class="table-responsive" style="display: <?= ($this->session->userdata('user_type') == 2 || $this->session->userdata('user_type') == 3 || $this->session->userdata('user_type') == 5) ? 'block' : 'none'; ?>">
+                                            <table class="table table-hover " id="forValidationTable">
+                                                <thead>
+                                                    <tr>
+                                                        <th>Vessel</th>
+                                                        <th>Voyage</th>
+                                                        <th>Port</th>
+                                                        <?php if($this->session->userdata('user_type') == 3 || $this->session->userdata('user_type') == 5): ?>
+                                                            <th>Agent</th>
+                                                        <?php endif; ?>
+                                                        <?php if($this->session->userdata('user_type') == 2): ?>
+                                                            <th>Arrival</th>
+                                                            <th>Departure</th>
+                                                        <?php endif; ?>
+                                                        <th>Status</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <?php if($this->session->userdata('user_type') == 2): ?>
+                                                        <?php if (!empty($pending_validation)): ?>
+                                                            <?php foreach ($pending_validation as $liquidation): ?>
+                                                                <?php if($liquidation->item_status == 1 || $liquidation->item_status == 2 || $liquidation->item_status == 3 || $liquidation->item_status == 5 || $liquidation->item_status == 6 || $liquidation->item_status == 7 || $liquidation->item_status == 8 ): ?>
+                                                                    <tr onclick="window.location.href='<?= site_url('vesselitem/view/' . $liquidation->id); ?>'"> 
+                                                                        <td><?= $liquidation->vessel_name; ?></td>
+                                                                        <td><?= $liquidation->voyno; ?></td>
+                                                                        <td><?= $liquidation->port; ?></td>
+                                                                        <td><?= $liquidation->eta; ?></td>
+                                                                        <td><?= $liquidation->etd; ?></td>
+                                                                        <td>
+                                                                            <?php
+                                                                                // Define the status-to-badge mapping
+                                                                                $status_to_class = [
+                                                                                    '0' => 'bg-secondary', // Unliquidated
+                                                                                    '1' => 'bg-dark', // Liquidated
+                                                                                    '2' => 'bg-primary', // OK To Pay
+                                                                                    '3' => 'bg-info', // Validated
+                                                                                    '4' => 'bg-success', // Pay To Agent
+                                                                                    '5' => 'bg-danger', // Return To AP
+                                                                                    '6' => 'bg-warning', // Return To AP
+                                                                                    '7' => 'bg-light text-dark', // Return To Agent by AP
+                                                                                    '8' => 'bg-danger', // Amend
+                                                                                ];
+
+                                                                                // Determine the badge class based on the item's status
+                                                                                $badge_class = isset($status_to_class[$liquidation->item_status]) ? $status_to_class[$liquidation->item_status] : '';
+                                                                            ?>
+                                                                            <span class="badge <?= $badge_class; ?>">
+                                                                                <?= htmlspecialchars($liquidation->desc_status); ?>
+                                                                            </span>
+
+                                                                        </td>
+                                                                    </tr>
+                                                                <?php endif; ?>
+                                                            <?php endforeach; ?>
+                                                        <?php endif; ?> 
+                                                    <?php elseif($this->session->userdata('user_type') == 3): ?>
+                                                        <?php if (!empty($pending_validation)): ?>
+                                                            <?php foreach ($pending_validation as $liquidation): ?>
+                                                                <?php if($liquidation->item_status == 2): ?>
+                                                                    
+                                                                    <tr onclick="window.location.href='<?= site_url('agentvessel/view/' . $liquidation->id); ?>'"> 
+                                                                        <td><?= $liquidation->vessel_name; ?></td>
+                                                                        <td><?= $liquidation->voyno; ?></td>
+                                                                        <td><?= $liquidation->port; ?></td>
+                                                                        <td><?= $liquidation->supplier; ?></td>
+                                                                        <td>
+                                                                            <?php
+                                                                                // Define the status-to-badge mapping
+                                                                                $status_to_class = [
+                                                                                    '0' => 'bg-secondary', // Unliquidated
+                                                                                    '1' => 'bg-dark', // Liquidated
+                                                                                    '2' => 'bg-primary', // OK To Pay
+                                                                                    '3' => 'bg-info', // Validated
+                                                                                    '4' => 'bg-success', // Pay To Agent
+                                                                                    '5' => 'bg-danger', // Return To AP
+                                                                                    '6' => 'bg-warning', // Return To AP
+                                                                                    '7' => 'bg-light text-dark', // Return To Agent by AP
+                                                                                    '8' => 'bg-danger', // Amend
+                                                                                ];
+
+                                                                                // Determine the badge class based on the item's status
+                                                                                $badge_class = isset($status_to_class[$liquidation->item_status]) ? $status_to_class[$liquidation->item_status] : '';
+                                                                            ?>
+                                                                            <span class="badge <?= $badge_class; ?>">
+                                                                                <?= htmlspecialchars($liquidation->desc_status); ?>
+                                                                            </span>
+
+                                                                        </td>
+                                                                    </tr>
+                                                                <?php endif; ?>
+                                                            <?php endforeach; ?>
+                                                        <?php endif ?>
+                                                    <?php elseif($this->session->userdata('user_type') == 5): ?>
+                                                        <?php if (!empty($pending_otp)): ?>
+                                                            <?php foreach ($pending_otp as $liquidation): ?>
+                                                                <?php if($liquidation->item_status == 1): ?>    
+                                                                    <tr onclick="window.location.href='<?= site_url('agentvessel/view/' . $liquidation->id); ?>'"> 
+                                                                        <td><?= $liquidation->vessel_name; ?></td>
+                                                                        <td><?= $liquidation->voyno; ?></td>
+                                                                        <td><?= $liquidation->port; ?></td>
+                                                                        <td><?= $liquidation->supplier; ?></td>
+                                                                        <td>
+                                                                        <?php
+                                                                            // Define the status-to-badge mapping
+                                                                            $status_to_class = [
+                                                                                '0' => 'bg-secondary', // Unliquidated
+                                                                                '1' => 'bg-dark', // Liquidated
+                                                                                '2' => 'bg-primary', // OK To Pay
+                                                                                '3' => 'bg-info', // Validated
+                                                                                '4' => 'bg-success', // Pay To Agent
+                                                                                '5' => 'bg-danger', // Return To AP
+                                                                                '6' => 'bg-warning', // Return To AP
+                                                                                '7' => 'bg-light text-dark', // Return To Agent by AP
+                                                                                '8' => 'bg-danger', // Amend
+                                                                            ];
+
+                                                                            // Determine the badge class based on the item's status
+                                                                            $badge_class = isset($status_to_class[$liquidation->item_status]) ? $status_to_class[$liquidation->item_status] : '';
+                                                                        ?>
+                                                                        <span class="badge <?= $badge_class; ?>">
+                                                                            <?= htmlspecialchars($liquidation->desc_status); ?>
+                                                                        </span>
+
+                                                                        </td>
+                                                                    </tr>
+                                                                <?php endif; ?>
+                                                            <?php endforeach; ?>
+                                                        <?php endif; ?>
+                                                    <?php endif; ?>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- For AP/AR/AM Validation -->
+                <div class="mt-3"  style="display: <?= ($this->session->userdata('user_type') == 3) ? 'block' : 'none'; ?>">
+                    <div class="accordion accordion-flush" id="forAMValidation">
+                        <div class="accordion-item">
+                            <h4 class="accordion-header">
+                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseFive" aria-expanded="true" aria-controls="collapseFive">
+                                    <div class="btn">
+                                        <p class="bold">For AM Validation</p>
+                                        <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
+                                            <?= $countForAMValidationA; ?>
+                                            <span class="visually-hidden">unread messages</span>
+                                        </span>
+                                    </div>
+                                </button>
+                            </h4>
+                            <div id="collapseFive" class="accordion-collapse collapse">
+                                <div class="accordion-body">
+                                    <div class="data-table">
+                                        <div class="table-responsive">
+                                            <table class="table table-hover " id="forAMValidationTable">
+                                                <thead>
+                                                    <tr>
+                                                        <th>Vessel</th>
+                                                        <th>Voyage</th>
+                                                        <th>Port</th>
+                                                        <th>Agent</th>
+                                                        <th>Status</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <?php if($this->session->userdata('user_type') == 3): ?>
+                                                        <?php if (!empty($pending_validation)): ?>
+                                                            <?php foreach ($pending_validation as $liquidation): ?>
+                                                                <?php if($liquidation->item_status == 3 || $liquidation->status == 1): ?>
+                                                                    <tr onclick="window.location.href='<?= site_url('agentvessel/view/' . $liquidation->id); ?>'"> 
+                                                                        <td><?= $liquidation->vessel_name; ?></td>
+                                                                        <td><?= $liquidation->voyno; ?></td>
+                                                                        <td><?= $liquidation->port; ?></td>
+                                                                        <td><?= $liquidation->supplier; ?></td>
+                                                                        <td>
+                                                                            <?php
+                                                                                // Define the status-to-badge mapping
+                                                                                $status_to_class = [
+                                                                                    '0' => 'bg-secondary', // Unliquidated
+                                                                                    '1' => 'bg-dark', // Liquidated
+                                                                                    '2' => 'bg-primary', // OK To Pay
+                                                                                    '3' => 'bg-info', // Validated
+                                                                                    '4' => 'bg-success', // Pay To Agent
+                                                                                    '5' => 'bg-danger', // Return To AP
+                                                                                    '6' => 'bg-warning', // Return To AP
+                                                                                    '7' => 'bg-light text-dark', // Return To Agent by AP
+                                                                                    '8' => 'bg-danger', // Amend
+                                                                                ];
+
+                                                                                // Determine the badge class based on the item's status
+                                                                                $badge_class = isset($status_to_class[$liquidation->item_status]) ? $status_to_class[$liquidation->item_status] : '';
+                                                                            ?>
+                                                                            <span class="badge <?= $badge_class; ?>">
+                                                                                <?= htmlspecialchars($liquidation->desc_status); ?>
+                                                                            </span>
+
+                                                                        </td>
+                                                                    </tr>
+                                                                <?php endif; ?>
+                                                            <?php endforeach; ?>
+                                                        <?php endif; ?>
+                                                    <?php endif; ?>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- Completed Liquidation -->
+                <div class="mt-3" style="display: <?= ($this->session->userdata('user_type') == 3 || $this->session->userdata('user_type') == 2) ? 'block' : 'none'; ?>">
+                    <div class="accordion accordion-flush" id="completed">
+                        <div class="accordion-item">
+                            <h4 class="accordion-header">
+                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseFour" aria-expanded="true" aria-controls="collapseFour">
+                                    <div class="btn">
+                                        <p class="bold">Completed Liquidation</p>
+                                        <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
+                                            <?php if($this->session->userdata('user_type') == 2): ?>
+                                                <?= $countCompletedAg; ?>
+                                            <?php elseif($this->session->userdata('user_type') == 3): ?>
+                                                <?= $countCompleted; ?>
+                                            <?php endif; ?>
+                                            <span class="visually-hidden">unread messages</span>
+                                        </span>
+                                    </div>
+                                </button>
+                            </h4>
+                            <div id="collapseFour" class="accordion-collapse collapse">
+                                <div class="accordion-body">
+                                    <div class="data-table">
+                                        <div class="table-responsive" style="display: <?= ($this->session->userdata('user_type') == 2 || $this->session->userdata('user_type') == 3 || $this->session->userdata('user_type') == 5) ? 'block' : 'none'; ?>">
+                                            <table class="table table-hover " id="completedTable">
+                                                <thead>
+                                                    <tr>
+                                                        <th>Vessel</th>
+                                                        <th>Voyage</th>
+                                                        <th>Port</th>
+                                                        <?php if($this->session->userdata('user_type') == 3 || $this->session->userdata('user_type') == 5): ?>
+                                                            <th>Agent</th>
+                                                        <?php endif; ?>
+                                                        <?php if($this->session->userdata('user_type') == 2): ?>
+                                                            <th>Arrival</th>
+                                                            <th>Departure</th>
+                                                        <?php endif; ?>
+                                                        <th>Status</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <?php if($this->session->userdata('user_type') == 2): ?>
+                                                        <?php if (!empty($completed)): ?>
+                                                            <?php foreach ($completed as $liquidation): ?>
+                                                                <?php if($liquidation->item_status == '4'): ?>
+                                                                    <tr onclick="window.location.href='<?= site_url('vesselitem/view/' . $liquidation->id); ?>'"> 
+                                                                        <td><?= $liquidation->vessel_name; ?></td>
+                                                                        <td><?= $liquidation->voyno; ?></td>
+                                                                        <td><?= $liquidation->port; ?></td>
+                                                                        <td><?= $liquidation->eta; ?></td>
+                                                                        <td><?= $liquidation->etd; ?></td>
+                                                                        <td>
+                                                                        <?php
+                                                                            // Define the status-to-badge mapping
+                                                                            $status_to_class = [
+                                                                                '0' => 'bg-secondary', // Unliquidated
+                                                                                '1' => 'bg-dark', // Liquidated
+                                                                                '2' => 'bg-primary', // OK To Pay
+                                                                                '3' => 'bg-info', // Validated
+                                                                                '4' => 'bg-success', // Pay To Agent
+                                                                                '5' => 'bg-danger', // Return To AP
+                                                                                '6' => 'bg-warning', // Return To AP
+                                                                                '7' => 'bg-light text-dark', // Return To Agent by AP
+                                                                                '8' => 'bg-danger', // Amend
+                                                                            ];
+
+                                                                            // Determine the badge class based on the item's status
+                                                                            $badge_class = isset($status_to_class[$liquidation->item_status]) ? $status_to_class[$liquidation->item_status] : '';
+                                                                        ?>
+                                                                        <span class="badge <?= $badge_class; ?>">
+                                                                            <?= htmlspecialchars($liquidation->desc_status); ?>
+                                                                        </span>
+
+                                                                        </td>
+                                                                    </tr>
+                                                                <?php endif; ?>
+                                                            <?php endforeach; ?>
+                                                        <?php endif; ?>
+                                                        <?php elseif($this->session->userdata('user_type') == 3 || $this->session->userdata('user_type') == 5): ?>
+                                                            <?php if (!empty($completed)): ?>
+                                                                <?php foreach ($completed as $liquidation): ?>
+                                                                    <?php if($liquidation->item_status == '4'): ?>
+                                                                    <tr onclick="window.location.href='<?= site_url('agentvessel/view/' . $liquidation->id); ?>'"> 
+                                                                        <td><?= $liquidation->vessel_name; ?></td>
+                                                                        <td><?= $liquidation->voyno; ?></td>
+                                                                        <td><?= $liquidation->port; ?></td>
+                                                                        <td><?= $liquidation->supplier; ?></td>
+                                                                        <td>
+                                                                        <?php
+                                                                            // Define the status-to-badge mapping
+                                                                            $status_to_class = [
+                                                                                '0' => 'bg-secondary', // Unliquidated
+                                                                                '1' => 'bg-dark', // Liquidated
+                                                                                '2' => 'bg-primary', // OK To Pay
+                                                                                '3' => 'bg-info', // Validated
+                                                                                '4' => 'bg-success', // Pay To Agent
+                                                                                '5' => 'bg-danger', // Return To AP
+                                                                                '6' => 'bg-warning', // Return To AP
+                                                                                '7' => 'bg-light text-dark', // Return To Agent by AP
+                                                                                '8' => 'bg-danger', // Amend
+                                                                            ];
+
+                                                                            // Determine the badge class based on the item's status
+                                                                            $badge_class = isset($status_to_class[$liquidation->item_status]) ? $status_to_class[$liquidation->item_status] : '';
+                                                                        ?>
+                                                                        <span class="badge <?= $badge_class; ?>">
+                                                                            <?= htmlspecialchars($liquidation->desc_status); ?>
+                                                                        </span>
+
+                                                                        </td>
+                                                                    </tr>
+                                                                <?php endif; ?>
+                                                            <?php endforeach; ?>
+                                                        <?php endif ?>
+                                                    <?php endif; ?>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- For Revalidation / For Amendment -->
+                <div class="mt-3" style="display: <?= ($this->session->userdata('user_type') == 3 || $this->session->userdata('user_type') == 2) ? 'block' : 'none'; ?>">
+                    <div class="accordion accordion-flush" id="revalidated">
+                        <div class="accordion-item">
+                            <h4 class="accordion-header">
+                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseThree" aria-expanded="true" aria-controls="collapseThree">
+                                    <div class="btn">
+                                        <p class="bold"><?= ($this->session->userdata('user_type') == 2) ? 'For Amendment' : 'Return To Agent'; ?></p>
+                                        <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
+                                            <?php if($this->session->userdata('user_type') == 2): ?>
+                                                <?= $countRevalidatedAg; ?>
+                                            <?php elseif($this->session->userdata('user_type') == 3): ?>
+                                                <?= $countRevalidatedA; ?>
+                                            <?php elseif($this->session->userdata('user_type') == 5): ?>
+                                                <?= $countRevalidatedT; ?>
+                                            <?php endif; ?>
+                                            <span class="visually-hidden">unread messages</span>
+                                        </span>
+                                    </div>
+                                </button>
+                            </h4>
+                            <div id="collapseThree" class="accordion-collapse collapse">
+                                <div class="accordion-body">
+                                    <div class="data-table">
+                                        <div class="table-responsive" style="display: <?= ($this->session->userdata('user_type') == 2 || $this->session->userdata('user_type') == 3 || $this->session->userdata('user_type') == 5) ? 'block' : 'none'; ?>">
+                                            <table class="table table-hover " id="revalidatedTable">
+                                                <thead>
+                                                    <tr>
+                                                        <th>Vessel</th>
+                                                        <th>Voyage</th>
+                                                        <th>Port</th>
+                                                        <?php if($this->session->userdata('user_type') == 3 || $this->session->userdata('user_type') == 5): ?>
+                                                            <th>Agent</th>
+                                                        <?php endif; ?>
+                                                        <?php if($this->session->userdata('user_type') == 2): ?>
+                                                            <th>Arrival</th>
+                                                            <th>Departure</th>
+                                                        <?php endif; ?>
+                                                        <th>Status</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <?php if($this->session->userdata('user_type') == 2): ?>
+                                                        <?php if (!empty($for_amendment)): ?>
+                                                            <?php foreach ($for_amendment as $liquidation): ?>
+                                                                <?php if($liquidation->item_status == '5' || $liquidation->item_status == '6' || $liquidation->item_status == '7' || $liquidation->item_status == '8'): ?>
+                                                                    <tr onclick="window.location.href='<?= site_url('vesselitem/view/' . $liquidation->id); ?>'"> 
+                                                                    <td><?= $liquidation->vessel_name; ?></td>
+                                                                    <td><?= $liquidation->voyno; ?></td>
+                                                                    <td><?= $liquidation->port; ?></td>
+                                                                    <td><?= $liquidation->eta; ?></td>
+                                                                    <td><?= $liquidation->etd; ?></td>
+                                                                    <td>
+                                                                        <?php
+                                                                            // Define the status-to-badge mapping
+                                                                            $status_to_class = [
+                                                                                '0' => 'bg-secondary', // Unliquidated
+                                                                                '1' => 'bg-dark', // Liquidated
+                                                                                '2' => 'bg-primary', // OK To Pay
+                                                                                '3' => 'bg-info', // Validated
+                                                                                '4' => 'bg-success', // Pay To Agent
+                                                                                '5' => 'bg-danger', // Return To AP
+                                                                                '6' => 'bg-warning', // Return To AP
+                                                                                '7' => 'bg-light text-dark', // Return To Agent by AP
+                                                                                '8' => 'bg-danger', // Amend
+                                                                            ];
+
+                                                                            // Determine the badge class based on the item's status
+                                                                            $badge_class = isset($status_to_class[$liquidation->item_status]) ? $status_to_class[$liquidation->item_status] : '';
+                                                                        ?>
+                                                                        <span class="badge <?= $badge_class; ?>">
+                                                                            <?= htmlspecialchars($liquidation->desc_status); ?>
+                                                                        </span>
+
+                                                                        </td>
+                                                                </tr>
+                                                            <?php endif; ?>
+                                                        <?php endforeach; ?>
+                                                    <?php endif ?>
+                                                    <?php elseif($this->session->userdata('user_type') == 3): ?>
+                                                        <?php if (!empty($for_amendment)): ?>
+                                                            <?php foreach ($for_amendment as $liquidation): ?>
+                                                                <?php if($liquidation->item_status == '5' || $liquidation->item_status == '7' || $liquidation->item_status == '8'): ?>
+                                                                    <tr onclick="window.location.href='<?= site_url('agentvessel/view/' . $liquidation->id); ?>'"> 
+                                                                        <td><?= $liquidation->vessel_name; ?></td>
+                                                                        <td><?= $liquidation->voyno; ?></td>
+                                                                        <td><?= $liquidation->port; ?></td>
+                                                                        <td><?= $liquidation->supplier; ?></td>
+                                                                        <td>
+                                                                            <?php
+                                                                                // Define the status-to-badge mapping
+                                                                                $status_to_class = [
+                                                                                    '0' => 'bg-secondary', // Unliquidated
+                                                                                    '1' => 'bg-dark', // Liquidated
+                                                                                    '2' => 'bg-primary', // OK To Pay
+                                                                                    '3' => 'bg-info', // Validated
+                                                                                    '4' => 'bg-success', // Pay To Agent
+                                                                                    '5' => 'bg-danger', // Return To AP
+                                                                                    '6' => 'bg-warning', // Return To AP
+                                                                                    '7' => 'bg-light text-dark', // Return To Agent by AP
+                                                                                    '8' => 'bg-danger', // Amend
+                                                                                ];  
+
+                                                                                $badge_class = isset($status_to_class[$liquidation->item_status]) ? $status_to_class[$liquidation->item_status] : '';
+                                                                            ?>
+                                                                            <span class="badge <?= $badge_class; ?>">
+                                                                                <?= htmlspecialchars($liquidation->desc_status); ?>
+                                                                            </span>
+                                                                        </td>
+                                                                    </tr>
+                                                                <?php endif; ?>
+                                                            <?php endforeach; ?>
+                                                        <?php endif; ?>
+                                                    <?php elseif($this->session->userdata('user_type') == 5): ?>
+                                                        <?php if (!empty($for_amendment)): ?>
+                                                            <?php foreach ($for_amendment as $liquidation): ?>
+                                                                <?php if($liquidation->item_status == '5' || $liquidation->item_status == '6' || $liquidation->item_status == '7' || $liquidation->item_status == '8'): ?>
+                                                                    <tr onclick="window.location.href='<?= site_url('agentvessel/view/' . $liquidation->id); ?>'"> 
+                                                                        <td><?= $liquidation->vessel_name; ?></td>
+                                                                        <td><?= $liquidation->voyno; ?></td>
+                                                                        <td><?= $liquidation->port; ?></td>
+                                                                        <td><?= $liquidation->supplier; ?></td>
+                                                                        <td>
+                                                                        <?php
+                                                                            // Define the status-to-badge mapping
+                                                                            $status_to_class = [
+                                                                                '0' => 'bg-secondary', // Unliquidated
+                                                                                '1' => 'bg-dark', // Liquidated
+                                                                                '2' => 'bg-primary', // OK To Pay
+                                                                                '3' => 'bg-info', // Validated
+                                                                                '4' => 'bg-success', // Pay To Agent
+                                                                                '5' => 'bg-danger', // Return To AP
+                                                                                '6' => 'bg-warning', // Return To AP
+                                                                                '7' => 'bg-light text-dark', // Return To Agent by AP
+                                                                                '8' => 'bg-danger', // Amend
+                                                                            ];
+
+                                                                            // Determine the badge class based on the item's status
+                                                                            $badge_class = isset($status_to_class[$liquidation->item_status]) ? $status_to_class[$liquidation->item_status] : '';
+                                                                        ?>
+                                                                        <span class="badge <?= $badge_class; ?>">
+                                                                            <?= htmlspecialchars($liquidation->desc_status); ?>
+                                                                        </span>
+
+                                                                        </td>
+                                                                    </tr>
+                                                                <?php endif; ?>
+                                                            <?php endforeach; ?>
+                                                        <?php endif; ?>
+                                                    <?php endif; ?>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -137,98 +709,42 @@
             </div>
         </div>
     </div>
-    <?php if($this->session->userdata('user_type') == 2): ?>
-        <button onclick="toggleBreakdown()" class="breakdown-toggle-btn btn btn-warning rounded-circle">
-            <i class="fa-solid fa-money-bill-transfer"></i>
-            <!-- <span class="position-absolute start-100 translate-middle p-2 bg-danger border border-light rounded-circle">
-                <span class="visually-hidden">New alerts</span>
-            </span> -->
-        </button>
-        <div class="breakdown-window">
-            <div class="breakdown-header text-white p-3 text-center">
-                Credit Breakdown
-            </div>
-            <div class="breakdown-content p-3">                        
-                <div class="d-flex justify-content-between align-items-end">
-                    <h4><strong>Credit Breakdown:</strong></h4>
-                    <p class="text-danger small"><strong>CURRENCY:</strong> PHP</p>
-                </div>
-                <table class="table table-warning table-hover">
-                    <caption class="small">As of <span id="currentTime"></span></caption>
-                    <thead>
-                        <tr>
-                            <th class="col-3">Vessel/Voyage</th>
-                            <th class="col-3">Total</th>
-                            <th class="text-end col-6">Credited Amount</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr class="breakdown-row">
-                            <td>Vessel Name V123</td>
-                            <td>20,000.00</td>
-                            <td class="text-end">20,000.00</td>
-                        </tr>
-                        <tr class="breakdown-row">
-                            <td>Vessel Name V123</td>
-                            <td>20,000.00</td>
-                            <td class="text-end">20,000.00</td>
-                        </tr>
-                        <tr class="breakdown-row">
-                            <td>Vessel Name V123</td>
-                            <td>20,000.00</td>
-                            <td class="text-end">20,000.00</td>
-                        </tr>
-                    </tbody>
-                </table>
-                <h4 class="text-end bold">PHP 60,0000.00</h4>
-            </div>
-        </div>
-    <?php endif; ?>
-    <!-- Modals -->
-    <div class="modal fade" id="changePasswordModal" tabindex="-1" aria-labelledby="changePasswordModalLabel" aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h1 class="modal-title fs-5" id="changePasswordModalLabel">Change Your Password</h1>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                    <form id="changePasswordForm" action="<?= site_url('login/change_password'); ?>" method="post">
-                        <div class="mb-3">
-                            <label for="currentUserPassword" class="form-label">Current Password</label>
-                            <input type="password" class="form-control" id="old_password" required>
-                        </div>
-                        <div class="mb-3">
-                            <label for="newUserPassword" class="form-label">New Password</label>
-                            <input type="password" class="form-control" id="new_password" required>
-                        </div>
-                        <div class="mb-3">
-                            <label for="confirmUserPassword" class="form-label">Confirm New Password</label>
-                            <input type="password" class="form-control" id="confirm_password" required>
-                        </div>
-                    </form>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-                    <button type="button" class="btn btn-primary">Update Password</button>
-                </div>
-            </div>
-        </div>
-    </div>
+    <?php require_once(APPPATH . 'views/partials/breakdown-window.php'); ?>
+
+
     <script>
         function toggleBreakdown() {
             const chat = document.querySelector('.breakdown-window');
             chat.classList.toggle('open');
         }
-        // function showTime() {
-        //     document.getElementById('currentTime').innerHTML = new Date().toUTCString();
-        // }
-        // showTime();
-        // setInterval(function () {
-        //     showTime();
-        // }, 1000);
-
-        
+        $(document).ready(function() {
+            $('#unliquidatedTable').DataTable({
+                paging: true,
+                searching: true,
+                pageLength: 10,
+            });
+            $('#forValidationTable').DataTable({
+                paging: true,
+                searching: true,
+                pageLength: 10,
+            });
+            $('#revalidatedTable').DataTable({
+                paging: true,
+                searching: true,
+                pageLength: 10,
+            });
+            $('#completedTable').DataTable({
+                paging: true,
+                searching: true,
+                pageLength: 10,
+            });
+            $('#forAMValidationTable').DataTable({
+                paging: true,
+                searching: true,
+                pageLength: 10,
+            });
+        });
     </script>
+
 </body>
 </html>

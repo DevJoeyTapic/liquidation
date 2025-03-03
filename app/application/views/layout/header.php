@@ -10,7 +10,7 @@
             </button>
             
             <ul class="dropdown-menu dropdown-menu-end">
-                <li><h6 class="dropdown-header"><?= $this->session->userdata('fullname') ?: 'Guest'; ?> - <?= $this->session->userdata('user_type') == 2 ? 'Supercargo Agent' : ($this->session->userdata('user_type') == 3 ? 'Accounting' : 'Unknown'); ?></h6></li>
+                <li><h6 class="dropdown-header"><?= $this->session->userdata('fullname') ?: 'Guest'; ?></h6></li>
                 <li><hr class="dropdown-divider"></li>
                 <li><a class="dropdown-item" href="<?= site_url('login/logout'); ?>">Signout</a></li>
             </ul>

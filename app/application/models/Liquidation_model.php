@@ -5,7 +5,7 @@ class Liquidation_model extends CI_Model {
         $this->load->database();
     }
 
-    public function get_accounting_liquidations() {
+    public function get_for_validation() {
         $sql = "SELECT
                     l.id,
                     l.user_id,
@@ -14,44 +14,36 @@ class Liquidation_model extends CI_Model {
                     l.vessel_name,
                     l.voyno,
                     l.`port`,
-                    l.`status`
+                    l.`status`,
+                    i.`status` as item_status
                 FROM tbl_agent_liquidation AS l
                 INNER JOIN tbl_agent_liquidation_items AS i
                 ON l.transno = i.transno
-                WHERE i.`status` = 2 or i.`status` = 3 AND l.`status` = 1
-                GROUP BY l.transno, l.voyno";
-        $query = $this->db->query($sql);
-        return $query->result();
-    }
-
-    public function get_voo_om_liquidations() {
-        $sql = "SELECT
-                l.id,
-                l.user_id,
-                l.supplier,
-                l.transno,
-                l.vessel_name,
-                l.voyno,
-                l.`port`,
-                l.`status`
-                FROM tbl_agent_liquidation AS l
-                INNER JOIN tbl_agent_liquidation_items AS i
-                ON l.transno = i.transno
-                WHERE i.`status` = 2 OR i.`status` = 3 AND l.`status` = 1
+                WHERE (i.`status` = 0 or i.`status` = 1 or i.`status` = 2 or i.`status` = 3 or i.`status` = 4 or i.`status` = 5) AND l.`status` = 1
                 GROUP BY l.transno, l.voyno";
         $query = $this->db->query($sql);
         return $query->result();
     }
 
     public function get_agent_liquidations($user_id) {
-        $sql = "SELECT * FROM tbl_agent_liquidation
-                WHERE user_id = ?";
+        $sql = "SELECT * 
+                FROM tbl_agent_liquidation l
+                WHERE l.user_id = ?
+                AND EXISTS (
+                    SELECT 1 
+                    FROM tbl_agent_liquidation_items i
+                    WHERE l.transno = i.transno AND l.supplier = i.supplier
+                );
+                ";
         $query = $this->db->query($sql, array($user_id));
         return $query->result();
     }
     public function get_vessel_data($id) {
-        $sql = "SELECT * FROM tbl_agent_liquidation
-                WHERE id = ?";
+        $sql = "SELECT l.*, i.`status` AS item_status
+                FROM tbl_agent_liquidation AS l
+                JOIN tbl_agent_liquidation_items AS i
+                ON l.transno = i.transno
+                WHERE l.id = ?";
         $query = $this->db->query($sql, array($id));
         return $query->result();
     }
@@ -63,7 +55,11 @@ class Liquidation_model extends CI_Model {
         return null;
     }
     public function get_vessel_items($transno) {
-        $sql = "SELECT * FROM tbl_agent_liquidation_items
+        $sql = "SELECT
+                    i.*,
+                    s.`status` AS desc_status
+                FROM tbl_agent_liquidation_items AS i
+                INNER JOIN tbl_liq_item_status AS s ON i.`status` = s.id
                 WHERE transno = ?
                 ORDER BY id ASC";
         $query = $this->db->query($sql, array($transno));
@@ -96,23 +92,23 @@ class Liquidation_model extends CI_Model {
     }
 
     public function update_item_agent($data) {
-        $sql ="UPDATE tbl_agent_liquidation_items
-               SET `status` = 2,
-               actual_amount = ?,
-               variance = ?,
-               `remarks` = ?
-               WHERE id = ?";
-        $this->db->query($sql, array(
-            $data['actualAmount'],
-            $data['variance'],
-            $data['remarks'],
-            $data['item_id']
-        ));
+        if (!empty($data['actualAmount']) && !empty($data['variance']) && !empty($data['item_id'])) {
+            $sql = "UPDATE tbl_agent_liquidation_items
+                    SET `status` = 1,
+                        actual_amount = ?,
+                        variance = ?
+                    WHERE id = ?";
+            $this->db->query($sql, array(
+                $data['actualAmount'],
+                $data['variance'],
+                $data['item_id']
+            ));
+        }
     }
 
-    public function update_item_by_voo_om($id) {
+    public function revalidate_item($id) {
         $sql ="UPDATE tbl_agent_liquidation_items
-               SET `status` = 2
+               SET `status` = 5
                WHERE id = ?";
         $this->db->query($sql, array($id));
     }
@@ -130,22 +126,18 @@ class Liquidation_model extends CI_Model {
         $query = $this->db->query($sql, array($item_id));
         return $query->result();
     }
-    
-    public function get_notes($liq_ref) {
-        $sql = "SELECT * FROM notes_master
-                WHERE liq_ref = ?";
-        $query = $this->db->query($sql, array($liq_ref));
-        return $query->result();
+
+    public function insert_item_remark($data) {
+        $this->db->insert('tbl_remarks', $data);
+        return $this->db->insert_id();
     }
-    public function insert_note($liq_ref, $sender, $notes, $timestamp) {
-        $data = [
-            'liq_ref' => $liq_ref,
-            'sender' => $sender,
-            'notes' => $notes,
-            'timestamp' => $timestamp
-        ];
-        $this->db->insert('notes_master', $data);
+
+    public function add_breakdown_cost($data) {
+        $this->db->insert('tbl_item_breakdown', $data);
+        return $this->db->insert_id();
     }
+
+
 
 
     
