@@ -1,4 +1,6 @@
-<?php require_once(APPPATH . 'views/layout/head.php'); ?>
+<!DOCTYPE html>
+<html lang="en">
+<?php $this->load->view('layout/head'); ?>
 <body>
     <div class="container">
         <div class="row justify-content-center align-items-center vh-100">

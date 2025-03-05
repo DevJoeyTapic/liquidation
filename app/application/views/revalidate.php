@@ -1,7 +1,8 @@
-<?php require_once(APPPATH . 'views/layout/head.php'); ?>
-
+<!DOCTYPE html>
+<html lang="en">
+<?php $this->load->view('layout/head'); ?>
 <body>
-    <?php require_once(APPPATH . 'views/layout/header.php'); ?>
+    <?php $this->load->view('layout/header'); ?>
     
     <div class="main-container bg-gradient">
         <div class="search-result cont d-flex flex-column" style="display: <?= ($this->session->userdata('user_type') == 4) ? 'block' : 'none'; ?>">
@@ -11,12 +12,13 @@
                         <thead>
                             <tr>
                                 <th class="col-2">Agent</th>
-                                <th class="col-3">Items</th>
+                                <th class="col-2">Items</th>
                                 <th class="col-1 text-center">RFP No.</th>
                                 <th class="text-center">Currency</th>
                                 <th class="col-2">RFP Amount</th>
                                 <th class="col-2">Actual Amount</th>
                                 <th class="col-2">Variance</th>
+                                <th class="col-1">Variance %</th>
                                 <th class="col-2 text-center">Remarks</th>
                                 <th class="col text-center">Validate</th>
                             </tr>
@@ -37,6 +39,7 @@
                                         <td><?= number_format($item->rfp_amount, 2); ?></td>
                                         <td><?= number_format($item->actual_amount, 2); ?></td>
                                         <td><?= number_format($item->variance, 2); ?></td>
+                                        <td><?= $item->variance_percent; ?></td>
                                         <td class="text-center">
                                             <button type="button" class="btn text-primary" data-bs-toggle="modal" data-bs-target="#showItemRemarksModal" id="showItemRemarks" data-item="<?= $item->id ?>">
                                                 <i class="fa-solid fa-message"></i>
@@ -70,7 +73,7 @@
             <? endif ?>           
         </div>
     </div>
-    <?php require_once(APPPATH . 'views/partials/modals.php'); ?>
+    <?php $this->load->view('partials/modals'); ?>
 
     <script>
         $(document).ready(function() {

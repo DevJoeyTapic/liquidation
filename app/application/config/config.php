@@ -54,3 +54,4 @@ $config['proxy_ips'] = '';
 // Garbage Collection Settings (Default: 1% chance per request)
 $config['sess_gc_probability'] = 1;
 $config['sess_gc_divisor'] = 100;
+

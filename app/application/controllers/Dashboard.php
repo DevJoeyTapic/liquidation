@@ -6,6 +6,7 @@ class Dashboard extends CI_Controller {
     public function __construct() {
         parent::__construct();
         $this->load->model('Dashboard_model');
+        $this->load->model('CreditBreakdown_model');
         $this->load->model('Login_model');
         $this->load->library('session');
         $this->load->model('User_model');
@@ -28,6 +29,9 @@ class Dashboard extends CI_Controller {
                 $data['pending_validation'] = $this->Dashboard_model->get_pendingValidationAg($user_id);
                 $data['completed'] = $this->Dashboard_model->get_completedAg($user_id);
                 $data['for_amendment'] = $this->Dashboard_model->get_forAmendmentAg($user_id);
+                $data['credit_breakdown'] = $this->CreditBreakdown_model->get_credit_breakdown($user_id);
+                $data['total_php'] = $this->CreditBreakdown_model->get_total_php($user_id);
+                $data['total_usd'] = $this->CreditBreakdown_model->get_total_usd($user_id);
                 $this->load->view('dashboard', $data);
                 break;
             case 3: // Accounting

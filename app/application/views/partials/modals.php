@@ -149,48 +149,48 @@
  <!-- add user modal -->
 <?php if($this->session->userdata('user_type') == 1): ?>
     <div class="modal fade" id="addUserModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h1 class="modal-title fs-5" id="staticBackdropLabel">Add New User</h1>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="staticBackdropLabel">Add New User</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <form action="<?php echo site_url('admin/addUser');?>" method="POST">
+                    <div class="modal-body">
+                            <div class="d-flex justify-content-between">
+                                <div>
+                                    <label for="username" class="small ms-2 mb-2">USERNAME</label>
+                                    <input type="text" class="form-control mb-2" name="username" value="<?php echo set_value('name') ?>"required>
+                                </div>
+                                <div>
+                                    <label for="password" class="small ms-2 mb-2">PASSWORD</label>
+                                    <input type="text" class="form-control mb-2" name="password" value="<?php echo set_value('password') ?>" required>
+                                </div>
+                            </div>
+                            <label for="fullname" class="small ms-2 mb-2">FULL NAME</label>
+                            <input type="text" class="form-control mb-2" name="fullname" value="<?php echo set_value('fullname') ?>" required>
+
+                            <label for="email" class="small ms-2 mb-2">EMAIL</label>
+                            <input type="email" class="form-control mb-2" name="email" value="<?php echo set_value('email') ?>" required>
+
+                            <label for="role" class="small ms-2 mb-2">ROLE</label>
+                            <select class="form-select mb-3" name="user_type" id="user_type" required>
+                                <option selected disabled></option>
+                                <option value="1"  <?php echo ($user->user_type == 1) ? 'selected' : ''; ?>>Admin</option>
+                                <option value="2"  <?php echo ($user->user_type == 2) ? 'selected' : ''; ?>>Agent</option>
+                                <option value="3"  <?php echo ($user->user_type == 3) ? 'selected' : ''; ?>>Accounting</option>
+                                <option value="4"  <?php echo ($user->user_type == 4) ? 'selected' : ''; ?>>TAD</option>
+                            </select>
+
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                        <button type="submit" class="btn btn-primary" id="addUserBtn">Add</button>
+                    </div>
+                </form>
             </div>
-            <form action="<?php echo site_url('admin/addUser');?>" method="POST">
-                <div class="modal-body">
-                        <div class="d-flex justify-content-between">
-                            <div>
-                                <label for="username" class="small ms-2 mb-2">USERNAME</label>
-                                <input type="text" class="form-control mb-2" name="username" value="<?php echo set_value('name') ?>"required>
-                            </div>
-                            <div>
-                                <label for="password" class="small ms-2 mb-2">PASSWORD</label>
-                                <input type="text" class="form-control mb-2" name="password" value="<?php echo set_value('password') ?>" required>
-                            </div>
-                        </div>
-                        <label for="fullname" class="small ms-2 mb-2">FULL NAME</label>
-                        <input type="text" class="form-control mb-2" name="fullname" value="<?php echo set_value('fullname') ?>" required>
-
-                        <label for="email" class="small ms-2 mb-2">EMAIL</label>
-                        <input type="email" class="form-control mb-2" name="email" value="<?php echo set_value('email') ?>" required>
-
-                        <label for="role" class="small ms-2 mb-2">ROLE</label>
-                        <select class="form-select mb-3" name="user_type" id="user_type" required>
-                            <option selected disabled></option>
-                            <option value="1"  <?php echo ($user->user_type == 1) ? 'selected' : ''; ?>>Admin</option>
-                            <option value="2"  <?php echo ($user->user_type == 2) ? 'selected' : ''; ?>>Agent</option>
-                            <option value="3"  <?php echo ($user->user_type == 3) ? 'selected' : ''; ?>>Accounting</option>
-                            <option value="4"  <?php echo ($user->user_type == 4) ? 'selected' : ''; ?>>TAD</option>
-                        </select>
-
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                    <button type="submit" class="btn btn-primary" id="addUserBtn">Add</button>
-                </div>
-            </form>
         </div>
     </div>
-</div>
  <!-- edit user modal -->
  <div class="modal fade" id="editUserModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
     <div class="modal-dialog">

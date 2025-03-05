@@ -11,7 +11,7 @@ class AgentVessel_model extends CI_Model {
         $sql = "SELECT 
                     i.*, 
                     l.`status` AS liq_status,
-                    s.`status` AS desc_status
+                    s.`status` AS desc_status,
                 FROM tbl_agent_liquidation_items AS i
                 INNER JOIN tbl_agent_liquidation AS l ON i.transno = l.transno
                 INNER JOIN tbl_liq_item_status AS s ON i.`status` = s.id
@@ -52,7 +52,8 @@ class AgentVessel_model extends CI_Model {
     public function ok_to_pay($data) {
         if (!empty($data['item_id'])) {
             $sql = "UPDATE tbl_agent_liquidation_items
-                    SET `status` = 2
+                    SET `status` = 2,
+                        tad_ts = NOW()
                     WHERE id = ?";
             $this->db->query($sql, array(
                 $data['item_id']
@@ -62,7 +63,8 @@ class AgentVessel_model extends CI_Model {
     public function submit_to_am($data) {
         if (!empty($data['item_id'])) {
             $sql = "UPDATE tbl_agent_liquidation_items
-                    SET `status` = 3
+                    SET `status` = 3,
+                        acctg_ts = NOW()
                     WHERE id = ?";
             $this->db->query($sql, array(
                 $data['item_id']
@@ -72,7 +74,8 @@ class AgentVessel_model extends CI_Model {
     public function pay_to_agent($data) {
         if (!empty($data['item_id'])) {
             $sql = "UPDATE tbl_agent_liquidation_items
-                    SET `status` = 4
+                    SET `status` = 4,
+                    amanager_ts = NOW()
                     WHERE id = ?";
             $this->db->query($sql, array(
                 $data['item_id']

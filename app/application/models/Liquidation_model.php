@@ -39,7 +39,7 @@ class Liquidation_model extends CI_Model {
         return $query->result();
     }
     public function get_vessel_data($id) {
-        $sql = "SELECT l.*, i.`status` AS item_status
+        $sql = "SELECT l.*, i.`status` AS item_status, DATEDIFF(NOW(), l.etd) AS age
                 FROM tbl_agent_liquidation AS l
                 JOIN tbl_agent_liquidation_items AS i
                 ON l.transno = i.transno
@@ -57,7 +57,16 @@ class Liquidation_model extends CI_Model {
     public function get_vessel_items($transno) {
         $sql = "SELECT
                     i.*,
-                    s.`status` AS desc_status
+                    s.`status` AS desc_status,
+                    ROUND(
+                        CASE
+                            WHEN actual_amount > rfp_amount THEN
+                                ((actual_amount - rfp_amount) / rfp_amount) * 100
+                            WHEN actual_amount < rfp_amount THEN
+                                ((rfp_amount - actual_amount) / rfp_amount) * 100
+                            ELSE 
+                                0
+                        END, 2) AS variance_percent
                 FROM tbl_agent_liquidation_items AS i
                 INNER JOIN tbl_liq_item_status AS s ON i.`status` = s.id
                 WHERE transno = ?
@@ -89,21 +98,6 @@ class Liquidation_model extends CI_Model {
     public function insert_item($data) {
         $this->db->insert('tbl_agent_liquidation_items', $data);
         return $this->db->insert_id();
-    }
-
-    public function update_item_agent($data) {
-        if (!empty($data['actualAmount']) && !empty($data['variance']) && !empty($data['item_id'])) {
-            $sql = "UPDATE tbl_agent_liquidation_items
-                    SET `status` = 1,
-                        actual_amount = ?,
-                        variance = ?
-                    WHERE id = ?";
-            $this->db->query($sql, array(
-                $data['actualAmount'],
-                $data['variance'],
-                $data['item_id']
-            ));
-        }
     }
 
     public function revalidate_item($id) {

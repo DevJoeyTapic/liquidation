@@ -1,7 +1,8 @@
-<?php require_once(APPPATH . 'views/layout/head.php'); ?>
-<body>
+<!DOCTYPE html>
+<html lang="en">
+<?php $this->load->view('layout/head'); ?><body>
     <div class="container-fluid">
-        <?php require_once(APPPATH . 'views/layout/header.php'); ?>
+    <?php $this->load->view('layout/header'); ?>
         <div class="main-container bg-gradient">
             <div class="cont mb-3">
                 <div class="row p-0">
@@ -64,8 +65,7 @@
                     </div>
                 </div>
             </div>
-            <?php require_once(APPPATH . 'views/partials/liquidation-overview.php'); ?>
-
+            <?php $this->load->view('partials/liquidation-overview'); ?>
             <div class="row">
                 <div class="col-9">
                     <div class="cont">
@@ -76,7 +76,7 @@
                             <div class="nav nav-tabs liquidation-tabs" id="nav-tab" role="tablist">
                                 <button class="nav-link active" id="pendingTab" data-bs-toggle="tab" data-bs-target="#pending" type="button" role="tab" aria-controls="pending" aria-selected="false"><i class="fa-solid fa-user-clock pe-2"></i>Pending Item(s) for Liquidation</button>    
                                 <button class="nav-link" id="forValidationTab" data-bs-toggle="tab" data-bs-target="#forValidation" type="button" role="tab" aria-controls="forValidation" aria-selected="true"><i class="fa-regular fa-clock pe-2"></i><?= ($this->session->userdata('user_type') == '5') ? 'Pending OTP' : 'Item(s) for Validation' ?></button>    
-                                <button class="nav-link" id="validatedTab" style="display: <?= ($this->session->userdata('user_type') == '5') ? 'none' : 'block' ?>"data-bs-toggle="tab" data-bs-target="#validated" type="button" role="tab" aria-controls="validated" aria-selected="false"><i class="fa-solid fa-circle-check pe-2"></i>Validated Item(s)</button>            
+                                <button class="nav-link" id="validatedTab" style="display: <?= ($this->session->userdata('user_type') == '5') ? 'none' : 'block' ?>"data-bs-toggle="tab" data-bs-target="#validated" type="button" role="tab" aria-controls="validated" aria-selected="false"><i class="fa-solid fa-circle-check pe-2"></i>Liquidated Item(s)</button>            
                                 <button class="nav-link" id="forRevalidationTab" style="display: <?= ($this->session->userdata('user_type') == '5') ? 'none' : 'block' ?>"data-bs-toggle="tab" data-bs-target="#forRevalidation" type="button" role="tab" aria-controls="forRevalidation" aria-selected="false"><i class="fa-solid fa-user-xmark pe-2"></i>For Revalidation</button>            
 
                             </div>
@@ -204,6 +204,12 @@
                                                         <?php endforeach; ?>
                                                     <?php endif ?>
                                                 </tbody>
+                                                <tfoot>
+                                                    <tr class="total" style="font-size: 1.2rem">
+                                                        <td colspan=3 class="text-end bold">Total</td>
+                                                        <td colspan=5 id="totalRfpAmt">11,000.00</td>
+                                                    </tr>
+                                                </tfoot>
                                             </table>
                                         </div>
                                     </div>              
@@ -223,6 +229,7 @@
                                                         <th class="">RFP Amount</th>
                                                         <th class="">Actual Amount</th>
                                                         <th class="">Variance</th>
+                                                        <th class="">Variance %</th>
                                                         <th class="col-1 text-center">Remarks</th>
                                                         <th class="col-1 text-center">Validate</th>
                                                     </tr>
@@ -257,6 +264,7 @@
                                                                 <td>
                                                                     <?= number_format($item->variance, 2); ?>
                                                                 </td>
+                                                                <td><?= $item->variance_percent; ?></td>
                                                                 <td class="col-1 rtext-center">
                                                                     <button type="button" class="btn text-primary" data-bs-toggle="modal" data-bs-target="#showItemRemarksModal" id="showItemRemarks" data-item="<?= $item->id ?>">
                                                                         <i class="fa-solid fa-message"></i>
@@ -283,6 +291,7 @@
                                                         <th class="col-2">RFP Amount</th>
                                                         <th class="col-2">Actual Amount</th>
                                                         <th class="col-2">Variance</th>
+                                                        <th>Variance %</th>
                                                         <th class="col-2">Remarks</th>
                                                         <th class="col text-center">Validate</th>
                                                     </tr>
@@ -318,6 +327,7 @@
                                                                     </td>
                                                                     <td id="credit"><?= $item->actual_amount; ?></td>
                                                                     <td><?= $item->variance; ?></td>
+                                                                    <td><?= $item->variance_percent; ?></td>
                                                                     <td>
                                                                         <button type="button" class="btn text-primary" data-bs-toggle="modal" data-bs-target="#showItemRemarksModal" id="showItemRemarks" data-item="<?= $item->id ?>">
                                                                             <i class="fa-solid fa-message"></i>
@@ -447,6 +457,7 @@
                                                         <th class="col-2">RFP Amount</th>
                                                         <th class="col-2">Actual Amount</th>
                                                         <th class="col-2">Variance</th>
+                                                        <th class="col-1">Variance %</th>
                                                         <th class="col-2">Remarks</th>
                                                         <th class="col text-center">Status</th>
                                                     </tr>
@@ -481,6 +492,7 @@
                                                                 </td>
                                                                 <td id="credit"><?= $item->actual_amount; ?></td>
                                                                 <td><?= $item->variance; ?></td>
+                                                                <td><?= $item->variance_percent; ?></td>
                                                                 <td>
                                                                     <button type="button" class="btn text-primary" data-bs-toggle="modal" data-bs-target="#showItemRemarksModal" id="showItemRemarks" data-item="<?= $item->id ?>">
                                                                         <i class="fa-solid fa-message"></i>
@@ -536,6 +548,7 @@
                                                         <th class="col-2">RFP Amount</th>
                                                         <th class="col-2">Actual Amount</th>
                                                         <th class="col-2">Variance</th>
+                                                        <th class="col">Variance %</th>
                                                         <th class="col-2">Remarks</th>
                                                         <th class="col text-center">Status</th>
                                                     </tr>
@@ -627,9 +640,9 @@
             </div>            
         </div>
     </div>
-    <?php require_once(APPPATH . 'views/partials/notes-window.php'); ?>
-    <?php require_once(APPPATH . 'views/partials/breakdown-window.php'); ?>
-    <?php require_once(APPPATH . 'views/partials/modals.php'); ?>
+    <?php $this->load->view('partials/notes-window'); ?>
+    <?php $this->load->view('partials/breakdown-window'); ?>
+    <?php $this->load->view('partials/modals'); ?>
 
     <script>
         function toggleChat() {
