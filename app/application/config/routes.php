@@ -1,13 +1,13 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
 
-$route['default_controller'] = 'login';
+$route['default_controller'] = 'Login';
 $route['404_override'] = 'errors/page_missing';
 $route['translate_uri_dashes'] = FALSE;
 
-$route['login'] = 'login';
-$route['login/authenticate'] = 'Login/authenticate';
-$route['logout'] = 'login/logout';
+$route['login'] = 'Login';
+$route['authenticate'] = 'Login/authenticate';
+$route['logout'] = 'Login/logout';
 $route['admin'] = 'Admin';
 $route['addUser'] = 'Admin/addUser';
 $route['editUser'] = 'Admin/editUser';
