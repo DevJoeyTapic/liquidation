@@ -11,7 +11,7 @@
                         <h3 class="mb-3">SUPERCARGO LIQUIDATION</h3>
                     </div>
                     
-                    <form action="<?= site_url('login/authenticate'); ?>" method="POST">
+                    <form action="<?= base_url('authenticate'); ?>" method="POST">
                         <div class="form-floating mb-3">
                             <input type="text" class="form-control" name="username" placeholder="Enter your username" required>
                             <label for="username" id="username">Username</label>

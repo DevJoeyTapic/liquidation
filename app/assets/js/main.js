@@ -195,7 +195,7 @@ $(document).ready(function () {
       const vpercent = ((rfpAmount - actualAmount) / rfpAmount) * 100;
   
       $(this).closest("tr").find(".variance").text(variance.toFixed(2)); 
-      $(this).closest("tr").find(".variance_percent").text(vpercent.toFixed(2)); 
+      $(this).closest("tr").find(".variance_percent").text(vpercent.toFixed(2) + '%'); 
       
       const checkbox = $(this).closest("tr").find(".rowCheckbox");
       
