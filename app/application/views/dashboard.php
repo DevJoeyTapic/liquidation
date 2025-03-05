@@ -1,8 +1,10 @@
-<?php require_once(APPPATH . 'views/layout/head.php'); ?>
+<!DOCTYPE html>
+<html lang="en">
+<?php $this->load->view('layout/head'); ?>
 <body>
-    <?php require_once(APPPATH . 'views/partials/loading-screen.php'); ?>
+<?php $this->load->view('partials/loading-screen'); ?>
     <div class="container-fluid">
-        <?php require_once(APPPATH . 'views/layout/header.php'); ?>
+        <?php $this->load->view('layout/header'); ?>
 
         <div class="main-container bg-gradient">
             <div class="col-11 mx-auto" style="display: <?= ($this->session->userdata('user_type') == 2 || $this->session->userdata('user_type') == 3 || $this->session->userdata('user_type') == 5) ? 'block' : 'none'; ?>">
@@ -11,7 +13,7 @@
                     <i class="fa-solid fa-arrows-rotate pe-2" ></i>Refresh Data
                 </button>
                 <div>
-                    <p class="small text-secondary text-end">Last updated on <?php echo date('Y-m-d H:i:s'); ?></p>
+                    <p class="small text-secondary text-end">Last updated on <?php echo date('Y-m-d H:i:s', strtotime('+8 hours')); ?></p>
                 </div>
                 
             </div>
@@ -709,7 +711,7 @@
             </div>
         </div>
     </div>
-    <?php require_once(APPPATH . 'views/partials/breakdown-window.php'); ?>
+    <?php $this->load->view('partials/breakdown-window'); ?>
 
 
     <script>

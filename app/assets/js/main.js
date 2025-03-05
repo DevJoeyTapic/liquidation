@@ -36,14 +36,14 @@ $(document).ready(function () {
                           const actualAmount = $(this).find("td:nth-child(5) input").val();
                           const variance = $(this).find(".variance").text();
                           const item_id = $(this).find("input[name='item_id']").val();
-                          
+
                           dataToSubmit.push({
                               actualAmount: actualAmount,
                               variance: variance,
                               item_id: item_id
                           });
                       });
-
+                      
                       $.ajax({
                           url: baseUrl + '/vesselitem/submit_for_validation', // Ensure baseUrl is defined
                           method: 'POST',
@@ -52,7 +52,9 @@ $(document).ready(function () {
                           },
                           success: function(response) {
                               console.log(response);
-                              location.reload();
+                              console.log(dataToSubmit);
+                              // location.reload(); 
+
                           },
                           error: function(error) {
                               Swal.fire({
@@ -126,7 +128,7 @@ $(document).ready(function () {
           },
           success: function(response) {
             console.log(response);
-            location.reload();
+            // location.reload();
           },
           error: function(error) {
             console.error("Error occurred while submitting:", error);
@@ -186,26 +188,28 @@ $(document).ready(function () {
   $(document).ready(function($) {
     $(document).on("input", "#actualAmount", function () {
       const rfpAmount = parseFloat(
-        $(this).closest("tr").find(".rfpAmount").text().replace(/,/g, '') 
+          $(this).closest("tr").find(".rfpAmount").text().replace(/,/g, '') 
       );
       const actualAmount = parseFloat($(this).val()) || 0; 
       const variance = rfpAmount - actualAmount;
-
+      const vpercent = ((rfpAmount - actualAmount) / rfpAmount) * 100;
+  
       $(this).closest("tr").find(".variance").text(variance.toFixed(2)); 
-    
+      $(this).closest("tr").find(".variance_percent").text(vpercent.toFixed(2)); 
+      
       const checkbox = $(this).closest("tr").find(".rowCheckbox");
-    
+      
       if (actualAmount) {
-        checkbox.prop("checked", true); 
-        checkbox.prop("disabled", false); 
-        $("#submitLiquidation").removeClass("disabled").prop("disabled", false);
+          checkbox.prop("checked", true); 
+          checkbox.prop("disabled", false); 
+          $("#submitLiquidation").removeClass("disabled").prop("disabled", false);
       } else {
-        checkbox.prop("checked", false); 
-        checkbox.prop("disabled", true); 
-        $("#submitLiquidation").addClass("disabled").prop("disabled", true);
-        // $(this).closest("tr").find(".variance").text("0.00"); 
+          checkbox.prop("checked", false); 
+          checkbox.prop("disabled", true); 
+          $("#submitLiquidation").addClass("disabled").prop("disabled", true);
       }
-    });
+  });
+  
 
     $(document).on('blur', '#actualAmount', function() {
       const rfpAmount = parseFloat(
@@ -214,6 +218,7 @@ $(document).ready(function () {
       const variance = parseFloat(
         $(this).closest("tr").find(".variance").text().replace(/,/g, '') 
       );
+
       const item_id = $(this).closest("tr").find("input[name='item_id']").val();
       if (variance !== rfpAmount) {
         Swal.fire({
@@ -407,7 +412,7 @@ $(document).ready(function () {
       },
       success: function (response) {
         const data = JSON.parse(response);
-        location.reload();
+        // location.reload();
         
       },
       error: function () {

@@ -17,4 +17,6 @@ class Breakdown_model extends CI_Model {
         $query = $this->db->query($sql, array($item_id));
         return $query->result_array();
     }
+
+    
 }

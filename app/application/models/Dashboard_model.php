@@ -7,7 +7,8 @@ class Dashboard_model extends CI_Model {
     // Get dashboard data for agent
     public function get_unliquidatedAg($user_id) {
         $sql = "SELECT
-                    l.*, i.`status` AS item_status,
+                    l.*,
+                    i.`status` AS item_status,
                     s.`status` AS desc_status
                 FROM tbl_agent_liquidation AS l
                 JOIN tbl_agent_liquidation_items AS i

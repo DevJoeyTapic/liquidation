@@ -1,8 +1,10 @@
-<?php require_once(APPPATH . 'views/layout/head.php'); ?>
+<!DOCTYPE html>
+<html lang="en">
+<?php $this->load->view('layout/head'); ?>
 <body>
-    <?php require_once(APPPATH . 'views/partials/loading-screen.php'); ?>
+    <?php $this->load->view('partials/loading-screen'); ?>
     <div class="container-fluid">
-    <?php require_once(APPPATH . 'views/layout/header.php'); ?>
+    <?php $this->load->view('layout/header'); ?>
         <div class="main-container bg-gradient">
             <div class="cont mb-3">
                 <div class="row px-3 d-flex justify-content-start align-items-center">
@@ -64,7 +66,7 @@
                 </div>
             </div>
 
-            <?php require_once(APPPATH . 'views/partials/liquidation-overview.php'); ?>
+            <?php $this->load->view('partials/liquidation-overview'); ?>
 
             <div class="cont">
                 <div class="d-flex justify-content-between align-items-center mb-3">
@@ -74,7 +76,7 @@
                             <i class="fa-solid fa-arrows-rotate pe-2"></i>Refresh Data
                         </button>
                         <div>
-                            <p class="small text-secondary text-end">Last updated on <?php echo date('Y-m-d H:i:s'); ?></p>
+                            <p class="small text-secondary text-end">Last updated on <?php echo date('Y-m-d H:i:s', strtotime('+8 hours')); ?></p>
                         </div>
                     </div>
                 </div>
@@ -106,12 +108,12 @@
                                         <thead>
                                             <tr>
                                                 <th class="">Items</th>
-                                                
                                                 <th class="col-1 text-center">RFP No.</th>
                                                 <th>Currency</th>
                                                 <th class="">RFP Amount</th>
                                                 <th class="">Actual Amount</th>
                                                 <th class="">Variance</th>
+                                                <th class="col-1">Variance %</th>
                                                 <th class="col-1 text-center">Remarks</th>
                                                 <th class="col-1 text-center">Document</th>
                                                 <th class="col-1 text-center">Validate</th>
@@ -167,6 +169,13 @@
                                                                 <?= number_format($item->variance, 2); ?>
                                                             <?php endif ?>
                                                         </td>
+                                                        <td class="variance_percent">
+                                                            <?php if($item->isNew == '1'): ?>  
+                                                                <?= number_format($item->variance_percent, 2) . '%'; ?>
+                                                            <?php elseif($item->status == '8'|| $item->status == '7'): ?>
+                                                                <?= number_format($item->variance_percent, 2) . '%'; ?>
+                                                            <?php endif ?>
+                                                        </td>
                                                         <td class="col-1 text-center">
                                                             <button type="button" class="btn text-primary" data-bs-toggle="modal" data-bs-target="#showItemRemarksModal" id="showItemRemarks" data-item="<?= $item->id ?>">
                                                                 <i class="fa-solid fa-message"></i>
@@ -190,7 +199,7 @@
                             </div>
                         </div>
                         <div class="d-flex justify-content-end">
-                            <button type="button" class="btn btn-primary" id="submitLiquidation" >Submit</button>
+                            <button type="button" class="btn btn-primary disabled" id="submitLiquidation" >Submit</button>
                         </div>
                     </div>
                     <div class="tab-pane fade" id="forValidation" role="tabpanel" aria-labelledby="forValidationTab">
@@ -206,7 +215,8 @@
                                                 <th class="col-2">RFP Amount</th>
                                                 <th class="col-2">Actual Amount</th>
                                                 <th class="col-2">Variance</th>
-                                                <th class="col-2">Remarks</th>
+                                                <th class="col-1">Variance %</th>
+                                                <th class="col-1">Remarks</th>
                                                 <th class="col-2 text-center">Document</th>
                                                 <th>Status</th>
                                             </tr>
@@ -215,7 +225,7 @@
                                             <?php foreach ($liquidation_item as $item): ?>
                                                 <?php if ($item->user_id == $this->session->userdata('user_id') && $item->status == '1' || $item->status == '2' || $item->status == '3' || $item->status == '5' || $item->status == '6' || $item->status == '7'): ?>
                                                     <tr>
-                                                        <td class="col-3" id="item">
+                                                        <td id="item">
                                                             <?= $item->item; ?>
                                                             <?php if($item->controlled == 0): ?>
                                                                 <span class="badge rounded-pill text-bg-warning">Controlled</span>
@@ -224,7 +234,7 @@
                                                                 <span class="badge rounded-pill text-bg-primary">NEW ITEM</span>
                                                             <?php endif ?>
                                                         </td>
-                                                        <td class="col-1 text-center" id="rfpno">
+                                                        <td class="text-center" id="rfpno">
                                                             <?php if($item->isNew == '1'): ?>  
                                                                 
                                                             <?php else: ?>
@@ -232,14 +242,14 @@
                                                             <?php endif ?>
                                                         </td>
                                                         <td><?= $item->currency ?></td>
-                                                        <td class="col-2 rfpAmount" id="rfpAmount">
+                                                        <td class="rfpAmount" id="rfpAmount">
                                                             <?php if($item->isNew == '1'): ?>  
                                                                 <?= number_format($item->actual_amount,2) ?>
                                                             <?php else: ?>
                                                                 <?= number_format($item->actual_amount,2) ?>
                                                             <?php endif ?>
                                                         </td>
-                                                        <td class="col-2"><?= number_format($item->actual_amount, 2) ?></td>
+                                                        <td><?= number_format($item->actual_amount, 2) ?></td>
                                                         <td class="variance">
                                                             <?php if($item->isNew == '1'): ?>  
                                                                 <?= number_format($item->variance, 2) ?>
@@ -247,7 +257,14 @@
                                                                 <?= number_format($item->variance, 2); ?>
                                                             <?php endif ?>
                                                         </td>
-                                                        <td class="col-2 ">
+                                                        <td class="variance_percent">
+                                                            <?php if($item->isNew == '1'): ?>  
+                                                                <?= number_format($item->variance_percent, 2) . '%'; ?>
+                                                            <?php else: ?>
+                                                                <?= number_format($item->variance_percent, 2) . '%'; ?>
+                                                            <?php endif ?>
+                                                        </td>
+                                                        <td>
                                                             <button type="button" class="btn text-primary" data-bs-toggle="modal" data-bs-target="#showItemRemarksModal" id="showItemRemarks" data-item="<?= $item->id ?>">
                                                                 <i class="fa-solid fa-message"></i>
                                                             </button>
@@ -302,6 +319,7 @@
                                                 <th class="col-2">RFP Amount</th>
                                                 <th class="col-2">Actual Amount</th>
                                                 <th class="col-2">Variance</th>
+                                                <th class="col-1">Variance %</th>
                                                 <th class="col-2">Remarks</th>
                                                 <th class="col-2 text-center">Document</th>
                                                 <th>Status</th>
@@ -311,7 +329,7 @@
                                             <?php foreach ($liquidation_item as $item): ?>
                                                 <?php if ($item->user_id == $this->session->userdata('user_id') && $item->status == '4'): ?>
                                                     <tr>
-                                                        <td class="col-3" id="item">
+                                                        <td id="item">
                                                             <?= $item->item; ?>
                                                             <?php if($item->controlled == 0): ?>
                                                                 <span class="badge rounded-pill text-bg-warning">Controlled</span>
@@ -320,9 +338,9 @@
                                                                 <span class="badge rounded-pill text-bg-primary">NEW ITEM</span>
                                                             <?php endif ?>
                                                         </td>
-                                                        <td class="col-1 text-center" id="rfpno"><?= $item->rfp_no; ?></td>
+                                                        <td class="text-center" id="rfpno"><?= $item->rfp_no; ?></td>
                                                         <td><?= $item->currency ?></td>
-                                                        <td class="col-2 rfpAmount" id="rfpAmount">
+                                                        <td class="rfpAmount" id="rfpAmount">
                                                             <?php if($item->isNew == '1'): ?>  
                                                                 <?= $item->actual_amount ?>
                                                             <?php else: ?>
@@ -330,11 +348,14 @@
                                                             <?php endif ?>
                                                             
                                                         </td>
-                                                        <td class="col-2"><?= number_format($item->actual_amount, 2) ?></td>
+                                                        <td><?= number_format($item->actual_amount, 2) ?></td>
                                                         <td class="variance">
                                                             <?= number_format($item->variance, 2); ?>
                                                         </td>
-                                                        <td class="col-2 ">
+                                                        <td class="variance">
+                                                            <?= number_format($item->variance_percent, 2) . '%'; ?>
+                                                        </td>
+                                                        <td class="">
                                                             <button type="button" class="btn text-primary" data-bs-toggle="modal" data-bs-target="#showItemRemarksModal" id="showItemRemarks" data-item="<?= $item->id ?>">
                                                                 <i class="fa-solid fa-message"></i>
                                                             </button>
@@ -388,6 +409,7 @@
                                                 <th class="col-2">RFP Amount</th>
                                                 <th class="col-2">Actual Amount</th>
                                                 <th class="col-2">Variance</th>
+                                                <th class="col-1">Variance %</th>
                                                 <th class="col-2">Remarks</th>
                                                 <th class="col-2 text-center">Document</th>
                                                 <th>Validate</th>
@@ -408,7 +430,7 @@
                                                             <?php endif ?>
                                                         </td>
                                                         
-                                                        <td class="text-center col-1 rfpno" id="rfpno">
+                                                        <td class="text-center rfpno" id="rfpno">
                                                             <?= $item->rfp_no ?>
                                                         </td>
                                                         <td class="currency"><?= $item->currency ?></td>
@@ -435,17 +457,20 @@
                                                         <td class="variance" id="<?= ($this->session->userdata('user_type') == 5 ? 'variance' : '') ?>">
                                                             <?= number_format($item->variance, 2) ?>
                                                         </td>
-                                                        <td class="col-1 text-center">
+                                                        <td class="variance_percent">
+                                                            <?= number_format($item->variance_percent, 2) . '%' ?>
+                                                        </td>
+                                                        <td class="text-center">
                                                             <button type="button" class="btn text-primary" data-bs-toggle="modal" data-bs-target="#showItemRemarksModal" id="showItemRemarks" data-item="<?= $item->id ?>">
                                                                 <i class="fa-solid fa-message"></i>
                                                             </button>
                                                         </td>
-                                                        <td class="col-1 docRef text-center">
+                                                        <td class="docRef text-center">
                                                             <button class="btn btn-sm" type="button" id="uploadButton">
                                                                 <i class="fa-solid fa-upload"></i>
                                                             </button>
                                                         </td>
-                                                        <td class="col-1 text-center validate">
+                                                        <td class="text-center validate">
                                                             <input type="checkbox" class="form-check-input rowCheckbox">
                                                             <input type="hidden" name="item_id" value="<?php echo $item->id; ?>">
                                                         </td>
@@ -466,9 +491,9 @@
             </div>
 		</div>
   	</div>
-    <?php require_once(APPPATH . 'views/partials/notes-window.php'); ?>
-    <?php require_once(APPPATH . 'views/partials/breakdown-window.php'); ?>
-    <?php require_once(APPPATH . 'views/partials/modals.php'); ?>
+    <?php $this->load->view('partials/notes-window'); ?>
+    <?php $this->load->view('partials/breakdown-window'); ?>
+    <?php require_once(APPPATH . 'views/partials/modals.php')?>
 
 
     <script>

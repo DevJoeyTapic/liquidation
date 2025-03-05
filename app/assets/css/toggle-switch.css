@@ -19,23 +19,23 @@
     margin-right: 20px;
     position: relative;
     height: 20px;
-    width: 70px;
+    width: 40px;
     transform: scale(1.5);
     transition: background-color 0.2s linear;
   }
 
   .label .ball {
     background-color: #fff;
-    border-radius: 30%;
+    border-radius: 50%;
     position: absolute;
     top: 2px;
     left: 2px;
-    height: 16px;
-    width: 29px;
+    height: 15px;
+    width: 15px;
     transform: translateX(0px);
     transition: transform 0.2s linear;
   }
 
   .checkbox:checked + .label .ball {
-    transform: translateX(37px);
+    transform: translateX(20px);
   }

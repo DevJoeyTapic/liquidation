@@ -1,8 +1,9 @@
-<?php require_once(APPPATH . 'views/layout/head.php'); ?>
+<!DOCTYPE html>
+<html lang="en">
+<?php $this->load->view('layout/head'); ?>
 <body>
     <div class="container-fluid">
-        <?php require_once(APPPATH . 'views/layout/header.php'); ?>
-
+    <?php $this->load->view('layout/header'); ?>
         <div class="main-container bg-gradient mt-5">
             <h3 class="my-3">Site Administrator</h3>
             <div class="accordion" id="user-accordion">
@@ -89,7 +90,7 @@
             });
         </script>
     <?php endif; ?>
-    <?php require_once(APPPATH . 'views/partials/modals.php'); ?>
+    <?php require_once('views/partials/modals.php'); ?>
 
 
 </body>
