@@ -711,8 +711,9 @@
             </div>
         </div>
     </div>
-    <?php $this->load->view('partials/breakdown-window'); ?>
-
+    <?php if($this->session->userdata('usertype') != 1): ?>
+        <?php $this->load->view('partials/breakdown-window'); ?>
+    <?php endif; ?>
 
     <script>
         function toggleBreakdown() {

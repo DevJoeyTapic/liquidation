@@ -39,7 +39,7 @@
                                         <td><?= number_format($item->rfp_amount, 2); ?></td>
                                         <td><?= number_format($item->actual_amount, 2); ?></td>
                                         <td><?= number_format($item->variance, 2); ?></td>
-                                        <td><?= $item->variance_percent; ?></td>
+                                        <td><?=number_format($item->variance_percent, 2) . '%'; ?></td>
                                         <td class="text-center">
                                             <button type="button" class="btn text-primary" data-bs-toggle="modal" data-bs-target="#showItemRemarksModal" id="showItemRemarks" data-item="<?= $item->id ?>">
                                                 <i class="fa-solid fa-message"></i>

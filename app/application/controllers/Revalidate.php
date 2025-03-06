@@ -4,6 +4,7 @@ class Revalidate extends CI_Controller {
         parent::__construct();
         $this->load->database();
         $this->load->model('AgentVessel_model');
+        $this->load->model('CreditBreakdown_model');
         $this->load->library('session');    
 
         if (!$this->session->userdata('logged_in')) {

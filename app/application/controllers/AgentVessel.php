@@ -4,6 +4,7 @@ class AgentVessel extends CI_Controller {
         parent::__construct();
         $this->load->database();
         $this->load->model('Liquidation_model');
+        $this->load->model('CreditBreakdown_model');
         $this->load->model('AgentVessel_model');
         $this->load->model('Notes_model');
         $this->load->library('session');    
@@ -24,9 +25,14 @@ class AgentVessel extends CI_Controller {
 
     public function view($id) {
         if ($this->session->userdata('user_type') == 3 || $this->session->userdata('user_type') == 4 || $this->session->userdata('user_type') == 5) {
+            $user_id = $this->session->userdata('user_id');
+            $supplier = $this->session->userdata('fullname');
             $data['id'] = $id;
             $data['vessel_data'] = $this->Liquidation_model->get_vessel_data($id);
-            $data['vessel_items'] = $this->Liquidation_model->get_vessel_items($data['vessel_data'][0]->transno);
+            $data['vessel_items'] = $this->Liquidation_model->get_vessel_items($data['vessel_data'][0]->transno, $data['vessel_data'][0]->supplier);
+            $data['credit_breakdown'] = $this->CreditBreakdown_model->get_credit_breakdown($user_id);
+            $data['total_php'] = $this->CreditBreakdown_model->get_total_php($user_id);
+            $data['total_usd'] = $this->CreditBreakdown_model->get_total_usd($user_id);
             $data['notes'] = $this->Notes_model->get_notes($data['id']);
 
             $this->load->view('agent-vessel', $data);

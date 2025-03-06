@@ -22,7 +22,16 @@ class AgentVessel_model extends CI_Model {
     public function get_for_am() {
         $sql = "SELECT
                     i.*,
-                    s.`status` as desc_status
+                    s.`status` as desc_status,
+                    ROUND(
+                        CASE
+                            WHEN actual_amount > rfp_amount THEN
+                                ((actual_amount - rfp_amount) / rfp_amount) * 100
+                            WHEN actual_amount < rfp_amount THEN
+                                ((rfp_amount - actual_amount) / rfp_amount) * 100
+                            ELSE 
+                                0
+                        END, 2) AS variance_percent
                 FROM tbl_agent_liquidation_items AS i
                 INNER JOIN tbl_liq_item_status AS s ON i.`status` = s.id
                 WHERE i.`status` = 3";

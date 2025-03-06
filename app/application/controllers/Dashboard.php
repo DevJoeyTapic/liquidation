@@ -35,16 +35,24 @@ class Dashboard extends CI_Controller {
                 $this->load->view('dashboard', $data);
                 break;
             case 3: // Accounting
+                $user_id = $this->session->userdata('user_id');
                 $data['unliquidated_vessels'] = $this->Dashboard_model->get_unliquidated();
                 $data['pending_validation'] = $this->Dashboard_model->get_pendingValidationAcc();
                 $data['for_amendment'] = $this->Dashboard_model->get_forAmendmentAcc();
                 $data['completed'] = $this->Dashboard_model->get_completed();
+                $data['credit_breakdown'] = $this->CreditBreakdown_model->get_credit_breakdown($user_id);
+                $data['total_php'] = $this->CreditBreakdown_model->get_total_php($user_id);
+                $data['total_usd'] = $this->CreditBreakdown_model->get_total_usd($user_id);
                 $this->load->view('dashboard', $data);
                 break;
             case 5: // TAD
+                $user_id = $this->session->userdata('user_id');
                 $data['unliquidated_vessels'] = $this->Dashboard_model->get_unliquidated();
                 $data['pending_otp'] = $this->Dashboard_model->get_pendingOTP();
                 $data['completed'] = $this->Dashboard_model->get_completed();
+                $data['credit_breakdown'] = $this->CreditBreakdown_model->get_credit_breakdown($user_id);
+                $data['total_php'] = $this->CreditBreakdown_model->get_total_php($user_id);
+                $data['total_usd'] = $this->CreditBreakdown_model->get_total_usd($user_id);
                 $this->load->view('dashboard', $data);
                 break;
             default:               

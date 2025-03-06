@@ -264,7 +264,7 @@
                                                                 <td>
                                                                     <?= number_format($item->variance, 2); ?>
                                                                 </td>
-                                                                <td><?= $item->variance_percent; ?></td>
+                                                                <td><?= number_format($item->variance_percent, 2) . '%'; ?></td>
                                                                 <td class="col-1 rtext-center">
                                                                     <button type="button" class="btn text-primary" data-bs-toggle="modal" data-bs-target="#showItemRemarksModal" id="showItemRemarks" data-item="<?= $item->id ?>">
                                                                         <i class="fa-solid fa-message"></i>
@@ -622,7 +622,7 @@
                 <div class="col-3 ps-0">
                     <div class="cont pt-0" style="max-height: 100%; overflow-y: scroll;">
                         <div class="row">
-                            <div class="col position-sticky pt-4" style="top: 0; background: white; z-index: 100;">
+                            <div class="col position-sticky pt-4" style="top: 0; background: white; z-index: 0;">
                                 <h5>Liquidation Attachments</h5>
                                 <hr>
                             </div>

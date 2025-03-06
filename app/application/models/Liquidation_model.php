@@ -54,7 +54,7 @@ class Liquidation_model extends CI_Model {
         }
         return null;
     }
-    public function get_vessel_items($transno) {
+    public function get_vessel_items($transno, $supplier) {
         $sql = "SELECT
                     i.*,
                     s.`status` AS desc_status,
@@ -69,9 +69,9 @@ class Liquidation_model extends CI_Model {
                         END, 2) AS variance_percent
                 FROM tbl_agent_liquidation_items AS i
                 INNER JOIN tbl_liq_item_status AS s ON i.`status` = s.id
-                WHERE transno = ?
+                WHERE i.transno = ? AND i.supplier = ?
                 ORDER BY id ASC";
-        $query = $this->db->query($sql, array($transno));
+        $query = $this->db->query($sql, array($transno, $supplier));
         return $query->result();
     }
     
