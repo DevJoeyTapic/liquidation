@@ -110,12 +110,12 @@
                                                 <th class="">Items</th>
                                                 <th class="col-1 text-center">RFP No.</th>
                                                 <th>Currency</th>
-                                                <th class="">RFP Amount</th>
-                                                <th class="">Actual Amount</th>
+                                                <th class="">Requested Amount</th>
+                                                <th>Amount Received</th>
+                                                <th class="">Actual Expenses</th>
                                                 <th class="">Variance</th>
                                                 <th class="col-1">Variance %</th>
                                                 <th class="col-1 text-center">Remarks</th>
-                                                <th class="col-1 text-center">Document</th>
                                                 <th class="col-1 text-center">Validate</th>
                                             </tr>
                                         </thead>
@@ -145,6 +145,15 @@
                                                         <td class="rfpAmount" id="rfpAmount">
                                                             <?php if($item->isNew == '1'): ?>  
                                                                 <?= number_format($item->actual_amount, 2); ?>
+                                                            <?php else: ?>  
+                                                                <?= number_format($item->rfp_amount, 2); ?>
+                                                            <?php endif ?>
+                                                        </td>
+                                                        <td>
+                                                            <?php if($item->isNew == '1'): ?>  
+                                                                <?= number_format($item->actual_amount, 2); ?>
+                                                            <?php elseif($item->controlled == '0'): ?>  
+                                                                <?php echo ('0.00'); ?>
                                                             <?php else: ?>  
                                                                 <?= number_format($item->rfp_amount, 2); ?>
                                                             <?php endif ?>
@@ -181,11 +190,6 @@
                                                                 <i class="fa-solid fa-message"></i>
                                                             </button>
                                                         </td>
-                                                        <td class="col-1 docRef text-center">
-                                                            <button class="btn btn-sm" type="button" id="uploadButton">
-                                                                <i class="fa-solid fa-upload"></i>
-                                                            </button>
-                                                        </td>
                                                         <td class="col-1 text-center validate">
                                                             <input type="checkbox" class="form-check-input rowCheckbox">
                                                             <input type="hidden" name="item_id" value="<?php echo $item->id; ?>">
@@ -212,8 +216,8 @@
                                                 <th class="col-3">Items</th>
                                                 <th class="col-1 text-center">RFP No.</th>
                                                 <th>Currency</th>
-                                                <th class="col-2">RFP Amount</th>
-                                                <th class="col-2">Actual Amount</th>
+                                                <th class="col-2">Requested Amount</th>
+                                                <th class="col-2">Actual Expenses</th>
                                                 <th class="col-2">Variance</th>
                                                 <th class="col-1">Variance %</th>
                                                 <th class="col-1">Remarks</th>
@@ -316,8 +320,8 @@
                                                 <th class="col-3">Items</th>
                                                 <th class="col-1 text-center">RFP No.</th>
                                                 <th class="text-center">Currency</th>
-                                                <th class="col-2">RFP Amount</th>
-                                                <th class="col-2">Actual Amount</th>
+                                                <th class="col-2">Requested Amount</th>
+                                                <th class="col-2">Actual Expenses</th>
                                                 <th class="col-2">Variance</th>
                                                 <th class="col-1">Variance %</th>
                                                 <th class="col-2">Remarks</th>
@@ -406,8 +410,8 @@
                                                 <th class="col-3">Items</th>
                                                 <th class="col-1 text-center">RFP No.</th>
                                                 <th><?= $item->currency ?></th>
-                                                <th class="col-2">RFP Amount</th>
-                                                <th class="col-2">Actual Amount</th>
+                                                <th class="col-2">Requested Amount</th>
+                                                <th class="col-2">Actual Expenses</th>
                                                 <th class="col-2">Variance</th>
                                                 <th class="col-1">Variance %</th>
                                                 <th class="col-2">Remarks</th>

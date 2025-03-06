@@ -226,9 +226,9 @@ $(document).ready(function () {
           input: 'text',
           inputLabel: 'Please provide a valid reason for variance.',
           inputPlaceholder: 'Type your remarks here...',
-          showCancelButton: true,
+          showCancelButton: false,
+          allowOutsideClick: false,
           confirmButtonText: 'Submit',
-          cancelButtonText: 'Cancel',
           showLoaderOnConfirm: true,
           preConfirm: (remarks) => {
               if (!remarks || remarks.trim() === '') {
@@ -412,7 +412,7 @@ $(document).ready(function () {
       },
       success: function (response) {
         const data = JSON.parse(response);
-        // location.reload();
+        location.reload();
         
       },
       error: function () {
