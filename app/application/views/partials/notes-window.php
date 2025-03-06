@@ -70,7 +70,7 @@
             <p>No notes available.</p>
         <?php endif; ?>
     </div>
-    <form action="<?php echo site_url('vesselitem/view/' . $id );?>" method="POST">
+    <form action="<?php echo base_url('vesselitem/view/' . $id );?>" method="POST">
         <input type="hidden" name="liq_ref" value="<?php echo $id; ?>">
         <input type="hidden" name="sender" value="<?php echo $this->session->userdata('username'); ?>">
         <input type="hidden" name="timestamp" value="<?php echo date('Y-m-d H:i:s'); ?>">
