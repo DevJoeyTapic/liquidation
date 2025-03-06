@@ -109,7 +109,7 @@
                                                         <?php if (!empty($unliquidated_vessels)): ?>
                                                             <?php foreach ($unliquidated_vessels as $liquidation): ?>
                                                                 <?php if($liquidation->item_status == '0'): ?>
-                                                                <tr onclick="window.location.href='<?= site_url('vesselitem/view/' . $liquidation->id); ?>'"> 
+                                                                <tr onclick="window.location.href='<?= base_url('vesselitem/view/' . $liquidation->id); ?>'"> 
                                                                     <td><?= $liquidation->vessel_name; ?></td>
                                                                     <td><?= $liquidation->voyno; ?></td>
                                                                     <td><?= $liquidation->port; ?></td>
@@ -146,7 +146,7 @@
                                                             <?php if (!empty($unliquidated_vessels)): ?>
                                                                 <?php foreach ($unliquidated_vessels as $liquidation): ?>
                                                                     <?php if($liquidation->item_status == '0'): ?>
-                                                                    <tr onclick="window.location.href='<?= site_url('agentvessel/view/' . $liquidation->id); ?>'"> 
+                                                                    <tr onclick="window.location.href='<?= base_url('agentvessel/view/' . $liquidation->id); ?>'"> 
                                                                         <td><?= $liquidation->vessel_name; ?></td>
                                                                         <td><?= $liquidation->voyno; ?></td>
                                                                         <td><?= $liquidation->port; ?></td>
@@ -234,7 +234,7 @@
                                                         <?php if (!empty($pending_validation)): ?>
                                                             <?php foreach ($pending_validation as $liquidation): ?>
                                                                 <?php if($liquidation->item_status == 1 || $liquidation->item_status == 2 || $liquidation->item_status == 3 || $liquidation->item_status == 5 || $liquidation->item_status == 6 || $liquidation->item_status == 7 || $liquidation->item_status == 8 ): ?>
-                                                                    <tr onclick="window.location.href='<?= site_url('vesselitem/view/' . $liquidation->id); ?>'"> 
+                                                                    <tr onclick="window.location.href='<?= base_url('vesselitem/view/' . $liquidation->id); ?>'"> 
                                                                         <td><?= $liquidation->vessel_name; ?></td>
                                                                         <td><?= $liquidation->voyno; ?></td>
                                                                         <td><?= $liquidation->port; ?></td>
@@ -272,7 +272,7 @@
                                                             <?php foreach ($pending_validation as $liquidation): ?>
                                                                 <?php if($liquidation->item_status == 2): ?>
                                                                     
-                                                                    <tr onclick="window.location.href='<?= site_url('agentvessel/view/' . $liquidation->id); ?>'"> 
+                                                                    <tr onclick="window.location.href='<?= base_url('agentvessel/view/' . $liquidation->id); ?>'"> 
                                                                         <td><?= $liquidation->vessel_name; ?></td>
                                                                         <td><?= $liquidation->voyno; ?></td>
                                                                         <td><?= $liquidation->port; ?></td>
@@ -308,7 +308,7 @@
                                                         <?php if (!empty($pending_otp)): ?>
                                                             <?php foreach ($pending_otp as $liquidation): ?>
                                                                 <?php if($liquidation->item_status == 1): ?>    
-                                                                    <tr onclick="window.location.href='<?= site_url('agentvessel/view/' . $liquidation->id); ?>'"> 
+                                                                    <tr onclick="window.location.href='<?= base_url('agentvessel/view/' . $liquidation->id); ?>'"> 
                                                                         <td><?= $liquidation->vessel_name; ?></td>
                                                                         <td><?= $liquidation->voyno; ?></td>
                                                                         <td><?= $liquidation->port; ?></td>
@@ -384,7 +384,7 @@
                                                         <?php if (!empty($pending_validation)): ?>
                                                             <?php foreach ($pending_validation as $liquidation): ?>
                                                                 <?php if($liquidation->item_status == 3 || $liquidation->status == 1): ?>
-                                                                    <tr onclick="window.location.href='<?= site_url('agentvessel/view/' . $liquidation->id); ?>'"> 
+                                                                    <tr onclick="window.location.href='<?= base_url('agentvessel/view/' . $liquidation->id); ?>'"> 
                                                                         <td><?= $liquidation->vessel_name; ?></td>
                                                                         <td><?= $liquidation->voyno; ?></td>
                                                                         <td><?= $liquidation->port; ?></td>
@@ -470,7 +470,7 @@
                                                         <?php if (!empty($completed)): ?>
                                                             <?php foreach ($completed as $liquidation): ?>
                                                                 <?php if($liquidation->item_status == '4'): ?>
-                                                                    <tr onclick="window.location.href='<?= site_url('vesselitem/view/' . $liquidation->id); ?>'"> 
+                                                                    <tr onclick="window.location.href='<?= base_url('vesselitem/view/' . $liquidation->id); ?>'"> 
                                                                         <td><?= $liquidation->vessel_name; ?></td>
                                                                         <td><?= $liquidation->voyno; ?></td>
                                                                         <td><?= $liquidation->port; ?></td>
@@ -507,7 +507,7 @@
                                                             <?php if (!empty($completed)): ?>
                                                                 <?php foreach ($completed as $liquidation): ?>
                                                                     <?php if($liquidation->item_status == '4'): ?>
-                                                                    <tr onclick="window.location.href='<?= site_url('agentvessel/view/' . $liquidation->id); ?>'"> 
+                                                                    <tr onclick="window.location.href='<?= base_url('agentvessel/view/' . $liquidation->id); ?>'"> 
                                                                         <td><?= $liquidation->vessel_name; ?></td>
                                                                         <td><?= $liquidation->voyno; ?></td>
                                                                         <td><?= $liquidation->port; ?></td>
@@ -595,7 +595,7 @@
                                                         <?php if (!empty($for_amendment)): ?>
                                                             <?php foreach ($for_amendment as $liquidation): ?>
                                                                 <?php if($liquidation->item_status == '5' || $liquidation->item_status == '6' || $liquidation->item_status == '7' || $liquidation->item_status == '8'): ?>
-                                                                    <tr onclick="window.location.href='<?= site_url('vesselitem/view/' . $liquidation->id); ?>'"> 
+                                                                    <tr onclick="window.location.href='<?= base_url('vesselitem/view/' . $liquidation->id); ?>'"> 
                                                                     <td><?= $liquidation->vessel_name; ?></td>
                                                                     <td><?= $liquidation->voyno; ?></td>
                                                                     <td><?= $liquidation->port; ?></td>
@@ -632,7 +632,7 @@
                                                         <?php if (!empty($for_amendment)): ?>
                                                             <?php foreach ($for_amendment as $liquidation): ?>
                                                                 <?php if($liquidation->item_status == '5' || $liquidation->item_status == '7' || $liquidation->item_status == '8'): ?>
-                                                                    <tr onclick="window.location.href='<?= site_url('agentvessel/view/' . $liquidation->id); ?>'"> 
+                                                                    <tr onclick="window.location.href='<?= base_url('agentvessel/view/' . $liquidation->id); ?>'"> 
                                                                         <td><?= $liquidation->vessel_name; ?></td>
                                                                         <td><?= $liquidation->voyno; ?></td>
                                                                         <td><?= $liquidation->port; ?></td>
@@ -666,7 +666,7 @@
                                                         <?php if (!empty($for_amendment)): ?>
                                                             <?php foreach ($for_amendment as $liquidation): ?>
                                                                 <?php if($liquidation->item_status == '5' || $liquidation->item_status == '6' || $liquidation->item_status == '7' || $liquidation->item_status == '8'): ?>
-                                                                    <tr onclick="window.location.href='<?= site_url('agentvessel/view/' . $liquidation->id); ?>'"> 
+                                                                    <tr onclick="window.location.href='<?= base_url('agentvessel/view/' . $liquidation->id); ?>'"> 
                                                                         <td><?= $liquidation->vessel_name; ?></td>
                                                                         <td><?= $liquidation->voyno; ?></td>
                                                                         <td><?= $liquidation->port; ?></td>

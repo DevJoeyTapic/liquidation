@@ -155,7 +155,7 @@
                     <h1 class="modal-title fs-5" id="staticBackdropLabel">Add New User</h1>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
-                <form action="<?php echo site_url('admin/addUser');?>" method="POST">
+                <form action="<?php echo base_url('admin/addUser');?>" method="POST">
                     <div class="modal-body">
                             <div class="d-flex justify-content-between">
                                 <div>
@@ -199,7 +199,7 @@
                 <h1 class="modal-title fs-5" id="staticBackdropLabel">Edit User</h1>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
-            <form action="<?php echo site_url('admin/updateUser');?>" method="POST">
+            <form action="<?php echo base_url('admin/updateUser');?>" method="POST">
                 <div class="modal-body">
                     <input type="hidden" name="user_id" id="user_id">
                     <div class="d-flex justify-content-between">

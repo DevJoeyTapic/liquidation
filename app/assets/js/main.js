@@ -570,7 +570,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 title: "Liquidation Complete!",
                 icon: "success"
             }).then(() => {
-                window.location.href = "<?= site_url('vesselitem/archive/' . $id); ?>";
+                window.location.href = "<?= base_url('vesselitem/archive/' . $id); ?>";
             });
         }
     });
