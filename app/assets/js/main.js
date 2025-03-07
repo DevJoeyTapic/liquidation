@@ -208,6 +208,8 @@ $(document).ready(function () {
           checkbox.prop("disabled", true); 
           $("#submitLiquidation").addClass("disabled").prop("disabled", true);
       }
+
+    
   });
   
 

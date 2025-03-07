@@ -133,7 +133,6 @@
                                                                 <span class="badge rounded-pill text-bg-primary">NEW ITEM</span>
                                                             <?php endif ?>
                                                         </td>
-                                                        
                                                         <td class="rfpno" id="rfpno">
                                                             <?php if($item->isNew == '1'): ?>  
                                                                 
@@ -143,20 +142,22 @@
                                                         </td>
                                                         <td class="currency"><?= $item->currency ?></td>
                                                         <td class="rfpAmount" id="rfpAmount">
-                                                            <?php if($item->isNew == '1'): ?>  
-                                                                <?= number_format($item->actual_amount, 2); ?>
-                                                            <?php else: ?>  
-                                                                <?= number_format($item->rfp_amount, 2); ?>
-                                                            <?php endif ?>
+                                                            <?php if($item->isNew == '1' && $item->controlled == '1'): ?>
+                                                                <?php echo('0.00'); ?>
+                                                            <?php elseif($item->controlled == '0' && $item->isNew == '1'): ?>
+                                                                <?php echo('0.00'); ?>
+                                                            <?php else: ?>
+                                                                <?= $item->rfp_amount; ?>
+                                                            <?php endif; ?>
                                                         </td>
                                                         <td>
-                                                            <?php if($item->isNew == '1'): ?>  
-                                                                <?= number_format($item->actual_amount, 2); ?>
-                                                            <?php elseif($item->controlled == '0'): ?>  
-                                                                <?php echo ('0.00'); ?>
-                                                            <?php else: ?>  
-                                                                <?= number_format($item->rfp_amount, 2); ?>
-                                                            <?php endif ?>
+                                                            <?php if($item->isNew == '1' && $item->controlled == '1'): ?>
+                                                                <?php echo('0.00'); ?>
+                                                            <?php elseif($item->controlled == '0' && $item->isNew == '1' || $item->controlled == '0'): ?>
+                                                                <?php echo('0.00'); ?>
+                                                            <?php else: ?>
+                                                                <?= $item->rfp_amount; ?>
+                                                            <?php endif; ?>
                                                         </td>
                                                         <td class="text-end">
                                                             <?php if($item->isNew == '1'): ?>  
@@ -247,20 +248,22 @@
                                                         </td>
                                                         <td><?= $item->currency ?></td>
                                                         <td class="rfpAmount" id="rfpAmount">
-                                                            <?php if($item->isNew == '1'): ?>  
-                                                                <?= number_format($item->actual_amount,2) ?>
+                                                            <?php if($item->isNew == '1' && $item->controlled == '1'): ?>
+                                                                <?php echo('0.00'); ?>
+                                                            <?php elseif($item->controlled == '0' && $item->isNew == '1'): ?>
+                                                                <?php echo('0.00'); ?>
                                                             <?php else: ?>
-                                                                <?= number_format($item->actual_amount,2) ?>
-                                                            <?php endif ?>
+                                                                <?= $item->rfp_amount; ?>
+                                                            <?php endif; ?>
                                                         </td>
                                                         <td>
-                                                            <?php if($item->isNew == '1'): ?>  
-                                                                <?= number_format($item->actual_amount, 2); ?>
-                                                            <?php elseif($item->controlled == '0'): ?>  
-                                                                <?php echo ('0.00'); ?>
-                                                            <?php else: ?>  
-                                                                <?= number_format($item->rfp_amount, 2); ?>
-                                                            <?php endif ?>
+                                                            <?php if($item->isNew == '1' && $item->controlled == '1'): ?>
+                                                                <?php echo('0.00'); ?>
+                                                            <?php elseif($item->controlled == '0' && $item->isNew == '1' || $item->controlled == '0'): ?>
+                                                                <?php echo('0.00'); ?>
+                                                            <?php else: ?>
+                                                                <?= $item->rfp_amount; ?>
+                                                            <?php endif; ?>
                                                         </td>
                                                         <td><?= number_format($item->actual_amount, 2) ?></td>
                                                         <td class="variance">
@@ -348,23 +351,25 @@
                                                                 <span class="badge rounded-pill text-bg-primary">NEW ITEM</span>
                                                             <?php endif ?>
                                                         </td>
-                                                        <td class="text-center" id="rfpno"><?= $item->rfp_no; ?></td>
+                                                        <td id="rfpno"><?= $item->rfp_no; ?></td>
                                                         <td><?= $item->currency ?></td>
                                                         <td class="rfpAmount" id="rfpAmount">
-                                                            <?php if($item->isNew == '1'): ?>  
-                                                                <?= $item->actual_amount ?>
+                                                            <?php if($item->isNew == '1' && $item->controlled == '1'): ?>
+                                                                <?php echo('0.00'); ?>
+                                                            <?php elseif($item->controlled == '0' && $item->isNew == '1'): ?>
+                                                                <?php echo('0.00'); ?>
                                                             <?php else: ?>
-                                                                <?= number_format($item->rfp_amount,2) ?>
-                                                            <?php endif ?>
+                                                                <?= $item->rfp_amount; ?>
+                                                            <?php endif; ?>
                                                         </td>
                                                         <td>
-                                                            <?php if($item->isNew == '1'): ?>  
-                                                                <?= number_format($item->actual_amount, 2); ?>
-                                                            <?php elseif($item->controlled == '0'): ?>  
-                                                                <?php echo ('0.00'); ?>
-                                                            <?php else: ?>  
-                                                                <?= number_format($item->rfp_amount, 2); ?>
-                                                            <?php endif ?>
+                                                            <?php if($item->isNew == '1' && $item->controlled == '1'): ?>
+                                                                <?php echo('0.00'); ?>
+                                                            <?php elseif($item->controlled == '0' && $item->isNew == '1' || $item->controlled == '0'): ?>
+                                                                <?php echo('0.00'); ?>
+                                                            <?php else: ?>
+                                                                <?= $item->rfp_amount; ?>
+                                                            <?php endif; ?>
                                                         </td>
                                                         <td><?= number_format($item->actual_amount, 2) ?></td>
                                                         <td class="variance">
@@ -449,11 +454,13 @@
                                                         </td>
                                                         <td class="currency"><?= $item->currency ?></td>
                                                         <td class="rfpAmount" id="rfpAmount">
-                                                            <?php if($item->isNew == '1'): ?>  
-                                                                <?= number_format($item->actual_amount, 2); ?>
-                                                            <?php else: ?>  
-                                                                <?= number_format($item->rfp_amount, 2) ?>
-                                                            <?php endif ?>
+                                                            <?php if($item->isNew == '1' && $item->controlled == '1'): ?>
+                                                                <?php echo('0.00'); ?>
+                                                            <?php elseif($item->controlled == '0' && $item->isNew == '1'): ?>
+                                                                <?php echo('0.00'); ?>
+                                                            <?php else: ?>
+                                                                <?= $item->rfp_amount; ?>
+                                                            <?php endif; ?>
                                                         </td>
                                                         <td>
                                                             <?php if($item->isNew == '1'): ?>  

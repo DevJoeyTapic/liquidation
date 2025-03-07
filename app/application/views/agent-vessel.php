@@ -91,14 +91,16 @@
                                             <table class="table  table-hover display" id="dataTableLiquidationT">
                                                 <thead>
                                                     <tr>
-                                                        <th class="">Items</th>
-                                                        <th class="col-1 text-center">RFP No.</th>
-                                                        <th class="text-center">Currency</th>
-                                                        <th class="">RFP Amount</th>
-                                                        <th class="">Actual Amount</th>
-                                                        <th class="">Variance</th>
-                                                        <th class="col-1 text-center">Remarks</th>
-                                                        <th class="col-1 text-center">Status</th>
+                                                        <th>Items</th>
+                                                        <th>RFP No.</th>
+                                                        <th>Currency</th>
+                                                        <th>Requested Amount</th>
+                                                        <th>Amount Received</th>
+                                                        <th>Actual Amount</th>
+                                                        <th>Variance</th>
+                                                        <th>Variance %</th>
+                                                        <th class="text-center">Remarks</th>
+                                                        <th class="text-center">Status</th>
                                                     </tr>
                                                 </thead>
                                                 <tbody>
@@ -117,8 +119,18 @@
                                                                 <td class="col-1 text-center"><?= $item->rfp_no; ?></td>
                                                                 <td class="text-center"><?= $item->currency ?></td>
                                                                 <td id="debit"><?= $item->rfp_amount; ?></td>
+                                                                <td>
+                                                                    <?php if($item->isNew == '1' && $item->controlled == '1'): ?>
+                                                                        <?= $item->actual_amount; ?>
+                                                                    <?php elseif($item->controlled == '0' && $item->isNew == '1'): ?>
+                                                                        <?php echo('0.00'); ?>
+                                                                    <?php else: ?>
+                                                                        <?= $item->rfp_amount; ?>
+                                                                    <?php endif; ?>
+                                                                </td>
                                                                 <td id="credit"><?= $item->actual_amount; ?></td>
                                                                 <td><?= $item->variance; ?></td>
+                                                                <td><?= $item->variance_percent . '%'; ?></td>
                                                                 <td class="col-1 text-center">
                                                                     <button type="button" class="btn text-primary" data-bs-toggle="modal" data-bs-target="#showItemRemarksModal" id="showItemRemarks" data-item="<?= $item->id ?>">
                                                                         <i class="fa-solid fa-message"></i>
@@ -153,14 +165,16 @@
                                             <table class="table  table-hover display" id="dataTableLiquidationA">
                                                 <thead>
                                                     <tr>
-                                                        <th class="col-3">Items</th>
-                                                        <th class="col-1 text-center">RFP No.</th>
-                                                        <th class="text-center">Currency</th>
-                                                        <th class="col-2">RFP Amount</th>
-                                                        <th class="col-2">Actual Amount</th>
-                                                        <th class="col-2">Variance</th>
-                                                        <th class="col-2">Remarks</th>
-                                                        <th class="col text-center">Validate</th>
+                                                        <th>Items</th>
+                                                        <th>RFP No.</th>
+                                                        <th>Currency</th>
+                                                        <th>Requested Amount</th>
+                                                        <th>Amount Received</th>
+                                                        <th>Actual Amount</th>
+                                                        <th>Variance</th>
+                                                        <th>Variance %</th>
+                                                        <th class="text-center">Remarks</th>
+                                                        <th class="text-center">Status</th>
                                                     </tr>
                                                 </thead>
                                                 <tbody>
@@ -177,12 +191,14 @@
                                                                             <span class="badge rounded-pill text-bg-primary">NEW ITEM</span>
                                                                         <?php endif ?>
                                                                     </td>
-                                                                    <td class="text-center"><?= $item->rfp_no; ?></td>
-                                                                    <td class="text-center"><?= $item->currency ?></td>
+                                                                    <td><?= $item->rfp_no; ?></td>
+                                                                    <td><?= $item->currency ?></td>
                                                                     <td id="debit"><?= $item->rfp_amount; ?></td>
+                                                                    <td><?= $item->rfp_amount; ?></td>
                                                                     <td id="credit"><?= $item->actual_amount; ?></td>
                                                                     <td><?= $item->variance; ?></td>
-                                                                    <td>
+                                                                    <td><?= $item->variance_percent; ?></td>
+                                                                    <td class="text-center">
                                                                         <button type="button" class="btn text-primary" data-bs-toggle="modal" data-bs-target="#showItemRemarksModal" id="showItemRemarks" data-item="<?= $item->id ?>">
                                                                             <i class="fa-solid fa-message"></i>
                                                                         </button>
@@ -207,7 +223,7 @@
                                                 <tfoot>
                                                     <tr class="total" style="font-size: 1.2rem">
                                                         <td colspan=3 class="text-end bold">Total</td>
-                                                        <td colspan=5 id="totalRfpAmt">11,000.00</td>
+                                                        <td colspan=7 id="totalRfpAmt">11,000.00</td>
                                                     </tr>
                                                 </tfoot>
                                             </table>
@@ -226,7 +242,7 @@
                                                         <th class="">Items</th>
                                                         <th class="col-1 text-center">RFP No.</th>
                                                         <th class="text-center">Currency</th>
-                                                        <th class="">RFP Amount</th>
+                                                        <th class="">Requested Amount</th>
                                                         <th class="">Actual Amount</th>
                                                         <th class="">Variance</th>
                                                         <th class="">Variance %</th>
@@ -252,10 +268,12 @@
                                                                 </td>
                                                                 <td class="text-center"><?= $item->currency ?></td>
                                                                 <td id="debit">
-                                                                    <?php if($item->isNew == '1'): ?>
-                                                                        <?= number_format($item->actual_amount, 2); ?>
+                                                                    <?php if($item->isNew == '1' && $item->controlled == '1'): ?>
+                                                                        <?= $item->actual_amount; ?>
+                                                                    <?php elseif($item->controlled == '0' && $item->isNew == '1'): ?>
+                                                                        <?php echo('0.00'); ?>
                                                                     <?php else: ?>
-                                                                        <?= number_format($item->rfp_amount, 2); ?>
+                                                                        <?= $item->rfp_amount; ?>
                                                                     <?php endif; ?>
                                                                 </td>
                                                                 <td id="credit">
@@ -265,7 +283,7 @@
                                                                     <?= number_format($item->variance, 2); ?>
                                                                 </td>
                                                                 <td><?= number_format($item->variance_percent, 2) . '%'; ?></td>
-                                                                <td class="col-1 rtext-center">
+                                                                <td class="text-center">
                                                                     <button type="button" class="btn text-primary" data-bs-toggle="modal" data-bs-target="#showItemRemarksModal" id="showItemRemarks" data-item="<?= $item->id ?>">
                                                                         <i class="fa-solid fa-message"></i>
                                                                     </button>
@@ -285,15 +303,16 @@
                                             <table class="table  table-hover display" id="dataTableForValidationA">
                                                 <thead>
                                                     <tr>
-                                                        <th class="col-3">Items</th>
-                                                        <th class="col-1 text-center">RFP No.</th>
-                                                        <th class="text-center">Currency</th>
-                                                        <th class="col-2">RFP Amount</th>
-                                                        <th class="col-2">Actual Amount</th>
-                                                        <th class="col-2">Variance</th>
+                                                        <th>Items</th>
+                                                        <th>RFP No.</th>
+                                                        <th>Currency</th>
+                                                        <th>Requested Amount</th>
+                                                        <th>Amount Received</th>
+                                                        <th>Actual Amount</th>
+                                                        <th>Variance</th>
                                                         <th>Variance %</th>
-                                                        <th class="col-2">Remarks</th>
-                                                        <th class="col text-center">Validate</th>
+                                                        <th class="text-center">Remarks</th>
+                                                        <th class="text-center">Validate</th>
                                                     </tr>
                                                 </thead>
                                                 <tbody>
@@ -310,14 +329,14 @@
                                                                             <span class="badge rounded-pill text-bg-primary">NEW ITEM</span>
                                                                         <?php endif ?>
                                                                     </td>
-                                                                    <td class="text-center">
+                                                                    <td>
                                                                         <?php if($item->isNew == '1'): ?>  
                                                                             
                                                                         <?php else: ?>
                                                                             <?= $item->rfp_no ?>
                                                                         <?php endif ?>
                                                                     </td>
-                                                                    <td class="text-center"><?= $item->currency ?></td>
+                                                                    <td><?= $item->currency ?></td>
                                                                     <td id="debit">
                                                                         <?php if($item->isNew == '1'): ?>  
                                                                             <?= number_format($item->actual_amount, 2) ?>
@@ -325,10 +344,19 @@
                                                                             <?= number_format($item->rfp_amount, 2) ?>
                                                                         <?php endif ?>
                                                                     </td>
+                                                                    <td>
+                                                                        <?php if($item->isNew == '1'): ?>  
+                                                                            <?= number_format($item->actual_amount, 2) ?>
+                                                                        <?php elseif($item->controlled == '0'): ?>
+                                                                            <?php echo('0.00'); ?>
+                                                                        <?php else: ?>
+                                                                            <?= number_format($item->rfp_amount, 2) ?>
+                                                                        <?php endif ?>
+                                                                    </td>
                                                                     <td id="credit"><?= $item->actual_amount; ?></td>
                                                                     <td><?= $item->variance; ?></td>
                                                                     <td><?= $item->variance_percent; ?></td>
-                                                                    <td>
+                                                                    <td class="text-center">
                                                                         <button type="button" class="btn text-primary" data-bs-toggle="modal" data-bs-target="#showItemRemarksModal" id="showItemRemarks" data-item="<?= $item->id ?>">
                                                                             <i class="fa-solid fa-message"></i>
                                                                         </button>
@@ -393,7 +421,7 @@
                                                         <th class="col-3">Items</th>
                                                         <th class="col">Description</th>
                                                         <th class="col-1 text-center">RFP No.</th>
-                                                        <th class="col-2">RFP Amount</th>
+                                                        <th class="col-2">Requested Amount</th>
                                                         <th class="col-2">Actual Amount</th>
                                                         <th class="col-2">Variance</th>
                                                         <th class="col-2">Remarks</th>
@@ -451,15 +479,16 @@
                                             <table class="table  table-hover display" id="dataTableValidatedA">
                                                 <thead>
                                                     <tr>
-                                                        <th class="col-3">Items</th>
-                                                        <th class="col-1 text-center">RFP No.</th>
-                                                        <th class="text-center">Currency</th>
-                                                        <th class="col-2">RFP Amount</th>
-                                                        <th class="col-2">Actual Amount</th>
-                                                        <th class="col-2">Variance</th>
-                                                        <th class="col-1">Variance %</th>
-                                                        <th class="col-2">Remarks</th>
-                                                        <th class="col text-center">Status</th>
+                                                        <th>Items</th>
+                                                        <th>RFP No.</th>
+                                                        <th>Currency</th>
+                                                        <th>Requested Amount</th>
+                                                        <th>Amount Received</th>
+                                                        <th>Actual Amount</th>
+                                                        <th>Variance</th>
+                                                        <th>Variance %</th>
+                                                        <th class="text-center">Remarks</th>
+                                                        <th class="text-center">Status</th>
                                                     </tr>
                                                 </thead>
                                                 <tbody>
@@ -490,10 +519,19 @@
                                                                         <?= number_format($item->rfp_amount, 2) ?>
                                                                     <?php endif ?>
                                                                 </td>
+                                                                <td>
+                                                                    <?php if($item->isNew == '1'): ?>  
+                                                                        <?= number_format($item->actual_amount, 2) ?>
+                                                                    <?php elseif($item->controlled == '0'): ?>
+                                                                        <?php echo('0.00'); ?>
+                                                                    <?php else: ?>
+                                                                        <?= number_format($item->rfp_amount, 2) ?>
+                                                                    <?php endif ?>
+                                                                </td>
                                                                 <td id="credit"><?= $item->actual_amount; ?></td>
                                                                 <td><?= $item->variance; ?></td>
                                                                 <td><?= $item->variance_percent; ?></td>
-                                                                <td>
+                                                                <td class="text-center">
                                                                     <button type="button" class="btn text-primary" data-bs-toggle="modal" data-bs-target="#showItemRemarksModal" id="showItemRemarks" data-item="<?= $item->id ?>">
                                                                         <i class="fa-solid fa-message"></i>
                                                                     </button>
@@ -542,15 +580,16 @@
                                             <table class="table  table-hover display" id="dataTableForRevalidationA">
                                                 <thead>
                                                     <tr>
-                                                        <th class="col-3">Items</th>
-                                                        <th class="col-1 text-center">RFP No.</th>
-                                                        <th class="text-center">Currency</th>
-                                                        <th class="col-2">RFP Amount</th>
-                                                        <th class="col-2">Actual Amount</th>
-                                                        <th class="col-2">Variance</th>
-                                                        <th class="col">Variance %</th>
-                                                        <th class="col-2">Remarks</th>
-                                                        <th class="col text-center">Status</th>
+                                                        <th>Items</th>
+                                                        <th>RFP No.</th>
+                                                        <th>Currency</th>
+                                                        <th>Requested Amount</th>
+                                                        <th>Amount Received</th>
+                                                        <th>Actual Amount</th>
+                                                        <th>Variance</th>
+                                                        <th>Variance %</th>
+                                                        <th class="text-center">Remarks</th>
+                                                        <th class="text-center">Status</th>
                                                     </tr>
                                                 </thead>
                                                 <tbody>
@@ -581,8 +620,18 @@
                                                                         <?= number_format($item->rfp_amount, 2) ?>
                                                                     <?php endif ?>
                                                                 </td>
+                                                                <td>
+                                                                    <?php if($item->isNew == '1'): ?>  
+                                                                        <?= number_format($item->actual_amount, 2) ?>
+                                                                    <?php elseif($item->controlled == '0'): ?>
+                                                                        <?php echo('0.00'); ?>
+                                                                    <?php else: ?>
+                                                                        <?= number_format($item->rfp_amount, 2) ?>
+                                                                    <?php endif ?>
+                                                                </td>
                                                                 <td id="credit"><?= $item->actual_amount; ?></td>
                                                                 <td><?= $item->variance; ?></td>
+                                                                <td><?= number_format($item->variance, 2) . '%'; ?></td>
                                                                 <td>
                                                                     <button type="button" class="btn text-primary" data-bs-toggle="modal" data-bs-target="#showItemRemarksModal" id="showItemRemarks" data-item="<?= $item->id ?>">
                                                                         <i class="fa-solid fa-message"></i>
