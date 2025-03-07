@@ -774,7 +774,7 @@
     <!-- okay to pay by tad -->
     <script>
         $(document).ready(function() {
-            let baseUrl = 'http://192.168.192.251:3000';
+            let baseUrl = 'https://agents.wallem.com.ph';
 
             $('#otpBtn').on('click', function() {
                 Swal.fire({
@@ -833,7 +833,7 @@
     <!-- amend button for tad -->
     <script>
         $(document).ready(function() {
-            let baseUrl = 'http://192.168.192.251:3000';
+            let baseUrl = 'https://agents.wallem.com.ph';
 
             $('#amendBtn').on('click', function() {
                 Swal.fire({
@@ -892,7 +892,7 @@
     <!-- return to agent -->
     <script>
         $(document).ready(function() {
-            let baseUrl = 'http://192.168.192.251:3000';
+            let baseUrl = 'https://agents.wallem.com.ph';
 
             $('#rtaBtn').on('click', function() {
                 Swal.fire({
@@ -951,7 +951,7 @@
     <!-- submit to AM -->
     <script>
         $(document).ready(function() {
-            let baseUrl = 'http://192.168.192.251:3000';
+            let baseUrl = 'https://agents.wallem.com.ph';
 
             $('#submitToAMBtn').on('click', function() {
                 Swal.fire({
@@ -1010,7 +1010,7 @@
     <!-- return to agent s5 -->
     <script>
         $(document).ready(function() {
-            let baseUrl = 'http://192.168.192.251:3000';
+            let baseUrl = 'https://agents.wallem.com.ph';
 
             $('#rtaBtns5').on('click', function() {
                 Swal.fire({
@@ -1069,7 +1069,7 @@
     <!-- submit to AM s5 -->
     <script>
         $(document).ready(function() {
-            let baseUrl = 'http://192.168.192.251:3000';
+            let baseUrl = 'https://agents.wallem.com.ph';
 
             $('#submitToAMBtns5').on('click', function() {
                 Swal.fire({
