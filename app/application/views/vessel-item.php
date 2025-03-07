@@ -104,19 +104,19 @@
                                 </div>
                                 
                                 <div class="table-reponsive">
-                                    <table class="table table-hover display" id="pendingTableAg">
+                                    <table class="table table-hover display " id="pendingTableAg">
                                         <thead>
                                             <tr>
-                                                <th class="">Items</th>
-                                                <th class="col-1 text-center">RFP No.</th>
+                                                <th>Items</th>
+                                                <th class="text-center">RFP No.</th>
                                                 <th>Currency</th>
-                                                <th class="">RFP Amount</th>
-                                                <th class="">Actual Amount</th>
-                                                <th class="">Variance</th>
-                                                <th class="col-1">Variance %</th>
-                                                <th class="col-1 text-center">Remarks</th>
-                                                <th class="col-1 text-center">Document</th>
-                                                <th class="col-1 text-center">Validate</th>
+                                                <th>Requested Amount</th>
+                                                <th>Amount Received</th>
+                                                <th>Actual Expenses</th>
+                                                <th>Variance</th>
+                                                <th>Variance %</th>
+                                                <th class="text-center">Remarks</th>
+                                                <th class="text-center">Validate</th>
                                             </tr>
                                         </thead>
                                         <tbody>
@@ -124,7 +124,7 @@
                                                 <?php if ($item->user_id == $this->session->userdata('user_id') && $item->status == '0'): ?>
                                                     
                                                     <tr id="item-<?= $item->id ?>">
-                                                        <td class="item " id="item">
+                                                        <td class="item" id="item">
                                                             <?= $item->item; ?>
                                                             <?php if($item->controlled == 0): ?>
                                                                 <span class="badge rounded-pill text-bg-warning">Controlled</span>
@@ -133,8 +133,7 @@
                                                                 <span class="badge rounded-pill text-bg-primary">NEW ITEM</span>
                                                             <?php endif ?>
                                                         </td>
-                                                        
-                                                        <td class="text-center col-1 rfpno" id="rfpno">
+                                                        <td class="rfpno" id="rfpno">
                                                             <?php if($item->isNew == '1'): ?>  
                                                                 
                                                             <?php else: ?>  
@@ -143,11 +142,22 @@
                                                         </td>
                                                         <td class="currency"><?= $item->currency ?></td>
                                                         <td class="rfpAmount" id="rfpAmount">
-                                                            <?php if($item->isNew == '1'): ?>  
-                                                                <?= number_format($item->actual_amount, 2); ?>
-                                                            <?php else: ?>  
-                                                                <?= number_format($item->rfp_amount, 2); ?>
-                                                            <?php endif ?>
+                                                            <?php if($item->isNew == '1' && $item->controlled == '1'): ?>
+                                                                <?php echo('0.00'); ?>
+                                                            <?php elseif($item->controlled == '0' && $item->isNew == '1'): ?>
+                                                                <?php echo('0.00'); ?>
+                                                            <?php else: ?>
+                                                                <?= $item->rfp_amount; ?>
+                                                            <?php endif; ?>
+                                                        </td>
+                                                        <td>
+                                                            <?php if($item->isNew == '1' && $item->controlled == '1'): ?>
+                                                                <?php echo('0.00'); ?>
+                                                            <?php elseif($item->controlled == '0' && $item->isNew == '1' || $item->controlled == '0'): ?>
+                                                                <?php echo('0.00'); ?>
+                                                            <?php else: ?>
+                                                                <?= $item->rfp_amount; ?>
+                                                            <?php endif; ?>
                                                         </td>
                                                         <td class="text-end">
                                                             <?php if($item->isNew == '1'): ?>  
@@ -176,17 +186,12 @@
                                                                 <?= number_format($item->variance_percent, 2) . '%'; ?>
                                                             <?php endif ?>
                                                         </td>
-                                                        <td class="col-1 text-center">
+                                                        <td class="text-center">
                                                             <button type="button" class="btn text-primary" data-bs-toggle="modal" data-bs-target="#showItemRemarksModal" id="showItemRemarks" data-item="<?= $item->id ?>">
                                                                 <i class="fa-solid fa-message"></i>
                                                             </button>
                                                         </td>
-                                                        <td class="col-1 docRef text-center">
-                                                            <button class="btn btn-sm" type="button" id="uploadButton">
-                                                                <i class="fa-solid fa-upload"></i>
-                                                            </button>
-                                                        </td>
-                                                        <td class="col-1 text-center validate">
+                                                        <td class="text-center validate">
                                                             <input type="checkbox" class="form-check-input rowCheckbox">
                                                             <input type="hidden" name="item_id" value="<?php echo $item->id; ?>">
                                                         </td>
@@ -209,16 +214,16 @@
                                     <table class="table table-hover display" id="liquidatedTableAg">
                                         <thead>
                                             <tr>
-                                                <th class="col-3">Items</th>
-                                                <th class="col-1 text-center">RFP No.</th>
+                                                <th>Items</th>
+                                                <th>RFP No.</th>
                                                 <th>Currency</th>
-                                                <th class="col-2">RFP Amount</th>
-                                                <th class="col-2">Actual Amount</th>
-                                                <th class="col-2">Variance</th>
-                                                <th class="col-1">Variance %</th>
-                                                <th class="col-1">Remarks</th>
-                                                <th class="col-2 text-center">Document</th>
-                                                <th>Status</th>
+                                                <th>Requested Amount</th>
+                                                <th>Amount Received</th>
+                                                <th>Actual Expenses</th>
+                                                <th>Variance</th>
+                                                <th>Variance %</th>
+                                                <th class="text-center">Remarks</th>
+                                                <th class="text-center">Status</th>
                                             </tr>
                                         </thead>
                                         <tbody>
@@ -234,7 +239,7 @@
                                                                 <span class="badge rounded-pill text-bg-primary">NEW ITEM</span>
                                                             <?php endif ?>
                                                         </td>
-                                                        <td class="text-center" id="rfpno">
+                                                        <td id="rfpno">
                                                             <?php if($item->isNew == '1'): ?>  
                                                                 
                                                             <?php else: ?>
@@ -243,11 +248,22 @@
                                                         </td>
                                                         <td><?= $item->currency ?></td>
                                                         <td class="rfpAmount" id="rfpAmount">
-                                                            <?php if($item->isNew == '1'): ?>  
-                                                                <?= number_format($item->actual_amount,2) ?>
+                                                            <?php if($item->isNew == '1' && $item->controlled == '1'): ?>
+                                                                <?php echo('0.00'); ?>
+                                                            <?php elseif($item->controlled == '0' && $item->isNew == '1'): ?>
+                                                                <?php echo('0.00'); ?>
                                                             <?php else: ?>
-                                                                <?= number_format($item->actual_amount,2) ?>
-                                                            <?php endif ?>
+                                                                <?= $item->rfp_amount; ?>
+                                                            <?php endif; ?>
+                                                        </td>
+                                                        <td>
+                                                            <?php if($item->isNew == '1' && $item->controlled == '1'): ?>
+                                                                <?php echo('0.00'); ?>
+                                                            <?php elseif($item->controlled == '0' && $item->isNew == '1' || $item->controlled == '0'): ?>
+                                                                <?php echo('0.00'); ?>
+                                                            <?php else: ?>
+                                                                <?= $item->rfp_amount; ?>
+                                                            <?php endif; ?>
                                                         </td>
                                                         <td><?= number_format($item->actual_amount, 2) ?></td>
                                                         <td class="variance">
@@ -264,13 +280,10 @@
                                                                 <?= number_format($item->variance_percent, 2) . '%'; ?>
                                                             <?php endif ?>
                                                         </td>
-                                                        <td>
+                                                        <td class="text-center">
                                                             <button type="button" class="btn text-primary" data-bs-toggle="modal" data-bs-target="#showItemRemarksModal" id="showItemRemarks" data-item="<?= $item->id ?>">
                                                                 <i class="fa-solid fa-message"></i>
                                                             </button>
-                                                        </td>
-                                                        <td class="docRef text-center">
-                                                            <?= !empty($item->doc_ref) ? '<a href="' . $item->doc_ref . '" target="_blank"><span class="badge bg-primary">open file</span></a>' : '<span class="badge bg-danger">not provided</span>' ?>
                                                         </td>
                                                         <td class="text-center validate">
                                                         <?php
@@ -313,16 +326,16 @@
                                     <table class="table table-hover display" id="completeTableAg">
                                         <thead>
                                             <tr>
-                                                <th class="col-3">Items</th>
-                                                <th class="col-1 text-center">RFP No.</th>
-                                                <th class="text-center">Currency</th>
-                                                <th class="col-2">RFP Amount</th>
-                                                <th class="col-2">Actual Amount</th>
-                                                <th class="col-2">Variance</th>
-                                                <th class="col-1">Variance %</th>
-                                                <th class="col-2">Remarks</th>
-                                                <th class="col-2 text-center">Document</th>
-                                                <th>Status</th>
+                                                <th>Items</th>
+                                                <th>RFP No.</th>
+                                                <th>Currency</th>
+                                                <th>Requested Amount</th>
+                                                <th>Amount Received</th>
+                                                <th>Actual Expenses</th>
+                                                <th>Variance</th>
+                                                <th>Variance %</th>
+                                                <th class="text-center">Remarks</th>
+                                                <th class="text-center">Status</th>
                                             </tr>
                                         </thead>
                                         <tbody>
@@ -338,15 +351,25 @@
                                                                 <span class="badge rounded-pill text-bg-primary">NEW ITEM</span>
                                                             <?php endif ?>
                                                         </td>
-                                                        <td class="text-center" id="rfpno"><?= $item->rfp_no; ?></td>
+                                                        <td id="rfpno"><?= $item->rfp_no; ?></td>
                                                         <td><?= $item->currency ?></td>
                                                         <td class="rfpAmount" id="rfpAmount">
-                                                            <?php if($item->isNew == '1'): ?>  
-                                                                <?= $item->actual_amount ?>
+                                                            <?php if($item->isNew == '1' && $item->controlled == '1'): ?>
+                                                                <?php echo('0.00'); ?>
+                                                            <?php elseif($item->controlled == '0' && $item->isNew == '1'): ?>
+                                                                <?php echo('0.00'); ?>
                                                             <?php else: ?>
-                                                                <?= number_format($item->rfp_amount,2) ?>
-                                                            <?php endif ?>
-                                                            
+                                                                <?= $item->rfp_amount; ?>
+                                                            <?php endif; ?>
+                                                        </td>
+                                                        <td>
+                                                            <?php if($item->isNew == '1' && $item->controlled == '1'): ?>
+                                                                <?php echo('0.00'); ?>
+                                                            <?php elseif($item->controlled == '0' && $item->isNew == '1' || $item->controlled == '0'): ?>
+                                                                <?php echo('0.00'); ?>
+                                                            <?php else: ?>
+                                                                <?= $item->rfp_amount; ?>
+                                                            <?php endif; ?>
                                                         </td>
                                                         <td><?= number_format($item->actual_amount, 2) ?></td>
                                                         <td class="variance">
@@ -355,13 +378,10 @@
                                                         <td class="variance">
                                                             <?= number_format($item->variance_percent, 2) . '%'; ?>
                                                         </td>
-                                                        <td class="">
+                                                        <td class="text-center">
                                                             <button type="button" class="btn text-primary" data-bs-toggle="modal" data-bs-target="#showItemRemarksModal" id="showItemRemarks" data-item="<?= $item->id ?>">
                                                                 <i class="fa-solid fa-message"></i>
                                                             </button>
-                                                        </td>
-                                                        <td class="docRef text-center">
-                                                            <?= !empty($item->doc_ref) ? '<a href="' . $item->doc_ref . '" target="_blank"><span class="badge bg-primary">open file</span></a>' : '<span class="badge bg-danger">not provided</span>' ?>
                                                         </td>
                                                         <td class="text-center validate">
                                                             <?php
@@ -403,16 +423,16 @@
                                     <table class="table table-hover display" id="forAmendmentTableAg">
                                         <thead>
                                             <tr>
-                                                <th class="col-3">Items</th>
-                                                <th class="col-1 text-center">RFP No.</th>
+                                                <th>Items</th>
+                                                <th>RFP No.</th>
                                                 <th><?= $item->currency ?></th>
-                                                <th class="col-2">RFP Amount</th>
-                                                <th class="col-2">Actual Amount</th>
-                                                <th class="col-2">Variance</th>
-                                                <th class="col-1">Variance %</th>
-                                                <th class="col-2">Remarks</th>
-                                                <th class="col-2 text-center">Document</th>
-                                                <th>Validate</th>
+                                                <th>Requested Amount</th>
+                                                <th>Amount Received</th>
+                                                <th>Actual Expenses</th>
+                                                <th>Variance</th>
+                                                <th>Variance %</th>
+                                                <th class="text-center">Remarks</th>
+                                                <th class="text-center">Validate</th>
                                             </tr>
                                         </thead>
                                         <tbody>
@@ -429,19 +449,29 @@
                                                                 <span class="badge rounded-pill text-bg-primary">NEW ITEM</span>
                                                             <?php endif ?>
                                                         </td>
-                                                        
-                                                        <td class="text-center rfpno" id="rfpno">
+                                                        <td class="rfpno" id="rfpno">
                                                             <?= $item->rfp_no ?>
                                                         </td>
                                                         <td class="currency"><?= $item->currency ?></td>
                                                         <td class="rfpAmount" id="rfpAmount">
+                                                            <?php if($item->isNew == '1' && $item->controlled == '1'): ?>
+                                                                <?php echo('0.00'); ?>
+                                                            <?php elseif($item->controlled == '0' && $item->isNew == '1'): ?>
+                                                                <?php echo('0.00'); ?>
+                                                            <?php else: ?>
+                                                                <?= $item->rfp_amount; ?>
+                                                            <?php endif; ?>
+                                                        </td>
+                                                        <td>
                                                             <?php if($item->isNew == '1'): ?>  
                                                                 <?= number_format($item->actual_amount, 2); ?>
+                                                            <?php elseif($item->controlled == '0'): ?>  
+                                                                <?php echo ('0.00'); ?>
                                                             <?php else: ?>  
-                                                                <?= number_format($item->rfp_amount, 2) ?>
+                                                                <?= number_format($item->rfp_amount, 2); ?>
                                                             <?php endif ?>
                                                         </td>
-                                                        <td class="text-end">
+                                                        <td>
                                                             <?php if($item->isNew == '1'): ?>  
                                                                 <input type="text" class="form-control form-control-sm actualAmount" id="actualAmount" name="actualAmount" value="<?= $item->actual_amount; ?>">
                                                             <?php else: ?> 
@@ -465,10 +495,6 @@
                                                                 <i class="fa-solid fa-message"></i>
                                                             </button>
                                                         </td>
-                                                        <td class="docRef text-center">
-                                                            <button class="btn btn-sm" type="button" id="uploadButton">
-                                                                <i class="fa-solid fa-upload"></i>
-                                                            </button>
                                                         </td>
                                                         <td class="text-center validate">
                                                             <input type="checkbox" class="form-check-input rowCheckbox">
