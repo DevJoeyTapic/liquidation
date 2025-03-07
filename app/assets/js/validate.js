@@ -21,7 +21,7 @@ $('document').ready(function() {
                         const description = $(this).find("td:nth-child(2)").text();
                         const rfpNo = $(this).find("td:nth-child(3)").text();
                         const rfpAmount = $(this).find("td:nth-child(4)").text();
-                        const actualAmount = $(this).find("td:nth-child(5) input").val();
+                        const actualAmount = $(this).find("td:nth-child(6) input").val();
                         const variance = $(this).find(".variance").text();
                         const remarks = $(this).find(".remarks").val();
                         const item_id = $(this).find('input[name="item_id"]').val();

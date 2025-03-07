@@ -5,17 +5,17 @@
 <?php $this->load->view('partials/loading-screen'); ?>
     <div class="container-fluid">
         <?php $this->load->view('layout/header'); ?>
-
         <div class="main-container bg-gradient">
             <div class="col-11 mx-auto" style="display: <?= ($this->session->userdata('user_type') == 2 || $this->session->userdata('user_type') == 3 || $this->session->userdata('user_type') == 5) ? 'block' : 'none'; ?>">
             <div class="justify-content-end text-end">
+                <h2>Welcome aboard, <?= ucfirst($this->session->userdata('username')) . '!'; ?></h2>
+
                 <button class="btn btn-primary btn-sm small" id="refreshData">
                     <i class="fa-solid fa-arrows-rotate pe-2" ></i>Refresh Data
                 </button>
                 <div>
                     <p class="small text-secondary text-end">Last updated on <?php echo date('Y-m-d H:i:s', strtotime('+8 hours')); ?></p>
                 </div>
-                
             </div>
 
                 <?php

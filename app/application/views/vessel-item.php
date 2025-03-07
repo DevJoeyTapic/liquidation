@@ -150,7 +150,7 @@
                                                                 <?= $item->rfp_amount; ?>
                                                             <?php endif; ?>
                                                         </td>
-                                                        <td>
+                                                        <td class="amountReceived">
                                                             <?php if($item->isNew == '1' && $item->controlled == '1'): ?>
                                                                 <?php echo('0.00'); ?>
                                                             <?php elseif($item->controlled == '0' && $item->isNew == '1' || $item->controlled == '0'): ?>
@@ -256,7 +256,7 @@
                                                                 <?= $item->rfp_amount; ?>
                                                             <?php endif; ?>
                                                         </td>
-                                                        <td>
+                                                        <td class="amountReceived">
                                                             <?php if($item->isNew == '1' && $item->controlled == '1'): ?>
                                                                 <?php echo('0.00'); ?>
                                                             <?php elseif($item->controlled == '0' && $item->isNew == '1' || $item->controlled == '0'): ?>
@@ -362,7 +362,7 @@
                                                                 <?= $item->rfp_amount; ?>
                                                             <?php endif; ?>
                                                         </td>
-                                                        <td>
+                                                        <td class="amountReceived">
                                                             <?php if($item->isNew == '1' && $item->controlled == '1'): ?>
                                                                 <?php echo('0.00'); ?>
                                                             <?php elseif($item->controlled == '0' && $item->isNew == '1' || $item->controlled == '0'): ?>
@@ -462,7 +462,7 @@
                                                                 <?= $item->rfp_amount; ?>
                                                             <?php endif; ?>
                                                         </td>
-                                                        <td>
+                                                        <td class="amountReceived">
                                                             <?php if($item->isNew == '1'): ?>  
                                                                 <?= number_format($item->actual_amount, 2); ?>
                                                             <?php elseif($item->controlled == '0'): ?>  
@@ -604,7 +604,7 @@
 
                             if (checkedRows.length > 0) {
                                 checkedRows.each(function () {
-                                    const actualAmount = $(this).find("td:nth-child(5) input").val();
+                                    const actualAmount = $(this).find("td:nth-child(6) input").val();
                                     const variance = $(this).find(".variance").text();
                                     const item_id = $(this).find("input[name='item_id']").val();
 
@@ -614,6 +614,7 @@
                                         item_id: item_id
                                     });
                                 });
+                                console.log(dataToSubmit);
 
                                 $.ajax({
                                     url: baseUrl + '/vesselitem/submit_for_validation', // Ensure baseUrl is defined
@@ -659,7 +660,7 @@
 
                             if (checkedRows.length > 0) {
                                 checkedRows.each(function () {
-                                    const actualAmount = $(this).find("td:nth-child(5) input").val();
+                                    const actualAmount = $(this).find("td:nth-child(6) input").val();
                                     const variance = $(this).find(".variance").text();
                                     const item_id = $(this).find("input[name='item_id']").val();
 
