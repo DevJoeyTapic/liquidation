@@ -72,7 +72,7 @@ class AgentVessel_model extends CI_Model {
     public function submit_to_am($data) {
         if (!empty($data['item_id'])) {
             $sql = "UPDATE tbl_agent_liquidation_items
-                    SET `status` = 3,
+                    SET `status` = 4,
                         acctg_ts = NOW()
                     WHERE id = ?";
             $this->db->query($sql, array(

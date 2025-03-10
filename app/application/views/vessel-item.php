@@ -83,7 +83,6 @@
                 <nav>
                     <div class="nav nav-tabs liquidation-tabs" id="nav-tab" role="tablist">
                         <button class="nav-link active" id="pendingTab" data-bs-toggle="tab" data-bs-target="#pending" type="button" role="tab" aria-controls="pending" aria-selected="true"><i class="fa-regular fa-clock pe-2"></i>Pending Item(s) Liquidation</button>    
-                        <button class="nav-link" id="forValidationTab" data-bs-toggle="tab" data-bs-target="#forValidation" type="button" role="tab" aria-controls="forValidation" aria-selected="false"><i class="fa-solid fa-user-clock pe-2"></i>Liquidated Item(s) for Validation</button>
                         <button class="nav-link" id="completedTab" data-bs-toggle="tab" data-bs-target="#completed" type="button" role="tab" aria-controls="completed" aria-selected="false"><i class="fa-solid fa-circle-check pe-2"></i>Completed Item(s)</button>
                         <button class="nav-link" id="forAmendmentTab" data-bs-toggle="tab" data-bs-target="#forAmendment" type="button" role="tab" aria-controls="forAmendment" aria-selected="false"><i class="fa-solid fa-user-pen pe-2"></i></i>For Amendment Item(s)</button>
                     </div>
@@ -147,7 +146,7 @@
                                                             <?php elseif($item->controlled == '0' && $item->isNew == '1'): ?>
                                                                 <?php echo('0.00'); ?>
                                                             <?php else: ?>
-                                                                <?= $item->rfp_amount; ?>
+                                                                <?= number_format($item->rfp_amount, 2); ?>
                                                             <?php endif; ?>
                                                         </td>
                                                         <td class="amountReceived">
@@ -156,21 +155,49 @@
                                                             <?php elseif($item->controlled == '0' && $item->isNew == '1' || $item->controlled == '0'): ?>
                                                                 <?php echo('0.00'); ?>
                                                             <?php else: ?>
-                                                                <?= $item->rfp_amount; ?>
+                                                                <?= number_format($item->rfp_amount, 2); ?>
                                                             <?php endif; ?>
                                                         </td>
                                                         <td class="text-end">
-                                                            <?php if($item->isNew == '1'): ?>  
-                                                                <input type="text" class="form-control form-control-sm actualAmount" id="actualAmount" name="actualAmount" value="<?= $item->actual_amount; ?>">
-                                                            <?php else: ?> 
-                                                                <?php if($item->hasBreakdown == '1'): ?>
-                                                                    <input type="text" class="form-control form-control-sm actualAmount" id="actualAmount" name="actualAmount" value="<?= $item->actual_amount; ?>" disabled>
-                                                                    <button class="btn btn-sm text-primary multiple-btn" data-bs-toggle="modal" data-bs-target="#multipleEntryModal" data-item="<?= $item->id ?>">Cost Breakdown</button>
-                                                                <?php else: ?>
-                                                                    <input type="text" class="form-control form-control-sm actualAmount" id="actualAmount" name="actualAmount" value="<?= $item->actual_amount; ?>" required>
-                                                                    <button class="btn btn-sm text-primary multiple-btn" data-bs-toggle="modal" data-bs-target="#multipleEntryModal" data-item="<?= $item->id ?>">Cost Breakdown</button>
-                                                                <?php endif ?>
-                                                            <?php endif ?>
+                                                            
+                                                            <?php
+                                                            // Count the number of liquidation items where controlled == 1 and status == 4
+                                                            $matching_items = 0;
+                                                            $total_matching_items = 0;
+
+                                                            foreach ($liquidation_item as $liquidation) {
+                                                                if ($liquidation->controlled == 1) {
+                                                                    $total_matching_items++;
+                                                                    if ($liquidation->status == 4) {
+                                                                        $matching_items++;
+                                                                    }
+                                                                }
+                                                            }
+
+
+                                                                // Check if all controlled == 1 items have status 4
+                                                                $allControlledStatus4 = ($matching_items === $total_matching_items);
+                                                                ?>
+
+                                                                <?php if ($item->isNew == '1'): ?>  
+                                                                    <input type="text" class="form-control form-control-sm actualAmount" id="actualAmount" name="actualAmount" value="<?= $item->actual_amount; ?>">
+                                                                <?php else: ?> 
+                                                                    <?php if ($item->hasBreakdown == '1' ): ?>
+                                                                        <input type="text" class="form-control form-control-sm actualAmount" id="actualAmount" name="actualAmount" value="<?= $item->actual_amount; ?>" disabled>
+                                                                    <?php else: ?>
+                                                                        <?php if($allControlledStatus4): ?>
+                                                                            <input type="text" class="form-control form-control-sm actualAmount" id="actualAmount" name="actualAmount" value="<?= $item->actual_amount; ?>" required>
+                                                                        <?php else: ?>
+                                                                            <?php if($item->controlled == 0): ?>
+                                                                                <input type="text" class="form-control form-control-sm actualAmount" id="actualAmount" name="actualAmount" value="<?= $item->actual_amount; ?>" disabled>
+                                                                            <?php else: ?>
+                                                                                <input type="text" class="form-control form-control-sm actualAmount" id="actualAmount" name="actualAmount" value="<?= $item->actual_amount; ?>" required>
+                                                                        
+                                                                            <?php endif; ?>
+                                                                        <?php endif; ?>
+                                                                    <?php endif; ?>
+                                                                <?php endif; ?>
+
                                                         </td>
                                                         <td class="variance" id="variance">
                                                             <?php if($item->isNew == '1'): ?>  
@@ -204,119 +231,7 @@
                             </div>
                         </div>
                         <div class="d-flex justify-content-end">
-                            <button type="button" class="btn btn-primary disabled" id="submitLiquidation" >Submit</button>
-                        </div>
-                    </div>
-                    <div class="tab-pane fade" id="forValidation" role="tabpanel" aria-labelledby="forValidationTab">
-                        <div class="row m-2"> 
-                            <div class="data-table">
-                                <div class="table-reponsive">
-                                    <table class="table table-hover display" id="liquidatedTableAg">
-                                        <thead>
-                                            <tr>
-                                                <th>Items</th>
-                                                <th>RFP No.</th>
-                                                <th>Currency</th>
-                                                <th>Requested Amount</th>
-                                                <th>Amount Received</th>
-                                                <th>Actual Expenses</th>
-                                                <th>Variance</th>
-                                                <th>Variance %</th>
-                                                <th class="text-center">Remarks</th>
-                                                <th class="text-center">Status</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            <?php foreach ($liquidation_item as $item): ?>
-                                                <?php if ($item->user_id == $this->session->userdata('user_id') && $item->status == '1' || $item->status == '2' || $item->status == '3' || $item->status == '5' || $item->status == '6' || $item->status == '7'): ?>
-                                                    <tr>
-                                                        <td id="item">
-                                                            <?= $item->item; ?>
-                                                            <?php if($item->controlled == 0): ?>
-                                                                <span class="badge rounded-pill text-bg-warning">Controlled</span>
-                                                            <?php endif; ?>
-                                                            <?php if($item->isNew == '1'): ?>  
-                                                                <span class="badge rounded-pill text-bg-primary">NEW ITEM</span>
-                                                            <?php endif ?>
-                                                        </td>
-                                                        <td id="rfpno">
-                                                            <?php if($item->isNew == '1'): ?>  
-                                                                
-                                                            <?php else: ?>
-                                                                <?= $item->rfp_no; ?>
-                                                            <?php endif ?>
-                                                        </td>
-                                                        <td><?= $item->currency ?></td>
-                                                        <td class="rfpAmount" id="rfpAmount">
-                                                            <?php if($item->isNew == '1' && $item->controlled == '1'): ?>
-                                                                <?php echo('0.00'); ?>
-                                                            <?php elseif($item->controlled == '0' && $item->isNew == '1'): ?>
-                                                                <?php echo('0.00'); ?>
-                                                            <?php else: ?>
-                                                                <?= $item->rfp_amount; ?>
-                                                            <?php endif; ?>
-                                                        </td>
-                                                        <td class="amountReceived">
-                                                            <?php if($item->isNew == '1' && $item->controlled == '1'): ?>
-                                                                <?php echo('0.00'); ?>
-                                                            <?php elseif($item->controlled == '0' && $item->isNew == '1' || $item->controlled == '0'): ?>
-                                                                <?php echo('0.00'); ?>
-                                                            <?php else: ?>
-                                                                <?= $item->rfp_amount; ?>
-                                                            <?php endif; ?>
-                                                        </td>
-                                                        <td><?= number_format($item->actual_amount, 2) ?></td>
-                                                        <td class="variance">
-                                                            <?php if($item->isNew == '1'): ?>  
-                                                                <?= number_format($item->variance, 2) ?>
-                                                            <?php else: ?>
-                                                                <?= number_format($item->variance, 2); ?>
-                                                            <?php endif ?>
-                                                        </td>
-                                                        <td class="variance_percent">
-                                                            <?php if($item->isNew == '1'): ?>  
-                                                                <?= number_format($item->variance_percent, 2) . '%'; ?>
-                                                            <?php else: ?>
-                                                                <?= number_format($item->variance_percent, 2) . '%'; ?>
-                                                            <?php endif ?>
-                                                        </td>
-                                                        <td class="text-center">
-                                                            <button type="button" class="btn text-primary" data-bs-toggle="modal" data-bs-target="#showItemRemarksModal" id="showItemRemarks" data-item="<?= $item->id ?>">
-                                                                <i class="fa-solid fa-message"></i>
-                                                            </button>
-                                                        </td>
-                                                        <td class="text-center validate">
-                                                        <?php
-                                                                // Define the status-to-badge mapping
-                                                                $status_to_class = [
-                                                                    '0' => 'bg-secondary', // Unliquidated
-                                                                    '1' => 'bg-dark', // Liquidated
-                                                                    '2' => 'bg-primary', // OK To Pay
-                                                                    '3' => 'bg-info', // Validated
-                                                                    '4' => 'bg-success', // Pay To Agent
-                                                                    '5' => 'bg-danger', // Return To AP
-                                                                    '6' => 'bg-warning', // Return To AP
-                                                                    '7' => 'bg-light text-dark', // Return To Agent by AP
-                                                                    '8' => 'bg-danger', // Amend
-                                                                ];
-
-                                                                // Determine the badge class based on the item's status
-                                                                $badge_class = isset($status_to_class[$item->status]) ? $status_to_class[$item->status] : '';
-                                                            ?>
-                                                            <span class="badge <?= $badge_class; ?>">
-                                                                <?= htmlspecialchars($item->desc_status); ?>
-                                                            </span>
-                                                        </td>
-
-                                                        
-                                                    </tr>
-                                                <?php endif; ?>
-                                            <?php endforeach; ?>
-                                            <!-- see main.js #submitLiquidation click -->
-                                        </tbody>
-                                    </table>
-                                </div>
-                            </div>
+                            <button type="button" class="btn btn-primary" id="submitLiquidation" >Submit</button>
                         </div>
                     </div>
                     <div class="tab-pane fade" id="completed" role="tabpanel" aria-labelledby="completedTab">
@@ -359,7 +274,7 @@
                                                             <?php elseif($item->controlled == '0' && $item->isNew == '1'): ?>
                                                                 <?php echo('0.00'); ?>
                                                             <?php else: ?>
-                                                                <?= $item->rfp_amount; ?>
+                                                                <?= number_format($item->rfp_amount, 2); ?>
                                                             <?php endif; ?>
                                                         </td>
                                                         <td class="amountReceived">
@@ -368,7 +283,7 @@
                                                             <?php elseif($item->controlled == '0' && $item->isNew == '1' || $item->controlled == '0'): ?>
                                                                 <?php echo('0.00'); ?>
                                                             <?php else: ?>
-                                                                <?= $item->rfp_amount; ?>
+                                                                <?= number_format($item->rfp_amount, 2); ?>
                                                             <?php endif; ?>
                                                         </td>
                                                         <td><?= number_format($item->actual_amount, 2) ?></td>
@@ -459,7 +374,7 @@
                                                             <?php elseif($item->controlled == '0' && $item->isNew == '1'): ?>
                                                                 <?php echo('0.00'); ?>
                                                             <?php else: ?>
-                                                                <?= $item->rfp_amount; ?>
+                                                                <?= number_format($item->rfp_amount, 2); ?>
                                                             <?php endif; ?>
                                                         </td>
                                                         <td class="amountReceived">
@@ -477,10 +392,10 @@
                                                             <?php else: ?> 
                                                                 <?php if($item->hasBreakdown == '1'): ?>
                                                                     <input type="text" class="form-control form-control-sm actualAmount" id="actualAmount" name="actualAmount" value="<?= $item->actual_amount; ?>" disabled>
-                                                                    <button class="btn btn-sm text-primary multiple-btn" data-bs-toggle="modal" data-bs-target="#multipleEntryModal" data-item="<?= $item->id ?>">Cost Breakdown</button>
+                                                                    <!-- <button class="btn btn-sm text-primary multiple-btn" data-bs-toggle="modal" data-bs-target="#multipleEntryModal" data-item="<?= $item->id ?>">Cost Breakdown</button> -->
                                                                 <?php else: ?>
                                                                     <input type="text" class="form-control form-control-sm actualAmount" id="actualAmount" name="actualAmount" value="<?= $item->actual_amount; ?>" required>
-                                                                    <button class="btn btn-sm text-primary multiple-btn" data-bs-toggle="modal" data-bs-target="#multipleEntryModal" data-item="<?= $item->id ?>">Cost Breakdown</button>
+                                                                    <!-- <button class="btn btn-sm text-primary multiple-btn" data-bs-toggle="modal" data-bs-target="#multipleEntryModal" data-item="<?= $item->id ?>">Cost Breakdown</button> -->
                                                                 <?php endif ?>
                                                             <?php endif ?>
                                                         </td>
@@ -568,16 +483,19 @@
                 paging: true,
                 searching: true,
                 pageLength: 10,
+                order: []
             });
             $('#completeTableAg').DataTable({
                 paging: true,
                 searching: true,
                 pageLength: 10,
+                order: []
             });
             $('#forAmendmentTableAg').DataTable({
                 paging: true,
                 searching: true,
                 pageLength: 10,
+                order: []
             });
         });
     </script>

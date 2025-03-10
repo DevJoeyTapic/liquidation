@@ -197,16 +197,6 @@ $(document).ready(function () {
       $(this).closest("tr").find(".variance_percent").text(vpercent.toFixed(2) + '%'); 
       
       const checkbox = $(this).closest("tr").find(".rowCheckbox");
-      
-      if (actualAmount) {
-          checkbox.prop("checked", true); 
-          checkbox.prop("disabled", false); 
-          $("#submitLiquidation").removeClass("disabled").prop("disabled", false);
-      } else {
-          checkbox.prop("checked", false); 
-          checkbox.prop("disabled", true); 
-          $("#submitLiquidation").addClass("disabled").prop("disabled", true);
-      }
 
     
   });
