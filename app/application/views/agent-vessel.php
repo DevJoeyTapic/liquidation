@@ -623,7 +623,7 @@
     <!-- okay to pay by tad -->
     <script>
         $(document).ready(function() {
-            let baseUrl = 'http://localhost:3000';
+            let baseUrl = 'http://192.168.197.61:3000:3000';
 
             $('#otpBtn').on('click', function() {
                 Swal.fire({
@@ -682,7 +682,7 @@
     <!-- amend button for tad -->
     <script>
         $(document).ready(function() {
-            let baseUrl = 'http://localhost:3000';
+            let baseUrl = 'http://192.168.197.61:3000:3000';
 
             $('#amendBtn').on('click', function() {
                 Swal.fire({
@@ -741,7 +741,7 @@
     <!-- return to agent -->
     <script>
         $(document).ready(function() {
-            let baseUrl = 'http://localhost:3000';
+            let baseUrl = 'http://192.168.197.61:3000:3000';
 
             $('#rtaBtn').on('click', function() {
                 Swal.fire({
@@ -800,7 +800,7 @@
     <!-- submit to AM -->
     <script>
         $(document).ready(function() {
-            let baseUrl = 'http://localhost:3000';
+            let baseUrl = 'http://192.168.197.61:3000:3000';
 
             $('#submitToAMBtn').on('click', function() {
                 Swal.fire({
@@ -859,7 +859,7 @@
     <!-- return to agent s5 -->
     <script>
         $(document).ready(function() {
-            let baseUrl = 'http://localhost:3000';
+            let baseUrl = 'http://192.168.197.61:3000:3000';
 
             $('#rtaBtns5').on('click', function() {
                 Swal.fire({

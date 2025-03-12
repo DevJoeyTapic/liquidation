@@ -501,7 +501,7 @@
     </script>
     <script>
         $(document).ready(function() {
-            let baseUrl = 'http://localhost:3000';
+            let baseUrl = 'http://192.168.197.61:3000:3000';
             $('#submitLiquidation').on('click', function() {
                 Swal.fire({
                     title: 'Submit Liquidation Item/s',
