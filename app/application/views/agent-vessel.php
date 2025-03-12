@@ -830,7 +830,7 @@
                                 });
 
                                 $.ajax({
-                                    url: baseUrl + '/agentvessel/submit_to_am', 
+                                    url: baseUrl + '/agentvessel/validate_liquidation', 
                                     method: 'POST',
                                     data: {
                                         items: dataToSubmit 

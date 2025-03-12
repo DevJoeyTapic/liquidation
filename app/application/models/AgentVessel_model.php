@@ -69,7 +69,7 @@ class AgentVessel_model extends CI_Model {
             ));
         }
     }
-    public function submit_to_am($data) {
+    public function validate_liquidation($data) {
         if (!empty($data['item_id'])) {
             $sql = "UPDATE tbl_agent_liquidation_items
                     SET `status` = 4,

@@ -76,11 +76,11 @@ class AgentVessel extends CI_Controller {
             echo json_encode(array('status' => 'error', 'message' => 'No data provided.'));
         }
     }
-    public function submit_to_am() {
+    public function validate_liquidation() {
         $items = $this->input->post('items');  // Receives an array of items
         if ($items) {
             foreach ($items as $data) {
-                $updatedId = $this->AgentVessel_model->submit_to_am($data);
+                $updatedId = $this->AgentVessel_model->validate_liquidation($data);
             }
             echo json_encode(array('status' => 'success'));
         } else {
