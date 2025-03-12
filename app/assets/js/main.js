@@ -1,5 +1,5 @@
 $(document).ready(function () {
-  let baseUrl = 'http://192.168.197.61:3000'
+  let baseUrl = 'http://agents.wallem.com.ph'
 
   let row;
   function updateTotal() {
@@ -411,7 +411,7 @@ $(document).ready(function () {
         timestamp: timestamp
       },
       success: function(response) {
-        let baseUrl = 'http://192.168.197.61:3000';  // Fixed missing protocol
+        let baseUrl = 'http://agents.wallem.com.ph';  // Fixed missing protocol
         console.log(response);
         
         // Create the new note HTML
