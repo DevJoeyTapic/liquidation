@@ -377,6 +377,74 @@ $(document).ready(function () {
     });
   });
 
+  $("#addNotesBtn").on('click', function() {
+    const liq_ref = $("#liq_ref").val();
+    const notes = $("#notesInput").val();
+    const sender = $("#sender").val();
+    const timestamp = new Date(new Date().getTime() + 8 * 60 * 60 * 1000).toISOString().slice(0, 19).replace('T', ' ');
+  
+    console.log({
+      liq_ref: liq_ref,
+      notes: notes,
+      sender: sender,
+      timestamp: timestamp
+    }); 
+  
+    // Check if the notes input is empty
+    if (notes === '') {
+      Swal.fire({
+        icon: 'error',
+        title: 'Error',
+        text: 'Please enter notes before submitting'
+      });
+      return;
+    }
+  
+    $.ajax({
+      url: baseUrl + '/vesselitem/add_notes', 
+      method: 'POST',
+      data: {
+        liq_ref: liq_ref,
+        notes: notes,
+        sender: sender,
+        timestamp: timestamp
+      },
+      success: function(response) {
+        let baseUrl = 'http://192.168.192.251:3000';  // Fixed missing protocol
+        console.log(response);
+        
+        // Create the new note HTML
+        const noteHtml = `
+            <div class="sender">
+                <div class="d-flex justify-content-between text-secondary">
+                    <div class="d-flex justify-content-end align-items-end">
+                        <p class="small">${timestamp}</p>
+                    </div>
+                    <div>
+                        <p class="small text-end"><strong>${sender}</strong></p>
+                    </div>
+                </div>
+                <div> 
+                    <div class="imessage d-flex justify-content-end align-items-right">
+                        <p class="from-me">${notes}</p>
+                        <div class="profile-notes right">
+                            <img src="${baseUrl}/assets/images/bg-ship.jpg" class="rounded-circle">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        `;
+        $(".chat-messages").append(noteHtml);
+        $(".no-notes").remove();
+        $("#notesInput").val('');
+
+      },
+      error: function(jqXHR, textStatus, errorThrown) {
+        console.error('Error:', textStatus, errorThrown);
+      }
+    });
+  });
+  
   $("#addItem").on("click", function () {
     const newItem = $("#newItem").val();
     const newRemarks = $("#newRemarks").val();
