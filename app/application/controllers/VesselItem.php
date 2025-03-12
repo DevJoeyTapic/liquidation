@@ -72,6 +72,20 @@ class VesselItem extends CI_Controller {
             echo json_encode(array('status' => 'error', 'message' => 'Failed to add item'));
         }
     }
+    public function delete_item($id) {
+        $id = $this->input->post('item_id');
+        if ($id) {
+            $deleted = $this->Liquidation_model->delete_item($id);
+            if ($deleted) {
+                echo json_encode(array('status' => 'success'));
+            } else {
+                echo json_encode(array('status' => 'error', 'message' => 'Failed to delete item'));
+            }
+        } else {
+            echo json_encode(array('status' => 'error', 'message' => 'No item ID provided'));
+        }
+        echo $this->db->last_query();
+    }
     
     public function submit_for_validation() {
         $items = $this->input->post('items');  // Receives an array of items

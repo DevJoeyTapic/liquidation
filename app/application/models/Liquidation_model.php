@@ -99,6 +99,13 @@ class Liquidation_model extends CI_Model {
         $this->db->insert('tbl_agent_liquidation_items', $data);
         return $this->db->insert_id();
     }
+    
+    public function delete_item($id) {
+        $sql = "DELETE FROM tbl_agent_liquidation_items WHERE id = ?";
+        $this->db->query($sql, array($id)); 
+        return $this->db->affected_rows() > 0; 
+    }
+    
 
     public function revalidate_item($id) {
         $sql ="UPDATE tbl_agent_liquidation_items
