@@ -28,7 +28,7 @@
                         </div>
                         <div class=""> 
                             <div class="imessage d-flex justify-content-end align-items-right">
-                                <p class="from-me p-2">
+                                <p class="from-me">
                                 <?= $note->notes; ?>
                                 </p>
                                 <div class="profile-notes right">
@@ -42,7 +42,6 @@
                         <div class="d-flex justify-content-between text-secondary">
                             <div>
                                 <p class="small"><strong><?= $note->sender; ?></strong></p>
-                                <p class="small"><?= $note->sender; ?></p>
                             </div>
                             <div class="d-flex justify-content-end align-items-end">
                                 <p class="small">
@@ -56,9 +55,9 @@
                         <div class="d-flex">
                             <div class="imessage d-flex">
                                 <div class="profile-notes">
-                                    <img src="<?= base_url('assets/images/bg-ship.jpg'); ?>" class="rounded-circle">
+                                    <img src="<?= base_url('assets/images/bg-ship.jpg'); ?>" class="rounded-circle m-0">
                                 </div>
-                                <p class="from-them p-2">
+                                <p class="from-them">
                                 <?= $note->notes; ?>
                                 </p>
                             </div>
@@ -67,13 +66,15 @@
                 <?php endif; ?>
             <?php endforeach; ?>
         <?php else: ?>
-            <p>No notes available.</p>
+            <p class="no-notes mx-auto my-auto">No notes available.</p>
         <?php endif; ?>
     </div>
-    <form action="<?php echo base_url('vesselitem/view/' . $id );?>" method="POST">
-        <input type="hidden" name="liq_ref" value="<?php echo $id; ?>">
-        <input type="hidden" name="sender" value="<?php echo $this->session->userdata('username'); ?>">
-        <input type="hidden" name="timestamp" value="<?php echo date('Y-m-d H:i:s'); ?>">
-        <input type="text" class="form-control" name="notes" placeholder="Type a message...">
-    </form>
+    <div class="input-group d-flex justify-content-betwen align-items-center">
+        <input type="hidden" name="liq_ref" value="<?php echo $id; ?>" id="liq_ref">
+        <input type="hidden" name="sender" value="<?php echo $this->session->userdata('fullname'); ?>" id="sender">
+        <input type="text" class="form-control" name="notes" placeholder="Type a message..." id="notesInput">
+        <button class="btn btn-primary" id="addNotesBtn" style="border-radius: 0;">
+            <i class="fa-solid fa-paper-plane"></i>
+        </button>
+    </div>
 </div>

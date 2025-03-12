@@ -179,6 +179,7 @@ html::-webkit-scrollbar {
   right: 100px !important;
   bottom: 0;
   width: 30%;
+  min-height: 400px;
   max-height: 400px; /* Set max height */
   background-color: #fff;
   border-radius: 10px 10px 0 0;
@@ -230,8 +231,9 @@ html::-webkit-scrollbar {
   padding-right: 10px; /* Avoid content touching the scrollbar */
   display: flex;
   flex-direction: column;
-  overflow: auto;
-  scrollbar-width: none; /* For Firefox */
+  min-height: 310px;
+  max-height: 310px; 
+  overflow: scroll;
 }
 .chat-messages .receiver, .chat-messages .sender {
   margin-bottom: 15px; /* Adds space between message blocks */
@@ -313,9 +315,9 @@ p.from-them:before {
 p.from-them::after {
   background-color: #fff;
   border-bottom-right-radius: 0.5rem;
-  left: 20px;
+  left: 22px;
   transform: translate(-30px, -2px);
-  width: 10px;
+  width: 8px;
 }
 
 .no-tail::before {
@@ -360,7 +362,7 @@ p.from-them::after {
 }
 
 .profile-notes img {
-  margin-top: 30px;
+  margin-top: 0px !important;
   margin-right: 5px;
   height: 40px;
 }

@@ -124,6 +124,22 @@ class VesselItem extends CI_Controller {
             echo json_encode(array('status' => 'error', 'message' => 'Failed to add remark'));
         }
     }
+
+    public function add_notes() {
+        $data = array(
+            'liq_ref' => $this->input->post('liq_ref'),
+            'notes' => $this->input->post('notes'),
+            'sender' => $this->input->post('sender'),
+            'timestamp' => $this->input->post('timestamp')
+        );
+        $insertedId = $this->Notes_model->insert_notes($data);
+        if ($insertedId) {
+            echo json_encode(array('status' => 'success', 'id' => $insertedId));
+        } else {
+            echo json_encode(array('status' => 'error', 'message' => 'Failed to add remark'));
+        }
+    }
 }
+
 
 ?>

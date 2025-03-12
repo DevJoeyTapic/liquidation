@@ -76,9 +76,7 @@
                             <div class="nav nav-tabs liquidation-tabs" id="nav-tab" role="tablist">
                                 <button class="nav-link active" id="pendingTab" data-bs-toggle="tab" data-bs-target="#pending" type="button" role="tab" aria-controls="pending" aria-selected="false"><i class="fa-solid fa-user-clock pe-2"></i>Pending Item(s) for Liquidation</button>    
                                 <button class="nav-link" id="forValidationTab" data-bs-toggle="tab" data-bs-target="#forValidation" type="button" role="tab" aria-controls="forValidation" aria-selected="true"><i class="fa-regular fa-clock pe-2"></i><?= ($this->session->userdata('user_type') == '5') ? 'Pending OTP' : 'Item(s) for Validation' ?></button>    
-                                <button class="nav-link" id="validatedTab" style="display: <?= ($this->session->userdata('user_type') == '5') ? 'none' : 'block' ?>"data-bs-toggle="tab" data-bs-target="#validated" type="button" role="tab" aria-controls="validated" aria-selected="false"><i class="fa-solid fa-circle-check pe-2"></i>Liquidated Item(s)</button>            
-                                <button class="nav-link" id="forRevalidationTab" style="display: <?= ($this->session->userdata('user_type') == '5') ? 'none' : 'block' ?>"data-bs-toggle="tab" data-bs-target="#forRevalidation" type="button" role="tab" aria-controls="forRevalidation" aria-selected="false"><i class="fa-solid fa-user-xmark pe-2"></i>For Revalidation</button>            
-
+                                <button class="nav-link" id="completedTab" data-bs-toggle="tab" data-bs-target="#completed" type="button" role="tab" aria-controls="completed" aria-selected="false"><i class="fa-solid fa-circle-check pe-2"></i>Completed Item(s)</button>
                             </div>
                         </nav>
                         
@@ -118,19 +116,19 @@
                                                                 </td>
                                                                 <td class="col-1 text-center"><?= $item->rfp_no; ?></td>
                                                                 <td class="text-center"><?= $item->currency ?></td>
-                                                                <td id="debit"><?= $item->rfp_amount; ?></td>
+                                                                <td id="debit"><?= number_format($item->rfp_amount, 2); ?></td>
                                                                 <td>
                                                                     <?php if($item->isNew == '1' && $item->controlled == '1'): ?>
                                                                         <?= $item->actual_amount; ?>
                                                                     <?php elseif($item->controlled == '0' && $item->isNew == '1'): ?>
                                                                         <?php echo('0.00'); ?>
                                                                     <?php else: ?>
-                                                                        <?= $item->rfp_amount; ?>
+                                                                        <?= number_format($item->rfp_amount, 2); ?>
                                                                     <?php endif; ?>
                                                                 </td>
                                                                 <td id="credit"><?= $item->actual_amount; ?></td>
-                                                                <td><?= $item->variance; ?></td>
-                                                                <td><?= $item->variance_percent . '%'; ?></td>
+                                                                <td><?= number_format($item->variance, 2); ?></td>
+                                                                <td><?= number_format($item->variance_percent, 2). '%'; ?></td>
                                                                 <td class="col-1 text-center">
                                                                     <button type="button" class="btn text-primary" data-bs-toggle="modal" data-bs-target="#showItemRemarksModal" id="showItemRemarks" data-item="<?= $item->id ?>">
                                                                         <i class="fa-solid fa-message"></i>
@@ -193,11 +191,11 @@
                                                                     </td>
                                                                     <td><?= $item->rfp_no; ?></td>
                                                                     <td><?= $item->currency ?></td>
-                                                                    <td id="debit"><?= $item->rfp_amount; ?></td>
-                                                                    <td><?= $item->rfp_amount; ?></td>
+                                                                    <td id="debit"><?= number_format($item->rfp_amount, 2); ?></td>
+                                                                    <td><?= number_format($item->rfp_amount, 2); ?></td>
                                                                     <td id="credit"><?= $item->actual_amount; ?></td>
-                                                                    <td><?= $item->variance; ?></td>
-                                                                    <td><?= $item->variance_percent; ?></td>
+                                                                    <td><?= number_format($item->variance, 2); ?></td>
+                                                                    <td><?= number_format($item->variance_percent, 2) . '%'; ?></td>
                                                                     <td class="text-center">
                                                                         <button type="button" class="btn text-primary" data-bs-toggle="modal" data-bs-target="#showItemRemarksModal" id="showItemRemarks" data-item="<?= $item->id ?>">
                                                                             <i class="fa-solid fa-message"></i>
@@ -273,7 +271,7 @@
                                                                     <?php elseif($item->controlled == '0' && $item->isNew == '1'): ?>
                                                                         <?php echo('0.00'); ?>
                                                                     <?php else: ?>
-                                                                        <?= $item->rfp_amount; ?>
+                                                                        <?= number_format($item->rfp_amount, 2); ?>
                                                                     <?php endif; ?>
                                                                 </td>
                                                                 <td id="credit">
@@ -354,8 +352,8 @@
                                                                         <?php endif ?>
                                                                     </td>
                                                                     <td id="credit"><?= $item->actual_amount; ?></td>
-                                                                    <td><?= $item->variance; ?></td>
-                                                                    <td><?= $item->variance_percent; ?></td>
+                                                                    <td><?= number_format($item->variance, 2); ?></td>
+                                                                    <td><?= number_format($item->variance_percent, 2) . '%'; ?></td>
                                                                     <td class="text-center">
                                                                         <button type="button" class="btn text-primary" data-bs-toggle="modal" data-bs-target="#showItemRemarksModal" id="showItemRemarks" data-item="<?= $item->id ?>">
                                                                             <i class="fa-solid fa-message"></i>
@@ -383,7 +381,7 @@
                                                     Check All
                                                 </button>
                                                 <button class="btn btn-primary" id="submitToAMBtn">
-                                                    Submit to AM
+                                                    Validate
                                                 </button>
                                             </div>
                                         </div>
@@ -405,78 +403,11 @@
                                     <? endif ?>                
                                 </div>
                             </div>
-                            <div class="tab-pane fade" id="validated" role="tabpanel" aria-labelledby="validatedTab">
-                                <div class="d-flex justify-content-end">
-                                    <button class="btn text-primary">
-                                        <i class="fa-solid fa-print pe-2"></i>Print Summary of Vessel Liquidation
-                                    </button>
-                                </div>
-                                <div class="row m-2">
+                            <div class="tab-pane fade" id="completed" role="tabpanel" aria-labelledby="completedTab">
+                                <div class="row m-2"> 
                                     <div class="data-table">
-                                        <!-- table for validated items (TAD) -->
-                                        <div class="table-responsive" style="display: <?= ($this->session->userdata('user_type') == 5) ? 'block' : 'none'; ?>">
-                                            <table class="table  table-hover display" id="dataTableValidatedT">
-                                                <thead>
-                                                    <tr>
-                                                        <th class="col-3">Items</th>
-                                                        <th class="col">Description</th>
-                                                        <th class="col-1 text-center">RFP No.</th>
-                                                        <th class="col-2">Requested Amount</th>
-                                                        <th class="col-2">Actual Amount</th>
-                                                        <th class="col-2">Variance</th>
-                                                        <th class="col-2">Remarks</th>
-                                                        <th class="col text-center">Status</th>
-                                                    </tr>
-                                                </thead>
-                                                <tbody>
-                                                    <?php foreach ($vessel_items as $item): ?>
-                                                        <?php if ($item->status == 2 ||$item->status == 3 || $item->status == 5): ?>
-                                                            <tr>
-                                                                <td>
-                                                                    <?= $item->item; ?>
-                                                                    <?php if($item->controlled == 0): ?>
-                                                                        <span class="badge rounded-pill text-bg-warning">Controlled</span>
-                                                                    <?php endif; ?>
-                                                                    <?php if($item->isNew == '1'): ?>  
-                                                                        <span class="badge rounded-pill text-bg-primary">NEW ITEM</span>
-                                                                    <?php endif ?>
-                                                                </td>
-                                                                <td></td>
-                                                                <td class="text-center"><?= $item->rfp_no; ?></td>
-                                                                <td id="debit"><?= $item->rfp_amount; ?></td>
-                                                                <td id="credit"><?= $item->actual_amount; ?></td>
-                                                                <td><?= $item->variance; ?></td>
-                                                                <td>
-                                                                    <button type="button" class="btn text-primary" data-bs-toggle="modal" data-bs-target="#showItemRemarksModal" id="showItemRemarks" data-item="<?= $item->id ?>">
-                                                                        <i class="fa-solid fa-message"></i>
-                                                                    </button>
-                                                                </td>
-                                                                <td class="text-center">
-                                                                    <span class="badge 
-                                                                        <?= ($item->status == 0) ? 'text-bg-secondary' : '' ?>
-                                                                        <?= ($item->status == 1) ? 'text-bg-primary' : '' ?>
-                                                                        <?= ($item->status == 2) ? 'text-bg-success' : '' ?>
-                                                                        <?= ($item->status == 3) ? 'text-bg-success' : '' ?>
-                                                                        <?= ($item->status == 4) ? 'text-bg-danger' : '' ?>
-                                                                        <?= ($item->status == 5) ? 'text-bg-warning' : '' ?>
-                                                                    ">
-                                                                        <?= ($item->status == 0) ? 'Pending Agent' : '' ?>
-                                                                        <?= ($item->status == 1) ? 'Pending Voo/OM' : '' ?>
-                                                                        <?= ($item->status == 2) ? 'Pending Accounting' : '' ?>
-                                                                        <?= ($item->status == 3) ? 'Validated' : '' ?>
-                                                                        <?= ($item->status == 4) ? 'For Re-validation' : '' ?>
-                                                                        <?= ($item->status == 5) ? 'Revalidated' : '' ?>
-                                                                    </span>
-                                                                </td>
-                                                            </tr>
-                                                        <?php endif; ?>
-                                                    <?php endforeach; ?>
-                                                </tbody>
-                                            </table>
-                                        </div>    
-                                        <!-- table for validated items (accounting) -->
-                                        <div class="table-responsive" style="display: <?= ($this->session->userdata('user_type') == 3) || ($this->session->userdata('user_type') == 4) ? 'block' : 'none'; ?>">
-                                            <table class="table  table-hover display" id="dataTableValidatedA">
+                                        <div class="table-reponsive">
+                                            <table class="table table-hover display" id="completeTableA">
                                                 <thead>
                                                     <tr>
                                                         <th>Items</th>
@@ -484,7 +415,7 @@
                                                         <th>Currency</th>
                                                         <th>Requested Amount</th>
                                                         <th>Amount Received</th>
-                                                        <th>Actual Amount</th>
+                                                        <th>Actual Expenses</th>
                                                         <th>Variance</th>
                                                         <th>Variance %</th>
                                                         <th class="text-center">Remarks</th>
@@ -493,9 +424,9 @@
                                                 </thead>
                                                 <tbody>
                                                     <?php foreach ($vessel_items as $item): ?>
-                                                        <?php if ($item->status == 3 || $item->status == 1): ?>
+                                                        <?php if ($item->status == '4'): ?>
                                                             <tr>
-                                                                <td>
+                                                                <td id="item">
                                                                     <?= $item->item; ?>
                                                                     <?php if($item->controlled == 0): ?>
                                                                         <span class="badge rounded-pill text-bg-warning">Controlled</span>
@@ -504,39 +435,39 @@
                                                                         <span class="badge rounded-pill text-bg-primary">NEW ITEM</span>
                                                                     <?php endif ?>
                                                                 </td>
-                                                                <td class="text-center">
-                                                                    <?php if($item->isNew == '1'): ?>  
-                                                                    
-                                                                    <?php else: ?>
-                                                                        <?= $item->rfp_no ?>
-                                                                    <?php endif ?>
-                                                                </td>
-                                                                <td class="text-center"><?= $item->currency ?></td>
-                                                                <td id="debit">
-                                                                    <?php if($item->isNew == '1'): ?>  
-                                                                        <?= number_format($item->actual_amount, 2) ?>
-                                                                    <?php else: ?>
-                                                                        <?= number_format($item->rfp_amount, 2) ?>
-                                                                    <?php endif ?>
-                                                                </td>
-                                                                <td>
-                                                                    <?php if($item->isNew == '1'): ?>  
-                                                                        <?= number_format($item->actual_amount, 2) ?>
-                                                                    <?php elseif($item->controlled == '0'): ?>
+                                                                <td id="rfpno"><?= $item->rfp_no; ?></td>
+                                                                <td><?= $item->currency ?></td>
+                                                                <td class="rfpAmount" id="rfpAmount">
+                                                                    <?php if($item->isNew == '1' && $item->controlled == '1'): ?>
+                                                                        <?php echo('0.00'); ?>
+                                                                    <?php elseif($item->controlled == '0' && $item->isNew == '1'): ?>
                                                                         <?php echo('0.00'); ?>
                                                                     <?php else: ?>
-                                                                        <?= number_format($item->rfp_amount, 2) ?>
-                                                                    <?php endif ?>
+                                                                        <?= number_format($item->rfp_amount, 2); ?>
+                                                                    <?php endif; ?>
                                                                 </td>
-                                                                <td id="credit"><?= $item->actual_amount; ?></td>
-                                                                <td><?= $item->variance; ?></td>
-                                                                <td><?= $item->variance_percent; ?></td>
+                                                                <td class="amountReceived">
+                                                                    <?php if($item->isNew == '1' && $item->controlled == '1'): ?>
+                                                                        <?php echo('0.00'); ?>
+                                                                    <?php elseif($item->controlled == '0' && $item->isNew == '1' || $item->controlled == '0'): ?>
+                                                                        <?php echo('0.00'); ?>
+                                                                    <?php else: ?>
+                                                                        <?= number_format($item->rfp_amount, 2); ?>
+                                                                    <?php endif; ?>
+                                                                </td>
+                                                                <td><?= number_format($item->actual_amount, 2) ?></td>
+                                                                <td class="variance">
+                                                                    <?= number_format($item->variance, 2); ?>
+                                                                </td>
+                                                                <td class="variance">
+                                                                    <?= number_format($item->variance_percent, 2) . '%'; ?>
+                                                                </td>
                                                                 <td class="text-center">
                                                                     <button type="button" class="btn text-primary" data-bs-toggle="modal" data-bs-target="#showItemRemarksModal" id="showItemRemarks" data-item="<?= $item->id ?>">
                                                                         <i class="fa-solid fa-message"></i>
                                                                     </button>
                                                                 </td>
-                                                                <td class="text-center">
+                                                                <td class="text-center validate">
                                                                     <?php
                                                                         // Define the status-to-badge mapping
                                                                         $status_to_class = [
@@ -558,113 +489,18 @@
                                                                         <?= htmlspecialchars($item->desc_status); ?>
                                                                     </span>
                                                                 </td>
+                                                                
                                                             </tr>
                                                         <?php endif; ?>
                                                     <?php endforeach; ?>
+                                                    <!-- see main.js #submitLiquidation click -->
                                                 </tbody>
                                             </table>
-                                        </div>  
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="tab-pane fade" id="forRevalidation" role="tabpanel" aria-labelledby="forRevalidationTab">
-                                <div class="d-flex justify-content-end">
-                                    <button class="btn text-primary">
-                                        <i class="fa-solid fa-print pe-2"></i>Print Summary of Vessel Liquidation
-                                    </button>
-                                </div>
-                                <div class="row m-2">
-                                    <div class="data-table">   
-                                        <!-- table for validated items (accounting) -->
-                                        <div class="table-responsive" style="display: <?= ($this->session->userdata('user_type') == 3) ? 'block' : 'none'; ?>">
-                                            <table class="table  table-hover display" id="dataTableForRevalidationA">
-                                                <thead>
-                                                    <tr>
-                                                        <th>Items</th>
-                                                        <th>RFP No.</th>
-                                                        <th>Currency</th>
-                                                        <th>Requested Amount</th>
-                                                        <th>Amount Received</th>
-                                                        <th>Actual Amount</th>
-                                                        <th>Variance</th>
-                                                        <th>Variance %</th>
-                                                        <th class="text-center">Remarks</th>
-                                                        <th class="text-center">Status</th>
-                                                    </tr>
-                                                </thead>
-                                                <tbody>
-                                                    <?php foreach ($vessel_items as $item): ?>
-                                                        <?php if ($item->status == 5): ?>
-                                                            <tr>
-                                                                <td>
-                                                                    <?= $item->item; ?>
-                                                                    <?php if($item->controlled == 0): ?>
-                                                                        <span class="badge rounded-pill text-bg-warning">Controlled</span>
-                                                                    <?php endif; ?>
-                                                                    <?php if($item->isNew == '1'): ?>  
-                                                                        <span class="badge rounded-pill text-bg-primary">NEW ITEM</span>
-                                                                    <?php endif ?>
-                                                                </td>
-                                                                <td class="text-center">
-                                                                    <?php if($item->isNew == '1'): ?> 
-
-                                                                    <?php else: ?>
-                                                                        <?= $item->rfp_no ?>
-                                                                    <?php endif ?>
-                                                                </td>
-                                                                <td class="text-center"><?= $item->currency ?></td>
-                                                                <td id="debit">
-                                                                    <?php if($item->isNew == '1'): ?> 
-                                                                         <?= number_format($item->actual_amount, 2) ?>
-                                                                    <?php else: ?>
-                                                                        <?= number_format($item->rfp_amount, 2) ?>
-                                                                    <?php endif ?>
-                                                                </td>
-                                                                <td>
-                                                                    <?php if($item->isNew == '1'): ?>  
-                                                                        <?= number_format($item->actual_amount, 2) ?>
-                                                                    <?php elseif($item->controlled == '0'): ?>
-                                                                        <?php echo('0.00'); ?>
-                                                                    <?php else: ?>
-                                                                        <?= number_format($item->rfp_amount, 2) ?>
-                                                                    <?php endif ?>
-                                                                </td>
-                                                                <td id="credit"><?= $item->actual_amount; ?></td>
-                                                                <td><?= $item->variance; ?></td>
-                                                                <td><?= number_format($item->variance, 2) . '%'; ?></td>
-                                                                <td>
-                                                                    <button type="button" class="btn text-primary" data-bs-toggle="modal" data-bs-target="#showItemRemarksModal" id="showItemRemarks" data-item="<?= $item->id ?>">
-                                                                        <i class="fa-solid fa-message"></i>
-                                                                    </button>
-                                                                </td>
-                                                                <td class="text-center validate">
-                                                                    <input type="checkbox" class="form-check-input rowCheckbox">
-                                                                    <input type="hidden" name="item_id" value="<?php echo $item->id; ?>">
-                                                                </td>
-                                                            </tr>
-                                                        <?php endif; ?>
-                                                    <?php endforeach; ?>
-                                                </tbody>
-                                            </table>
-                                        </div>  
-                                    </div>
-                                    <?php if($this->session->userdata('user_type') == '3'): ?>
-                                        <div class="row mt-3">
-                                            <div class="col d-flex gap-2 justify-content-end align-items-end">
-                                                <button class="btn btn-danger" id="rtaBtns5">
-                                                    Amend
-                                                </button>
-                                                <button class="btn btn-success" id="checkAllBtns5">
-                                                    Check All
-                                                </button>
-                                                <button class="btn btn-primary" id="submitToAMBtns5">
-                                                    Submit to AM
-                                                </button>
-                                            </div>
                                         </div>
-                                    <? endif ?>         
+                                    </div>
                                 </div>
                             </div>
+                            
                         </div>
                     </div>    
                 </div>
@@ -716,37 +552,50 @@
                 paging: true,
                 searching: true,
                 pageLength: 10,
+                order: []
             });
             var dataTableLiquidationA = $("#dataTableLiquidationA").DataTable({
                 paging: true,
                 searching: true,
                 pageLength: 10,
+                order: []
             });
             var dataTableForValidationT = $("#dataTableForValidationT").DataTable({
                 paging: true,
                 searching: true,
                 pageLength: 10,
+                order: []
             });
             var dataTableForValidationA = $("#dataTableForValidationA").DataTable({
                 paging: true,
                 searching: true,
                 pageLength: 10,
+                order: []
             });
             var dataTableValidatedT = $("#dataTableValidatedT").DataTable({
                 paging: true,
                 searching: true,
                 pageLength: 10,
+                order: []
             });
             var dataTableValidatedA = $("#dataTableValidatedA").DataTable({ 
                 paging: true,
                 searching: true,
                 pageLength: 10,
+                order: []
             });
             var dataTableForRevalidationA = $('#dataTableForRevalidationA').DataTable({
                 paging: true,
                 seraching: true,
-                pageLength: 10
-            })
+                pageLength: 10,
+                order: []
+            });
+            var dataTableforCompleted = $('#completeTableA').DataTable({
+                paging: true,
+                searching: true,
+                pageLength: 10,
+                order: []
+            });
 
         });
     </script>
@@ -955,8 +804,8 @@
 
             $('#submitToAMBtn').on('click', function() {
                 Swal.fire({
-                    title: 'Submit for Validation',
-                    text: 'Are you sure you want to submit this for validation?',
+                    title: 'Validate Liquidation',
+                    text: 'Are you sure you want to validate this liquidation item(s)?',
                     icon: 'warning',
                     showCancelButton: true,
                     confirmButtonText: 'Yes',
@@ -1041,65 +890,6 @@
 
                                 $.ajax({
                                     url: baseUrl + '/agentvessel/for_amendment_acctg', 
-                                    method: 'POST',
-                                    data: {
-                                        items: dataToSubmit 
-                                    },
-                                    success: function(response) {
-                                        console.log(response);
-                                        location.reload();
-                                    },
-                                    error: function(error) {
-                                        Swal.fire({
-                                            title: 'Submission Error',
-                                            text: 'An error occurred while submitting the items. Please try again later.',
-                                            icon: 'error',
-                                            confirmButtonText: 'OK'
-                                        });
-                                    }
-                                });
-                            }
-
-                        });
-                    }
-                });
-            });
-        })
-    </script>
-    <!-- submit to AM s5 -->
-    <script>
-        $(document).ready(function() {
-            let baseUrl = 'https://agents.wallem.com.ph';
-
-            $('#submitToAMBtns5').on('click', function() {
-                Swal.fire({
-                    title: 'Submit for Validation',
-                    text: 'Are you sure you want to submit this for validation?',
-                    icon: 'warning',
-                    showCancelButton: true,
-                    confirmButtonText: 'Yes',
-                    cancelButtonText: 'Cancel'
-                }).then((result) => {
-                    if (result.isConfirmed) {
-                        Swal.fire({
-                            title: "Item/s Submitted!",
-                            icon: "success"
-                        }).then(() => {
-                            const checkedRows = $("#dataTableForRevalidationA .rowCheckbox:checked").closest("tr");
-
-                            let dataToSubmit = [];
-                            
-                            if (checkedRows.length > 0) {
-                                checkedRows.each(function () {
-                                    const item_id = $(this).find("input[name='item_id']").val();
-                                    
-                                    dataToSubmit.push({
-                                        item_id: item_id
-                                    });
-                                });
-
-                                $.ajax({
-                                    url: baseUrl + '/agentvessel/submit_to_am', 
                                     method: 'POST',
                                     data: {
                                         items: dataToSubmit 

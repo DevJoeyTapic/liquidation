@@ -22,7 +22,7 @@ class Dashboard_model extends CI_Model {
                 WHERE l.supplier = sub_i.supplier
                 )
                 GROUP BY l.transno, l.voyno
-                ORDER BY id desc";
+                ORDER BY l.etd asc";
         $query = $this->db->query($sql, array($user_id));
         return $query->result();
     }
@@ -48,21 +48,21 @@ class Dashboard_model extends CI_Model {
     }
     public function get_completedAg($user_id) {
         $sql = "SELECT
-                    l.*, i.`status` AS item_status,
+                    l.*, 
+                    i.`status` AS item_status,
                     s.`status` AS desc_status
                 FROM tbl_agent_liquidation AS l
                 JOIN tbl_agent_liquidation_items AS i
-                ON l.transno = i.transno and l.supplier = i.supplier
+                ON l.transno = i.transno 
+                AND l.supplier = i.supplier
                 JOIN tbl_liq_item_status AS s
                 ON i.`status` = s.id
-                WHERE l.user_id = ? AND i.`status` = 4
-                AND EXISTS (
-                SELECT 1
-                FROM tbl_agent_liquidation_items AS sub_i
-                WHERE l.supplier = sub_i.supplier
-                )
+                WHERE l.user_id = ? 
+                AND i.`status` = 4
                 GROUP BY l.transno, l.voyno
-                ORDER BY id desc";
+                HAVING 
+                COUNT(i.`status`) = (SELECT COUNT(*) FROM tbl_agent_liquidation_items WHERE transno = l.transno AND voyno = l.voyno)
+                ORDER BY l.etd ASC";
         $query = $this->db->query($sql, array($user_id));
         return $query->result();
     }
@@ -82,7 +82,7 @@ class Dashboard_model extends CI_Model {
                 WHERE l.supplier = sub_i.supplier
                 )
                 GROUP BY l.transno, l.voyno
-                ORDER BY id desc";
+                ORDER BY l.etd ASC";
         $query = $this->db->query($sql, array($user_id));
         return $query->result();
     }
@@ -99,7 +99,7 @@ class Dashboard_model extends CI_Model {
                 ON i.`status` = s.id
                 WHERE (i.`status` = 0) AND l.`status` = 1
                 GROUP BY l.transno, l.voyno
-                ORDER BY id desc";
+                ORDER BY l.etd ASC";
         $query = $this->db->query($sql);
         return $query->result();
     }
@@ -115,10 +115,13 @@ class Dashboard_model extends CI_Model {
                 ON i.`status` = s.id
                 WHERE (i.`status` = 4) AND l.`status` = 1
                 GROUP BY l.transno, l.voyno
-                ORDER BY id desc";
+                HAVING 
+                COUNT(i.`status`) = (SELECT COUNT(*) FROM tbl_agent_liquidation_items WHERE transno = l.transno AND voyno = l.voyno)
+                ORDER BY l.etd asc";
         $query = $this->db->query($sql);
         return $query->result();
     }
+    
     // Get dashboard data for TAD
     public function get_pendingOTP() {
         $sql = "SELECT
@@ -132,7 +135,7 @@ class Dashboard_model extends CI_Model {
                 ON i.`status` = s.id
                 WHERE (i.`status` = 1 or i.`status` = 2 or i.`status` = 3 or i.`status` = 5 or i.`status` = 6) AND l.`status` = 1
                 GROUP BY l.transno, l.voyno
-                ORDER BY id desc";
+                ORDER BY l.etd ASC";
         $query = $this->db->query($sql);
         return $query->result();
     }
@@ -149,7 +152,7 @@ class Dashboard_model extends CI_Model {
                 ON i.`status` = s.id
                 WHERE (i.`status` = 2) AND l.`status` = 1
                 GROUP BY l.transno, l.voyno
-                ORDER BY id desc";
+                ORDER BY l.etd asc";
         $query = $this->db->query($sql);
         return $query->result();
     }
