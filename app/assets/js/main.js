@@ -367,10 +367,11 @@ $(document).ready(function () {
                          </td>
                        </tr>`;
         remarksTableBody.append(newRow);
-
-        // Clear the input field
+      
         $("#newRemarkInput").val('');
+        remarksTableBody.scrollTop(remarksTableBody[0].scrollHeight);
       },
+      
       error: function(jqXHR, textStatus, errorThrown) {
         console.error('Error:', textStatus, errorThrown);
       }
@@ -434,9 +435,11 @@ $(document).ready(function () {
                 </div>
             </div>
         `;
+        
         $(".chat-messages").append(noteHtml);
         $(".no-notes").remove();
         $("#notesInput").val('');
+        $(".chat-messages").scrollTop($(".chat-messages")[0].scrollHeight);
 
       },
       error: function(jqXHR, textStatus, errorThrown) {

@@ -69,6 +69,7 @@
             <p class="no-notes mx-auto my-auto">No notes available.</p>
         <?php endif; ?>
     </div>
+    
     <div class="input-group d-flex justify-content-betwen align-items-center">
         <input type="hidden" name="liq_ref" value="<?php echo $id; ?>" id="liq_ref">
         <input type="hidden" name="sender" value="<?php echo $this->session->userdata('fullname'); ?>" id="sender">

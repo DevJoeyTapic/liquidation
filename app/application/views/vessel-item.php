@@ -441,6 +441,8 @@
         function toggleChat() {
             const chat = document.querySelector('.notes-window');
             chat.classList.toggle('open');
+            var chatBody = document.getElementById('notes-list');
+            chatBody.scrollTop = chatBody.scrollHeight;
         }
         function toggleBreakdown() {
             const chat = document.querySelector('.breakdown-window');
