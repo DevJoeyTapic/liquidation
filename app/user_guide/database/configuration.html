@@ -435,7 +435,7 @@ in the respective environment config folder.</p>
 prototype:</p>
 <div class="highlight-ci"><div class="highlight"><pre><span></span><span class="nv">$db</span><span class="p">[</span><span class="s1">&#39;default&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="k">array</span><span class="p">(</span>
         <span class="s1">&#39;dsn&#39;</span>   <span class="o">=&gt;</span> <span class="s1">&#39;&#39;</span><span class="p">,</span>
-        <span class="s1">&#39;hostname&#39;</span> <span class="o">=&gt;</span> <span class="s1">&#39;localhost&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;hostname&#39;</span> <span class="o">=&gt;</span> <span class="s1">&#39;192.168.197.61:3000&#39;</span><span class="p">,</span>
         <span class="s1">&#39;username&#39;</span> <span class="o">=&gt;</span> <span class="s1">&#39;root&#39;</span><span class="p">,</span>
         <span class="s1">&#39;password&#39;</span> <span class="o">=&gt;</span> <span class="s1">&#39;&#39;</span><span class="p">,</span>
         <span class="s1">&#39;database&#39;</span> <span class="o">=&gt;</span> <span class="s1">&#39;database_name&#39;</span><span class="p">,</span>
@@ -460,10 +460,10 @@ require a full DSN string to be provided. If that is the case, you
 should use the &#8216;dsn&#8217; configuration setting, as if you&#8217;re using the
 driver&#8217;s underlying native PHP extension, like this:</p>
 <div class="highlight-ci"><div class="highlight"><pre><span></span><span class="c1">// PDO</span>
-<span class="nv">$db</span><span class="p">[</span><span class="s1">&#39;default&#39;</span><span class="p">][</span><span class="s1">&#39;dsn&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;pgsql:host=localhost;port=5432;dbname=database_name&#39;</span><span class="p">;</span>
+<span class="nv">$db</span><span class="p">[</span><span class="s1">&#39;default&#39;</span><span class="p">][</span><span class="s1">&#39;dsn&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;pgsql:host=192.168.197.61:3000;port=5432;dbname=database_name&#39;</span><span class="p">;</span>
 
 <span class="c1">// Oracle</span>
-<span class="nv">$db</span><span class="p">[</span><span class="s1">&#39;default&#39;</span><span class="p">][</span><span class="s1">&#39;dsn&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;//localhost/XE&#39;</span><span class="p">;</span>
+<span class="nv">$db</span><span class="p">[</span><span class="s1">&#39;default&#39;</span><span class="p">][</span><span class="s1">&#39;dsn&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;//192.168.197.61:3000/XE&#39;</span><span class="p">;</span>
 </pre></div>
 </div>
 <div class="admonition note">
@@ -528,7 +528,7 @@ connection group for each, then switch between groups as needed. For
 example, to set up a &#8220;test&#8221; environment you would do this:</p>
 <div class="highlight-ci"><div class="highlight"><pre><span></span><span class="nv">$db</span><span class="p">[</span><span class="s1">&#39;test&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="k">array</span><span class="p">(</span>
         <span class="s1">&#39;dsn&#39;</span>   <span class="o">=&gt;</span> <span class="s1">&#39;&#39;</span><span class="p">,</span>
-        <span class="s1">&#39;hostname&#39;</span> <span class="o">=&gt;</span> <span class="s1">&#39;localhost&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;hostname&#39;</span> <span class="o">=&gt;</span> <span class="s1">&#39;192.168.197.61:3000&#39;</span><span class="p">,</span>
         <span class="s1">&#39;username&#39;</span> <span class="o">=&gt;</span> <span class="s1">&#39;root&#39;</span><span class="p">,</span>
         <span class="s1">&#39;password&#39;</span> <span class="o">=&gt;</span> <span class="s1">&#39;&#39;</span><span class="p">,</span>
         <span class="s1">&#39;database&#39;</span> <span class="o">=&gt;</span> <span class="s1">&#39;database_name&#39;</span><span class="p">,</span>
@@ -593,7 +593,7 @@ Builder to be enabled to access certain functionality.</p>
 <td>The DSN connect string (an all-in-one configuration sequence).</td>
 </tr>
 <tr class="row-odd"><td><strong>hostname</strong></td>
-<td>The hostname of your database server. Often this is &#8216;localhost&#8217;.</td>
+<td>The hostname of your database server. Often this is &#8216;192.168.197.61:3000&#8217;.</td>
 </tr>
 <tr class="row-even"><td><strong>username</strong></td>
 <td>The username used to connect to the database.</td>

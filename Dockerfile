@@ -9,7 +9,7 @@ RUN docker-php-ext-install mysqli pdo_mysql gd zip pcntl exif
 RUN docker-php-ext-enable mysqli
 
 # Set the global ServerName to suppress the warning
-RUN echo "ServerName localhost" >> /etc/apache2/apache2.conf
+RUN echo "ServerName 192.168.197.61:3000" >> /etc/apache2/apache2.conf
 
 # Set working directory
 WORKDIR /var/www/html

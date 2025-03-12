@@ -411,7 +411,7 @@ $(document).ready(function () {
         timestamp: timestamp
       },
       success: function(response) {
-        let baseUrl = 'http://192.168.192.251:3000';  // Fixed missing protocol
+        let baseUrl = 'http://192.168.197.61:3000';  // Fixed missing protocol
         console.log(response);
         
         // Create the new note HTML

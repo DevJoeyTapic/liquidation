@@ -9,4 +9,4 @@
     ```
     docker compose up -d
     ```
-2. By default, access the the [localhost:8000]() in any browser
+2. By default, access the the [192.168.197.61:3000:8000]() in any browser
