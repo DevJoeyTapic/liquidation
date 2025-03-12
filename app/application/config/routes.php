@@ -13,6 +13,7 @@ $route['addUser'] = 'Admin/addUser';
 $route['editUser'] = 'Admin/editUser';
 $route['dashboard'] = 'Dashboard';
 $route['vesselitem/view/(:any)'] = 'VesselItem/view/$1';
+$route['vesselitem/add_notes'] = 'VesselItem/add_notes';
 $route['agentvessel/view/(:any)'] = 'AgentVessel/view/$1';
 $route['archive'] = 'VesselItem/archive';
 $route['add_item'] = 'VesselItem/add_item';

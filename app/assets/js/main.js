@@ -402,7 +402,7 @@ $(document).ready(function () {
     }
   
     $.ajax({
-      url: baseUrl + '/vesselitem/add_notes', 
+      url: baseUrl + '/notes/add_notes', 
       method: 'POST',
       data: {
         liq_ref: liq_ref,
