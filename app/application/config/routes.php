@@ -14,6 +14,7 @@ $route['editUser'] = 'Admin/editUser';
 $route['dashboard'] = 'Dashboard';
 $route['vesselitem/view/(:any)'] = 'VesselItem/view/$1';
 $route['vesselitem/submit_for_validation'] = 'VesselItem/submit_for_validation';
+$route['vesselitem/submit_for_amendment'] = 'VesselItem/submit_for_amendment';
 $route['notes/add_notes'] = 'notes/add_notes';
 $route['remarks/get_item_remarks/(:any)'] = 'Remarks/get_item_remarks/$1';
 $route['remarks/add_item_remark'] = 'Remarks/add_item_remark';
