@@ -503,7 +503,7 @@
     </script>
     <script>
         $(document).ready(function() {
-            let baseUrl = 'http://agents.wallem.com.ph';
+            let baseUrl = 'https://agents.wallem.com.ph';
             $('#submitLiquidation').on('click', function() {
                 Swal.fire({
                     title: 'Submit Liquidation Item/s',

@@ -99,7 +99,7 @@
     </script>
     <script>
         $(document).ready(function() {
-            let baseUrl = 'http://agents.wallem.com.ph';
+            let baseUrl = 'https://agents.wallem.com.ph';
 
             $('#payToAgentBtn').on('click', function() {
                 Swal.fire({
@@ -157,7 +157,7 @@
     </script>
     <script>
         $(document).ready(function() {
-            let baseUrl = 'http://agents.wallem.com.ph';
+            let baseUrl = 'https://agents.wallem.com.ph';
 
             $('#revalidateBtn').on('click', function() {
                 Swal.fire({

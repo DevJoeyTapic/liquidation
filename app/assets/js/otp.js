@@ -1,5 +1,5 @@
 $('document').ready(function() {
-    let baseUrl = 'http://agents.wallem.com.ph'
+    let baseUrl = 'https://agents.wallem.com.ph'
     $('.rowCheckbox').on('change', function() {
         const checkedRows = $("#dataTableForValidationT .rowCheckbox:checked").closest("tr");
     });
