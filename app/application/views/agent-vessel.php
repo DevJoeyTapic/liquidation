@@ -653,7 +653,7 @@
                                 });
 
                                 $.ajax({
-                                    url: baseUrl + '/agentvessel/ok_to_pay/', 
+                                    url: baseUrl + '/agentvessel/ok_to_pay', 
                                     method: 'POST',
                                     data: {
                                         items: dataToSubmit 
