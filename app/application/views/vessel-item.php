@@ -130,6 +130,9 @@
                                                             <?php endif; ?>
                                                             <?php if($item->isNew == '1'): ?>  
                                                                 <span class="badge rounded-pill text-bg-primary">NEW ITEM</span>
+                                                                <span class="badge rounded-pill text-bg-danger"  id="deleteItem" data-item="<?= $item->id ?>">
+                                                                    <i class="fa-solid fa-trash my-auto"></i>
+                                                                </span>
                                                             <?php endif ?>
                                                         </td>
                                                         <td class="rfpno" id="rfpno">
@@ -180,7 +183,7 @@
                                                                 ?>
 
                                                                 <?php if ($item->isNew == '1'): ?>  
-                                                                    <input type="text" class="form-control form-control-sm actualAmount" id="actualAmount" name="actualAmount" value="<?= $item->actual_amount; ?>">
+                                                                    <input type="text" class="form-control form-control-sm actualAmount " id="actualAmount" name="actualAmount" value="<?= $item->actual_amount; ?>" disabled>
                                                                 <?php else: ?> 
                                                                     <?php if ($item->hasBreakdown == '1' ): ?>
                                                                         <input type="text" class="form-control form-control-sm actualAmount" id="actualAmount" name="actualAmount" value="<?= $item->actual_amount; ?>" disabled>
@@ -503,7 +506,7 @@
     </script>
     <script>
         $(document).ready(function() {
-            let baseUrl = 'https://agents.wallem.com.ph';
+            let baseUrl = 'http://192.168.192.251:3000';
             $('#submitLiquidation').on('click', function() {
                 Swal.fire({
                     title: 'Submit Liquidation Item/s',
