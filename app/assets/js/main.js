@@ -1,5 +1,5 @@
 $(document).ready(function () {
-  let baseUrl = 'http://localhost:3000'
+  let baseUrl = 'http://192.168.197.61:3000'
 
   let row;
   function updateTotal() {
@@ -410,7 +410,7 @@ $(document).ready(function () {
         timestamp: timestamp
       },
       success: function(response) {
-        let baseUrl = 'http://localhost:3000';  // Fixed missing protocol
+        let baseUrl = 'http://192.168.197.61:3000';  // Fixed missing protocol
         console.log(response);
         
         // Create the new note HTML

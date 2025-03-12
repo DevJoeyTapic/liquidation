@@ -99,7 +99,7 @@
     </script>
     <script>
         $(document).ready(function() {
-            let baseUrl = 'http://localhost:3000';
+            let baseUrl = 'http://192.168.197.61:3000';
 
             $('#payToAgentBtn').on('click', function() {
                 Swal.fire({
@@ -157,7 +157,7 @@
     </script>
     <script>
         $(document).ready(function() {
-            let baseUrl = 'http://localhost:3000';
+            let baseUrl = 'http://192.168.197.61:3000';
 
             $('#revalidateBtn').on('click', function() {
                 Swal.fire({
