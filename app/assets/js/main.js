@@ -248,7 +248,7 @@ $(document).ready(function () {
 
             // AJAX call to add_item_remarks
             $.ajax({
-                url: baseUrl + '/vesselitem/add_item_remark',
+                url: baseUrl + '/remarks/add_item_remark',
                 method: 'POST',
                 data: {
                     item_id: item_id,
@@ -291,7 +291,7 @@ $(document).ready(function () {
     document.getElementById('addRemarkBtn').setAttribute('data-item', item_id);
     $('#showItemRemarksModalLabel').text(itemName);
     $.ajax({
-        url: baseUrl + '/vesselitem/get_item_remarks/' + item_id,
+        url: baseUrl + '/remarks/get_item_remarks/' + item_id,
         method: 'GET',
         success: function(response) {
           const remarks = JSON.parse(response);
