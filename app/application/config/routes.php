@@ -20,6 +20,7 @@ $route['remarks/add_item_remark'] = 'Remarks/add_item_remark';
 $route['agentvessel/view/(:any)'] = 'AgentVessel/view/$1';
 $route['agentvessel/ok_to_pay'] = 'AgentVessel/ok_to_pay';
 $route['agentvessel/for_amendment_tad'] = 'AgentVessel/for_amendment_tad';
+$route['agentvessel/for_amendment_acctg'] = 'AgentVessel/for_amendment_acctg';
 $route['agentvessel/validate_liquidation'] = 'AgentVessel/validate_liquidation';
 $route['archive'] = 'VesselItem/archive';
 $route['add_item'] = 'VesselItem/add_item';
