@@ -345,7 +345,7 @@ $(document).ready(function () {
     }
 
     $.ajax({
-      url: baseUrl + '/vesselitem/add_item_remark', 
+      url: baseUrl + '/remarks/add_item_remark', 
       method: 'POST',
       data: {
         item_id: item_id,
