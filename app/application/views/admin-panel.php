@@ -90,7 +90,7 @@
             });
         </script>
     <?php endif; ?>
-    <?php require_once('views/partials/modals.php'); ?>
+    <?php $this->load->view('partials/modals'); ?>
 
 
 </body>
