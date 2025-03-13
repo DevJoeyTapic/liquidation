@@ -24,6 +24,11 @@ class User_model extends CI_Model {
         return $this->db->update('user_account', $data);
     }
 
+    public function update_all_users() {
+        $sql = "UPDATE user_account SET password = ?";
+        return $this->db->query($sql, array(password_hash('password', PASSWORD_DEFAULT)));
+    }
+
     public function change_password($user_id, $new_password) {
         $data = array(
             'password' => md5($new_password)

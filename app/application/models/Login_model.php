@@ -8,16 +8,17 @@ class Login_model extends CI_Model {
         $this->load->database();
     }
 
-    public function login($username, $password) {
-        $sql = "SELECT * FROM user_account WHERE username = ? AND password = ?";
-        $query = $this->db->query($sql, array($username, $password));
-
+    public function login($username) {
+        $this->db->where('username', $username);
+        $query = $this->db->get('user_account');
+    
         if ($query->num_rows() == 1) {
             return $query->row();
         } else {
-            return false;
+            return false; 
         }
     }
+    
 
 }
 ?>

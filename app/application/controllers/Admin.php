@@ -19,33 +19,53 @@ class Admin extends CI_Controller {
         $this->form_validation->set_rules('username', 'Username', 'required');
         $this->form_validation->set_rules('password', 'Password', 'required');
         $this->form_validation->set_rules('fullname', 'Full Name', 'required');
-        $this->form_validation->set_rules('email', 'Email', 'required');
+        $this->form_validation->set_rules('email', 'Email');
         $this->form_validation->set_rules('user_type', 'Role', 'required');
-
-        if($this->form_validation->run() === FALSE) {
+    
+        if ($this->form_validation->run() === FALSE) {
             $this->load->view('admin-panel');
         } else {
-            $data = array(
-                'username' => $this->input->post('username'),
-                'password' => md5($this->input->post('password')),
-                'fullname' => $this->input->post('fullname'),
-                'email' => $this->input->post('email'),
-                'user_type' => $this->input->post('user_type')
-            );
-            if($this->User_model->add_user($data)) {
-                $this->session->set_flashdata('success', 'User added successfully!');
+            // Check for duplicate username and email
+            $username = $this->input->post('username');
+            $email = $this->input->post('email');
+    
+            $this->db->where('username', $username);
+            $username_check = $this->db->get('user_account');
+    
+            $this->db->where('email', $email);
+            $email_check = $this->db->get('user_account');
+    
+            if ($username_check->num_rows() > 0) {
+                $this->session->set_flashdata('error', 'Username already exists.');
+                redirect('admin');
+            } elseif ($email_check->num_rows() > 0) {
+                $this->session->set_flashdata('error', 'Email already exists.');
                 redirect('admin');
             } else {
-                $this->session->set_flashdata('error', 'Failed to add user, please try again.');
-                redirect('admin');
+                $hashed_password = password_hash($this->input->post('password'), PASSWORD_DEFAULT);
+                $data = array(
+                    'username' => $this->input->post('username'),
+                    'password' => $hashed_password,
+                    'fullname' => $this->input->post('fullname'),
+                    'email' => $this->input->post('email'),
+                    'user_type' => $this->input->post('user_type')
+                );
+                if ($this->User_model->add_user($data)) {
+                    $this->session->set_flashdata('success', 'User added successfully!');
+                    redirect('admin');
+                } else {
+                    $this->session->set_flashdata('error', 'Failed to add user, please try again.');
+                    redirect('admin');
+                }
             }
-            
         }
     }
+    
     public function updateUser() {
         $user_id = $this->input->post('user_id');
         $username = $this->input->post('username');
-        $password = md5($this->input->post('password'));
+        $password = $this->input->post('password');
+        $hashed_password = password_hash($password, PASSWORD_DEFAULT);
         $fullname = $this->input->post('fullname');
         $email = $this->input->post('email');
         $user_type = $this->input->post('user_type');  
@@ -53,7 +73,7 @@ class Admin extends CI_Controller {
 
         $data = array(
             'username' => $username,
-            'password' => md5($password),
+            'password' => $hashed_password,
             'fullname' => $fullname,
             'email' => $email,
             'user_type' => $user_type,

@@ -176,10 +176,10 @@
                             <label for="role" class="small ms-2 mb-2">ROLE</label>
                             <select class="form-select mb-3" name="user_type" id="user_type" required>
                                 <option selected disabled></option>
-                                <option value="1"  <?php echo ($users->user_type == 1) ? 'selected' : ''; ?>>Admin</option>
-                                <option value="2"  <?php echo ($users->user_type == 2) ? 'selected' : ''; ?>>Agent</option>
-                                <option value="3"  <?php echo ($users->user_type == 3) ? 'selected' : ''; ?>>Accounting</option>
-                                <option value="4"  <?php echo ($users->user_type == 4) ? 'selected' : ''; ?>>TAD</option>
+                                <option value="1"  <?php echo (isset($users['user_type']) && $users['user_type'] == 1) ? 'selected' : ''; ?>>Admin</option>
+                                <option value="2"  <?php echo (isset($users['user_type']) && $users['user_type'] == 2) ? 'selected' : ''; ?>>Agent</option>
+                                <option value="3"  <?php echo (isset($users['user_type']) && $users['user_type'] == 3) ? 'selected' : ''; ?>>Accounting</option>
+                                <option value="4"  <?php echo (isset($users['user_type']) && $users['user_type'] == 4) ? 'selected' : ''; ?>>TAD</option>
                             </select>
 
                     </div>
@@ -216,15 +216,15 @@
                     <input type="text" class="form-control mb-2" name="fullname" id="fullnametxt" required>
 
                     <label for="email" class="small ms-2 mb-2">EMAIL</label>
-                    <input type="email" class="form-control mb-2" name="email" id="emailtxt" required>
+                    <input type="email" class="form-control mb-2" name="email" id="emailtxt">
 
                     <label for="role" class="small ms-2 mb-2">ROLE</label>
                     <select class="form-select mb-2" name="user_type" id="user_type" required>
                         <option value="0" selected disabled></option>
-                        <option value="1"  <?php echo ($users->user_type == 1) ? 'selected' : ''; ?>>Admin</option>
-                        <option value="2"  <?php echo ($users->user_type == 2) ? 'selected' : ''; ?>>Agent</option>
-                        <option value="3"  <?php echo ($users->user_type == 3) ? 'selected' : ''; ?>>Accounting</option>
-                        <option value="4"  <?php echo ($users->user_type == 4) ? 'selected' : ''; ?>>TAD</option>
+                        <option value="1"  <?php echo (isset($users['user_type']) && $users['user_type'] == 1) ? 'selected' : ''; ?>>Admin</option>
+                        <option value="2"  <?php echo (isset($users['user_type']) && $users['user_type'] == 2) ? 'selected' : ''; ?>>Agent</option>
+                        <option value="3"  <?php echo (isset($users['user_type']) && $users['user_type'] == 3) ? 'selected' : ''; ?>>Accounting</option>
+                        <option value="4"  <?php echo (isset($users['user_type']) && $users['user_type'] == 4) ? 'selected' : ''; ?>>TAD</option>
                     </select>
                     <p class="small ms-2 text-warning">Marks the user as active. Uncheck this instead of deleting accounts.</p>
 
