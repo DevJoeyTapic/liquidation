@@ -70,10 +70,6 @@
                     <label for="itemName p-0">Remarks: </label>
                     <input type="text" class="form-control form-control-sm mb-2" id="remarks">
                 </div>
-                <div class="row m-2">
-                    <label for="docref">Upload:</label>
-                    <input type="file" class="form-control form-control-sm mb-2" name="filenames[]" multiple id="newUpload">
-                </div>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>

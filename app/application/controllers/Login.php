@@ -57,10 +57,10 @@ class Login extends CI_Controller {
                     redirect('dashboard');
                     break;
                 case 4:
-                    redirect('revalidate');
-                    break;
-                case 5:
                     redirect('dashboard');
+                    break;
+                default:
+                    redirect('login');
                     break;
             }
         } else {

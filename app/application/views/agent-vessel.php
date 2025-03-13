@@ -69,13 +69,19 @@
             <div class="row">
                 <div class="col-9">
                     <div class="cont">
-                        <div class="row d-flex justify-content-center align-items-center dtTitle">
-                            <h5 class="col mb-2">Vessel Items Liquidation</h5>
+                        <div class="d-flex justify-content-between">
+                            <div>
+                                <h5 class="col mb-2">Vessel Items Liquidation</h5>
+                            </div>
+                            <div>
+                                <p class="text-end">Liquidation Reference No.: </p>
+                                <p class="bold text-danger text-end" style="font-size: 1.3rem">LRN-<?= $vessel_data[0]->id; ?></p>
+                            </div>
                         </div>
                         <nav>
                             <div class="nav nav-tabs liquidation-tabs" id="nav-tab" role="tablist">
-                                <button class="nav-link active" id="pendingTab" data-bs-toggle="tab" data-bs-target="#pending" type="button" role="tab" aria-controls="pending" aria-selected="false"><i class="fa-solid fa-user-clock pe-2"></i>Pending Item(s) for Liquidation</button>    
-                                <button class="nav-link" id="forValidationTab" data-bs-toggle="tab" data-bs-target="#forValidation" type="button" role="tab" aria-controls="forValidation" aria-selected="true"><i class="fa-regular fa-clock pe-2"></i><?= ($this->session->userdata('user_type') == '5') ? 'Pending OTP' : 'Item(s) for Validation' ?></button>    
+                                <button class="nav-link active" id="pendingTab" data-bs-toggle="tab" data-bs-target="#pending" type="button" role="tab" aria-controls="pending" aria-selected="true"><i class="fa-solid fa-user-clock pe-2"></i>Pending Item(s) for Liquidation</button>    
+                                <button class="nav-link" id="forValidationTab" data-bs-toggle="tab" data-bs-target="#forValidation" type="button" role="tab" aria-controls="forValidation" aria-selected="false"><i class="fa-regular fa-clock pe-2"></i><?= ($this->session->userdata('user_type') == '5') ? 'Pending OTP' : 'Item(s) for Validation' ?></button>    
                                 <button class="nav-link" id="completedTab" data-bs-toggle="tab" data-bs-target="#completed" type="button" role="tab" aria-controls="completed" aria-selected="false"><i class="fa-solid fa-circle-check pe-2"></i>Completed Item(s)</button>
                             </div>
                         </nav>
@@ -623,7 +629,7 @@
     <!-- okay to pay by tad -->
     <script>
         $(document).ready(function() {
-            let baseUrl = 'https://agents.wallem.com.ph';
+            let baseUrl = 'http://192.168.192.251:3000';
 
             $('#otpBtn').on('click', function() {
                 Swal.fire({
@@ -682,7 +688,7 @@
     <!-- amend button for tad -->
     <script>
         $(document).ready(function() {
-            let baseUrl = 'https://agents.wallem.com.ph';
+            let baseUrl = 'http://192.168.192.251:3000';
 
             $('#amendBtn').on('click', function() {
                 Swal.fire({
@@ -741,7 +747,7 @@
     <!-- return to agent -->
     <script>
         $(document).ready(function() {
-            let baseUrl = 'https://agents.wallem.com.ph';
+            let baseUrl = 'http://192.168.192.251:3000';
 
             $('#rtaBtn').on('click', function() {
                 Swal.fire({
@@ -800,7 +806,7 @@
     <!-- submit to AM -->
     <script>
         $(document).ready(function() {
-            let baseUrl = 'https://agents.wallem.com.ph';
+            let baseUrl = 'http://192.168.192.251:3000';
 
             $('#submitToAMBtn').on('click', function() {
                 Swal.fire({
@@ -859,7 +865,7 @@
     <!-- return to agent s5 -->
     <script>
         $(document).ready(function() {
-            let baseUrl = 'https://agents.wallem.com.ph';
+            let baseUrl = 'http://192.168.192.251:3000';
 
             $('#rtaBtns5').on('click', function() {
                 Swal.fire({

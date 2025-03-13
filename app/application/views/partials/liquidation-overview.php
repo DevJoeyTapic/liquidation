@@ -5,10 +5,6 @@
                 <h5 class="mb-1">Liquidation Overview</h5>
                 <p class="fst-italic medium mb-2">Liquidation Age: <span><?= $vessel_data[0]->age; ?></span></p>
             </div>
-            <div>
-                <p class="text-end">Liquidation Reference No.: </p>
-                <p class="bold text-danger text-end" style="font-size: 1.3rem">LRN-<?= $vessel_data[0]->id; ?></p>
-            </div>
         </div>
         <?php if($vessel_data[0]->age > 7): ?>
             <div class="alert alert-danger" role="alert">
