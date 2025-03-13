@@ -171,7 +171,7 @@
                             <input type="text" class="form-control mb-2" name="fullname" value="<?php echo set_value('fullname') ?>" required>
 
                             <label for="email" class="small ms-2 mb-2">EMAIL</label>
-                            <input type="email" class="form-control mb-2" name="email" value="<?php echo set_value('email') ?>" required>
+                            <input type="email" class="form-control mb-2" name="email" value="<?php echo set_value('email') ?>">
 
                             <label for="role" class="small ms-2 mb-2">ROLE</label>
                             <select class="form-select mb-3" name="user_type" id="user_type" required>
