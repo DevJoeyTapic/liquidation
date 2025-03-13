@@ -11,8 +11,13 @@ class Admin extends CI_Controller {
     }
     
     public function index() {
-        $data['users'] = $this->User_model->get_users();
-        $this->load->view('admin-panel', $data);
+        if ($this->session->userdata('user_type') == 1) {
+            $data['users'] = $this->User_model->get_users();
+            $this->load->view('admin-panel', $data);
+        } else {
+            $this->session->set_flashdata('error', 'You do not have permission to access this page.');
+            redirect('login');
+        }
     }
     public function addUser() {
 
