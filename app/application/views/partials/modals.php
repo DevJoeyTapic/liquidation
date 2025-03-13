@@ -164,7 +164,7 @@
                                 </div>
                                 <div>
                                     <label for="password" class="small ms-2 mb-2">PASSWORD</label>
-                                    <input type="text" class="form-control mb-2" name="password" value="<?php echo set_value('password') ?>" required>
+                                    <input type="password" class="form-control mb-2" name="password" value="<?php echo set_value('password') ?>" required>
                                 </div>
                             </div>
                             <label for="fullname" class="small ms-2 mb-2">FULL NAME</label>
