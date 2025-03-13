@@ -229,6 +229,12 @@
                                                 <?php endif; ?>
                                             <?php endforeach; ?>
                                         </tbody>
+                                        <tfoot>
+                                            <tr class="total " style="font-size: 1.2rem">
+                                                <td colspan=3 class="text-end bold">Total</td>
+                                                <td colspan=7 id="totalRfpAmt">11,000.00</td>
+                                            </tr>
+                                        </tfoot>
                                     </table>
                                 </div>
                             </div>
@@ -329,6 +335,12 @@
                                             <?php endforeach; ?>
                                             <!-- see main.js #submitLiquidation click -->
                                         </tbody>
+                                        <tfoot>
+                                            <tr class="total " style="font-size: 1.2rem">
+                                                <td colspan=3 class="text-end bold">Total</td>
+                                                <td colspan=7 id="totalRfpAmt">11,000.00</td>
+                                            </tr>
+                                        </tfoot>
                                     </table>
                                 </div>
                             </div>
@@ -432,6 +444,12 @@
                                             <?php endforeach; ?>
                                             <!-- see main.js #submitLiquidation click -->
                                         </tbody>
+                                        <tfoot>
+                                            <tr class="total " style="font-size: 1.2rem">
+                                                <td colspan=3 class="text-end bold">Total</td>
+                                                <td colspan=7 id="totalRfpAmt">11,000.00</td>
+                                            </tr>
+                                        </tfoot>
                                     </table>
                                 </div>
                             </div>
