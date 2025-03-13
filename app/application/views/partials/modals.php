@@ -176,10 +176,10 @@
                             <label for="role" class="small ms-2 mb-2">ROLE</label>
                             <select class="form-select mb-3" name="user_type" id="user_type" required>
                                 <option selected disabled></option>
-                                <option value="1"  <?php echo ($user->user_type == 1) ? 'selected' : ''; ?>>Admin</option>
-                                <option value="2"  <?php echo ($user->user_type == 2) ? 'selected' : ''; ?>>Agent</option>
-                                <option value="3"  <?php echo ($user->user_type == 3) ? 'selected' : ''; ?>>Accounting</option>
-                                <option value="4"  <?php echo ($user->user_type == 4) ? 'selected' : ''; ?>>TAD</option>
+                                <option value="1"  <?php echo ($users->user_type == 1) ? 'selected' : ''; ?>>Admin</option>
+                                <option value="2"  <?php echo ($users->user_type == 2) ? 'selected' : ''; ?>>Agent</option>
+                                <option value="3"  <?php echo ($users->user_type == 3) ? 'selected' : ''; ?>>Accounting</option>
+                                <option value="4"  <?php echo ($users->user_type == 4) ? 'selected' : ''; ?>>TAD</option>
                             </select>
 
                     </div>
