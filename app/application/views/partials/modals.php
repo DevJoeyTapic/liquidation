@@ -175,7 +175,7 @@
                                 <option value="1"  <?php echo (isset($users['user_type']) && $users['user_type'] == 1) ? 'selected' : ''; ?>>Admin</option>
                                 <option value="2"  <?php echo (isset($users['user_type']) && $users['user_type'] == 2) ? 'selected' : ''; ?>>Agent</option>
                                 <option value="3"  <?php echo (isset($users['user_type']) && $users['user_type'] == 3) ? 'selected' : ''; ?>>Accounting</option>
-                                <option value="4"  <?php echo (isset($users['user_type']) && $users['user_type'] == 4) ? 'selected' : ''; ?>>TAD</option>
+                                <option value="5"  <?php echo (isset($users['user_type']) && $users['user_type'] == 5) ? 'selected' : ''; ?>>TAD</option>
                             </select>
 
                     </div>
@@ -220,7 +220,7 @@
                         <option value="1"  <?php echo (isset($users['user_type']) && $users['user_type'] == 1) ? 'selected' : ''; ?>>Admin</option>
                         <option value="2"  <?php echo (isset($users['user_type']) && $users['user_type'] == 2) ? 'selected' : ''; ?>>Agent</option>
                         <option value="3"  <?php echo (isset($users['user_type']) && $users['user_type'] == 3) ? 'selected' : ''; ?>>Accounting</option>
-                        <option value="4"  <?php echo (isset($users['user_type']) && $users['user_type'] == 4) ? 'selected' : ''; ?>>TAD</option>
+                        <option value="5"  <?php echo (isset($users['user_type']) && $users['user_type'] == 5) ? 'selected' : ''; ?>>TAD</option>
                     </select>
                     <p class="small ms-2 text-warning">Marks the user as active. Uncheck this instead of deleting accounts.</p>
 

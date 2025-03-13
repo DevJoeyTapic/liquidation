@@ -124,10 +124,10 @@
                                                                 <td class="text-center"><?= $item->currency ?></td>
                                                                 <td id="debit"><?= number_format($item->rfp_amount, 2); ?></td>
                                                                 <td>
-                                                                    <?php if($item->isNew == '1' && $item->controlled == '1'): ?>
-                                                                        <?= $item->actual_amount; ?>
-                                                                    <?php elseif($item->controlled == '0' && $item->isNew == '1'): ?>
-                                                                        <?php echo('0.00'); ?>
+                                                                    <?php if($item->isNew == '1' && $item->controlled == '0'): ?>
+                                                                        <?php echo '0.00'; ?>
+                                                                    <?php elseif($item->controlled == '0' && $item->isNew == '0'): ?>
+                                                                        <?php echo '0.00'; ?>
                                                                     <?php else: ?>
                                                                         <?= number_format($item->rfp_amount, 2); ?>
                                                                     <?php endif; ?>
@@ -198,7 +198,15 @@
                                                                     <td><?= $item->rfp_no; ?></td>
                                                                     <td><?= $item->currency ?></td>
                                                                     <td id="debit"><?= number_format($item->rfp_amount, 2); ?></td>
-                                                                    <td><?= number_format($item->rfp_amount, 2); ?></td>
+                                                                    <td>
+                                                                        <?php if($item->isNew == '1' && $item->controlled == '0'): ?>
+                                                                            <?php echo '0.00'; ?>
+                                                                        <?php elseif($item->controlled == '0' && $item->isNew == '0'): ?>
+                                                                            <?php echo '0.00'; ?>
+                                                                        <?php else: ?>
+                                                                            <?= number_format($item->rfp_amount, 2); ?>
+                                                                        <?php endif; ?>
+                                                                    </td>
                                                                     <td id="credit"><?= $item->actual_amount; ?></td>
                                                                     <td><?= number_format($item->variance, 2); ?></td>
                                                                     <td><?= number_format($item->variance_percent, 2) . '%'; ?></td>
@@ -247,6 +255,7 @@
                                                         <th class="col-1 text-center">RFP No.</th>
                                                         <th class="text-center">Currency</th>
                                                         <th class="">Requested Amount</th>
+                                                        <th class="">Amount Received</th>
                                                         <th class="">Actual Amount</th>
                                                         <th class="">Variance</th>
                                                         <th class="">Variance %</th>
@@ -273,9 +282,18 @@
                                                                 <td class="text-center"><?= $item->currency ?></td>
                                                                 <td id="debit">
                                                                     <?php if($item->isNew == '1' && $item->controlled == '1'): ?>
-                                                                        <?= $item->actual_amount; ?>
-                                                                    <?php elseif($item->controlled == '0' && $item->isNew == '1'): ?>
-                                                                        <?php echo('0.00'); ?>
+                                                                        <?php echo '0.00' ?>
+                                                                    <?php elseif($item->controlled == '0' && $item->isNew == '0'): ?>
+                                                                        <?= number_format($item->rfp_amount, 2); ?>
+                                                                    <?php else: ?>
+                                                                        <?= number_format($item->rfp_amount, 2); ?>
+                                                                    <?php endif; ?>
+                                                                </td>
+                                                                <td>
+                                                                    <?php if($item->isNew == '1' && $item->controlled == '1'): ?>
+                                                                        <?php echo '0.00' ?>
+                                                                    <?php elseif($item->controlled == '0' && $item->isNew == '0'): ?>
+                                                                        <?php echo '0.00' ?>
                                                                     <?php else: ?>
                                                                         <?= number_format($item->rfp_amount, 2); ?>
                                                                     <?php endif; ?>
@@ -334,23 +352,21 @@
                                                                         <?php endif ?>
                                                                     </td>
                                                                     <td>
-                                                                        <?php if($item->isNew == '1'): ?>  
-                                                                            
-                                                                        <?php else: ?>
+                                                                        <?php if($item->isNew != '1'): ?>  
                                                                             <?= $item->rfp_no ?>
                                                                         <?php endif ?>
                                                                     </td>
                                                                     <td><?= $item->currency ?></td>
                                                                     <td id="debit">
-                                                                        <?php if($item->isNew == '1'): ?>  
-                                                                            <?= number_format($item->actual_amount, 2) ?>
+                                                                        <?php if($item->isNew == '1' && $item->controlled == '1'): ?>  
+                                                                            <?php echo '0.00' ?>
                                                                         <?php else: ?>
                                                                             <?= number_format($item->rfp_amount, 2) ?>
                                                                         <?php endif ?>
                                                                     </td>
                                                                     <td>
-                                                                        <?php if($item->isNew == '1'): ?>  
-                                                                            <?= number_format($item->actual_amount, 2) ?>
+                                                                        <?php if($item->isNew == '1' && $item->controlled == '1'): ?>  
+                                                                            <?php echo '0.00' ?>
                                                                         <?php elseif($item->controlled == '0'): ?>
                                                                             <?php echo('0.00'); ?>
                                                                         <?php else: ?>
@@ -629,7 +645,7 @@
     <!-- okay to pay by tad -->
     <script>
         $(document).ready(function() {
-            let baseUrl = 'http://192.168.192.251:3000';
+            let baseUrl = 'https://agents.wallem.com.ph';
 
             $('#otpBtn').on('click', function() {
                 Swal.fire({
@@ -688,7 +704,7 @@
     <!-- amend button for tad -->
     <script>
         $(document).ready(function() {
-            let baseUrl = 'http://192.168.192.251:3000';
+            let baseUrl = 'https://agents.wallem.com.ph';
 
             $('#amendBtn').on('click', function() {
                 Swal.fire({
@@ -747,7 +763,7 @@
     <!-- return to agent -->
     <script>
         $(document).ready(function() {
-            let baseUrl = 'http://192.168.192.251:3000';
+            let baseUrl = 'https://agents.wallem.com.ph';
 
             $('#rtaBtn').on('click', function() {
                 Swal.fire({
@@ -806,7 +822,7 @@
     <!-- submit to AM -->
     <script>
         $(document).ready(function() {
-            let baseUrl = 'http://192.168.192.251:3000';
+            let baseUrl = 'https://agents.wallem.com.ph';
 
             $('#submitToAMBtn').on('click', function() {
                 Swal.fire({
@@ -865,7 +881,7 @@
     <!-- return to agent s5 -->
     <script>
         $(document).ready(function() {
-            let baseUrl = 'http://192.168.192.251:3000';
+            let baseUrl = 'https://agents.wallem.com.ph';
 
             $('#rtaBtns5').on('click', function() {
                 Swal.fire({

@@ -274,8 +274,8 @@
                                                         <td class="rfpAmount" id="rfpAmount">
                                                             <?php if($item->isNew == '1' && $item->controlled == '1'): ?>
                                                                 <?php echo('0.00'); ?>
-                                                            <?php elseif($item->controlled == '0' && $item->isNew == '1'): ?>
-                                                                <?php echo('0.00'); ?>
+                                                            <?php elseif($item->controlled == '0' && $item->isNew == '0'): ?>
+                                                                <?= number_format($item->rfp_amount, 2); ?>
                                                             <?php else: ?>
                                                                 <?= number_format($item->rfp_amount, 2); ?>
                                                             <?php endif; ?>
@@ -283,8 +283,8 @@
                                                         <td class="amountReceived">
                                                             <?php if($item->isNew == '1' && $item->controlled == '1'): ?>
                                                                 <?php echo('0.00'); ?>
-                                                            <?php elseif($item->controlled == '0' && $item->isNew == '1' || $item->controlled == '0'): ?>
-                                                                <?php echo('0.00'); ?>
+                                                            <?php elseif($item->controlled == '0' && $item->isNew == '0' && $item->status == '4'): ?>
+                                                                0.00
                                                             <?php else: ?>
                                                                 <?= number_format($item->rfp_amount, 2); ?>
                                                             <?php endif; ?>
@@ -337,6 +337,12 @@
                     <div class="tab-pane fade" id="forAmendment" role="tabpanel" aria-labelledby="forAmendmentTab">
                         <div class="row m-2"> 
                             <div class="data-table">
+                                <div class="d-flex justify-content-end mb-2">
+                                    <button type="button" class="btn btn-primary btn-sm" id="uploadMainBtn" data-bs-toggle="modal" data-bs-target="#uploadModal" data-id="<?= $id; ?>">
+                                        <i class="fa-solid fa-upload"></i>    
+                                        upload liquidation documents
+                                    </button>
+                                </div>
                                 <div class="table-reponsive">
                                     <table class="table table-hover display" id="forAmendmentTableAg">
                                         <thead>
@@ -365,6 +371,9 @@
                                                             <?php endif; ?>
                                                             <?php if($item->isNew == '1'): ?>  
                                                                 <span class="badge rounded-pill text-bg-primary">NEW ITEM</span>
+                                                                <span class="badge rounded-pill text-bg-danger"  id="deleteItem" data-item="<?= $item->id ?>">
+                                                                    <i class="fa-solid fa-trash my-auto"></i>
+                                                                </span>
                                                             <?php endif ?>
                                                         </td>
                                                         <td class="rfpno" id="rfpno">
@@ -374,24 +383,24 @@
                                                         <td class="rfpAmount" id="rfpAmount">
                                                             <?php if($item->isNew == '1' && $item->controlled == '1'): ?>
                                                                 <?php echo('0.00'); ?>
-                                                            <?php elseif($item->controlled == '0' && $item->isNew == '1'): ?>
-                                                                <?php echo('0.00'); ?>
+                                                            <?php elseif($item->controlled == '0' && $item->isNew == '0'): ?>
+                                                                <?= number_format($item->rfp_amount, 2); ?>
                                                             <?php else: ?>
                                                                 <?= number_format($item->rfp_amount, 2); ?>
                                                             <?php endif; ?>
                                                         </td>
                                                         <td class="amountReceived">
-                                                            <?php if($item->isNew == '1'): ?>  
-                                                                <?= number_format($item->actual_amount, 2); ?>
-                                                            <?php elseif($item->controlled == '0'): ?>  
-                                                                <?php echo ('0.00'); ?>
+                                                            <?php if($item->isNew == '1' && $item->controlled == '1'): ?>  
+                                                                <?php echo '0.00'; ?>
+                                                            <?php elseif($item->controlled == '0' && $item->isNew == '0'): ?>  
+                                                                <?php echo '0.00'; ?>
                                                             <?php else: ?>  
                                                                 <?= number_format($item->rfp_amount, 2); ?>
                                                             <?php endif ?>
                                                         </td>
                                                         <td>
                                                             <?php if($item->isNew == '1'): ?>  
-                                                                <input type="text" class="form-control form-control-sm actualAmount" id="actualAmount" name="actualAmount" value="<?= $item->actual_amount; ?>">
+                                                                <input type="text" class="form-control form-control-sm actualAmount" id="actualAmount" name="actualAmount" value="<?= $item->actual_amount; ?>"  data-toggle="tooltip" title="<?= $item->isNew == '1' ? 'You cannot modify the actual expenses of newly added item(s). Delete this row and add another item.' : '' ?>" disabled>
                                                             <?php else: ?> 
                                                                 <?php if($item->hasBreakdown == '1'): ?>
                                                                     <input type="text" class="form-control form-control-sm actualAmount" id="actualAmount" name="actualAmount" value="<?= $item->actual_amount; ?>" disabled>
@@ -413,10 +422,10 @@
                                                                 <i class="fa-solid fa-message"></i>
                                                             </button>
                                                         </td>
-                                                        </td>
                                                         <td class="text-center validate">
                                                             <input type="checkbox" class="form-check-input rowCheckbox">
                                                             <input type="hidden" name="item_id" value="<?php echo $item->id; ?>">
+                                                           
                                                         </td>
                                                     </tr>
                                                 <?php endif; ?>
@@ -506,7 +515,7 @@
     </script>
     <script>
         $(document).ready(function() {
-            let baseUrl = 'http://192.168.192.251:3000';
+            let baseUrl = 'https://agents.wallem.com.ph';
             $('#submitLiquidation').on('click', function() {
                 Swal.fire({
                     title: 'Submit Liquidation Item/s',

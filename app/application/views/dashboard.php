@@ -8,7 +8,7 @@
         <div class="main-container bg-gradient">
             <div class="col-11 mx-auto" style="display: <?= ($this->session->userdata('user_type') == 2 || $this->session->userdata('user_type') == 3 || $this->session->userdata('user_type') == 5) ? 'block' : 'none'; ?>">
             <div class="justify-content-end text-end">
-                <h2>Welcome aboard, <?= ucfirst($this->session->userdata('username')) . '!'; ?></h2>
+                <h2>Welcome aboard, <?= ucfirst($this->session->userdata('fullname')) . '!'; ?></h2>
 
                 <button class="btn btn-primary btn-sm small" id="refreshData">
                     <i class="fa-solid fa-arrows-rotate pe-2" ></i>Refresh Data
