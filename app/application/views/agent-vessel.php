@@ -75,8 +75,15 @@
                             </div>
                             <div>
                                 <p class="text-end">Liquidation Reference No.: </p>
-                                <p class="bold text-danger text-end" style="font-size: 1.3rem">LRN-<?= $vessel_data[0]->id; ?></p>
+                                <p class="bold text-danger text-end mb-2" style="font-size: 1.3rem">LRN-<?= $vessel_data[0]->id; ?></p>
+                                <div class="d-flex justify-content-end">
+                                    <button type="button" class="btn btn-primary btn-sm" id="uploadMainBtn">
+                                        <i class="fa-solid fa-download"></i>    
+                                        liquidation summary
+                                    </button>
+                                </div>
                             </div>
+                            
                         </div>
                         <nav>
                             <div class="nav nav-tabs liquidation-tabs" id="nav-tab" role="tablist">
@@ -527,21 +534,7 @@
                     </div>    
                 </div>
                 <div class="col-3 ps-0">
-                    <div class="cont pt-0" style="max-height: 100%; overflow-y: scroll;">
-                        <div class="row">
-                            <div class="col position-sticky pt-4" style="top: 0; background: white; z-index: 0;">
-                                <h5>Liquidation Attachments</h5>
-                                <hr>
-                            </div>
-                            <ul id="fileNamesList" class="list-group mt-2 p-0">
-                                <li class="list-group-item mx-3">
-                                    <i class="fa-solid fa-file-pdf"></i>
-                                    <span><?= $item->item ?></span>
-                                    <span>Liquidation.pdf</span>
-                                </li>
-                            </ul>
-                        </div>
-                    </div>
+                    <?php $this->load->view('partials/liquidation-attachments'); ?>
                 </div>
 
             </div>            
@@ -573,49 +566,49 @@
             var dataTableLiquidationT = $("#dataTableLiquidationT").DataTable({
                 paging: true,
                 searching: true,
-                pageLength: 10,
+                pageLength: 50,
                 order: []
             });
             var dataTableLiquidationA = $("#dataTableLiquidationA").DataTable({
                 paging: true,
                 searching: true,
-                pageLength: 10,
+                pageLength: 50,
                 order: []
             });
             var dataTableForValidationT = $("#dataTableForValidationT").DataTable({
                 paging: true,
                 searching: true,
-                pageLength: 10,
+                pageLength: 50,
                 order: []
             });
             var dataTableForValidationA = $("#dataTableForValidationA").DataTable({
                 paging: true,
                 searching: true,
-                pageLength: 10,
+                pageLength: 50,
                 order: []
             });
             var dataTableValidatedT = $("#dataTableValidatedT").DataTable({
                 paging: true,
                 searching: true,
-                pageLength: 10,
+                pageLength: 50,
                 order: []
             });
             var dataTableValidatedA = $("#dataTableValidatedA").DataTable({ 
                 paging: true,
                 searching: true,
-                pageLength: 10,
+                pageLength: 50,
                 order: []
             });
             var dataTableForRevalidationA = $('#dataTableForRevalidationA').DataTable({
                 paging: true,
                 seraching: true,
-                pageLength: 10,
+                pageLength: 50,
                 order: []
             });
             var dataTableforCompleted = $('#completeTableA').DataTable({
                 paging: true,
                 searching: true,
-                pageLength: 10,
+                pageLength: 50,
                 order: []
             });
 
@@ -645,7 +638,7 @@
     <!-- okay to pay by tad -->
     <script>
         $(document).ready(function() {
-            let baseUrl = 'https://agents.wallem.com.ph';
+            let baseUrl = 'http://192.168.192.251:3000';
 
             $('#otpBtn').on('click', function() {
                 Swal.fire({
@@ -704,7 +697,7 @@
     <!-- amend button for tad -->
     <script>
         $(document).ready(function() {
-            let baseUrl = 'https://agents.wallem.com.ph';
+            let baseUrl = 'http://192.168.192.251:3000';
 
             $('#amendBtn').on('click', function() {
                 Swal.fire({
@@ -763,7 +756,7 @@
     <!-- return to agent -->
     <script>
         $(document).ready(function() {
-            let baseUrl = 'https://agents.wallem.com.ph';
+            let baseUrl = 'http://192.168.192.251:3000';
 
             $('#rtaBtn').on('click', function() {
                 Swal.fire({
@@ -822,7 +815,7 @@
     <!-- submit to AM -->
     <script>
         $(document).ready(function() {
-            let baseUrl = 'https://agents.wallem.com.ph';
+            let baseUrl = 'http://192.168.192.251:3000';
 
             $('#submitToAMBtn').on('click', function() {
                 Swal.fire({
@@ -881,7 +874,7 @@
     <!-- return to agent s5 -->
     <script>
         $(document).ready(function() {
-            let baseUrl = 'https://agents.wallem.com.ph';
+            let baseUrl = 'http://192.168.192.251:3000';
 
             $('#rtaBtns5').on('click', function() {
                 Swal.fire({

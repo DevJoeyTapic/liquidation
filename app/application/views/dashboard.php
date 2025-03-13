@@ -653,37 +653,37 @@
             $('#unliquidatedTable').DataTable({
                 paging: true,
                 searching: true,
-                pageLength: 10,
+                pageLength: 50,
                 order: []
             });
             $('#forValidationTable').DataTable({
                 paging: true,
                 searching: true,
-                pageLength: 10,
+                pageLength: 50,
                 order: []
             });
             $('#revalidatedTable').DataTable({
                 paging: true,
                 searching: true,
-                pageLength: 10,
+                pageLength: 50,
                 order: []
             });
             $('#completedTable').DataTable({
                 paging: true,
                 searching: true,
-                pageLength: 10,
+                pageLength: 50,
                 order: []
             });
             $('#forAMValidationTable').DataTable({
                 paging: true,
                 searching: true,
-                pageLength: 10,
+                pageLength: 50,
                 order: []
             });
             $('#forSettlementTable').DataTable({
                 paging: true,
                 searching: true,
-                pageLength: 10,
+                pageLength: 50,
                 order: []
             });
             

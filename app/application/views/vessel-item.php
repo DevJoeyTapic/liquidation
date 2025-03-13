@@ -490,32 +490,32 @@
             $('#pendingTableAg').DataTable({
                 paging: true,
                 searching: true,
-                pageLength: 10,
+                pageLength: 50,
                 order: []
             });
             $('#liquidatedTableAg').DataTable({
                 paging: true,
                 searching: true,
-                pageLength: 10,
+                pageLength: 50,
                 order: []
             });
             $('#completeTableAg').DataTable({
                 paging: true,
                 searching: true,
-                pageLength: 10,
+                pageLength: 50,
                 order: []
             });
             $('#forAmendmentTableAg').DataTable({
                 paging: true,
                 searching: true,
-                pageLength: 10,
+                pageLength: 50,
                 order: []
             });
         });
     </script>
     <script>
         $(document).ready(function() {
-            let baseUrl = 'https://agents.wallem.com.ph';
+            let baseUrl = 'http://192.168.192.251:3000';
             $('#submitLiquidation').on('click', function() {
                 Swal.fire({
                     title: 'Submit Liquidation Item/s',
