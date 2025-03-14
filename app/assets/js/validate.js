@@ -1,5 +1,5 @@
 $('document').ready(function() {
-    let baseUrl = 'https://agent.wallem.com.ph'
+    let baseUrl = 'https://agents.wallem.com.ph'
     let row;
     
     $('#confirmValidationA').on('click', function() {

@@ -105,7 +105,7 @@ class CI_Config {
 			}
 			else
 			{
-				$base_url = 'https://agent.wallem.com.ph/';
+				$base_url = 'https://agents.wallem.com.ph/';
 			}
 
 			$this->set_item('base_url', $base_url);
