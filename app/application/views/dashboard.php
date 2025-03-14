@@ -654,7 +654,7 @@
             var unliquidatedTable = $('#unliquidatedTable').DataTable({
                 paging: true,
                 searching: true,
-                pageLength: 50,
+                pageLength: 5,
                 order: [],
                 initComplete: function(settings, json) {
                     $('#unliquidatedTable').attr('id', 'unliquidatedTableSearch'); 
@@ -663,31 +663,31 @@
             var forValidationTable = $('#forValidationTable').DataTable({
                 paging: true,
                 searching: true,
-                pageLength: 50,
+                pageLength: 5,
                 order: []
             });
             var revalidatedTable = $('#revalidatedTable').DataTable({
                 paging: true,
                 searching: true,
-                pageLength: 50,
+                pageLength: 5,
                 order: []
             });
             var completedTable = $('#completedTable').DataTable({
                 paging: true,
                 searching: true,
-                pageLength: 50,
+                pageLength: 5,
                 order: []
             });
             var forAMValidationTable = $('#forAMValidationTable').DataTable({
                 paging: true,
                 searching: true,
-                pageLength: 50,
+                pageLength: 5,
                 order: []
             });
             var forSettlementTable = $('#forSettlementTable').DataTable({
                 paging: true,
                 searching: true,
-                pageLength: 50,
+                pageLength: 5,
                 order: []
             });
 
