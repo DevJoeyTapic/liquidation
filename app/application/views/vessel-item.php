@@ -192,7 +192,7 @@
                                                                             <input type="text" class="form-control form-control-sm actualAmount" id="actualAmount" name="actualAmount" value="<?= $item->actual_amount; ?>" required>
                                                                         <?php else: ?>
                                                                             <?php if($item->controlled == 0): ?>
-                                                                                <input type="text" class="form-control form-control-sm actualAmount" id="actualAmount" name="actualAmount" value="<?= $item->actual_amount; ?>" disabled>
+                                                                                <input type="text" class="form-control form-control-sm actualAmount" id="actualAmount" name="actualAmount" value="<?= $item->actual_amount; ?>">
                                                                             <?php else: ?>
                                                                                 <input type="text" class="form-control form-control-sm actualAmount" id="actualAmount" name="actualAmount" value="<?= $item->actual_amount; ?>" required>
                                                                         
@@ -229,12 +229,6 @@
                                                 <?php endif; ?>
                                             <?php endforeach; ?>
                                         </tbody>
-                                        <tfoot>
-                                            <tr class="total " style="font-size: 1.2rem">
-                                                <td colspan=3 class="text-end bold">Total</td>
-                                                <td colspan=7 id="totalRfpAmt">11,000.00</td>
-                                            </tr>
-                                        </tfoot>
                                     </table>
                                 </div>
                             </div>
@@ -336,10 +330,21 @@
                                             <!-- see main.js #submitLiquidation click -->
                                         </tbody>
                                         <tfoot>
-                                            <tr class="total " style="font-size: 1.2rem">
-                                                <td colspan=3 class="text-end bold">Total</td>
-                                                <td colspan=7 id="totalRfpAmt">11,000.00</td>
-                                            </tr>
+                                            <?php foreach ($total_amount as $row): ?>
+                                                <?php if($row->status == '4'): ?>
+                                                    <tr class="total table-warning" style="font-size: 1.2rem">
+                                                        <td colspan=3 class="text-end bold">Total <?= $row->currency; ?></td>
+                                                        <td><?= number_format($row->total_requested); ?></td>
+                                                        <?php foreach ($total_controlled as $controlled): ?>
+                                                            <?php if ($controlled->currency == $row->currency): ?>
+                                                                <td><?= number_format($controlled->total_received); ?></td>
+                                                            <?php endif; ?>
+                                                        <?php endforeach; ?>
+                                                        <td><?= number_format($row->total_actual); ?></td>
+                                                        <td colspan=4><?= number_format($row->total_variance); ?></td>
+                                                    </tr>
+                                                <?php endif; ?>
+                                            <?php endforeach; ?>
                                         </tfoot>
                                     </table>
                                 </div>
@@ -533,7 +538,7 @@
     </script>
     <script>
         $(document).ready(function() {
-            let baseUrl = 'https://agents.wallem.com.ph';
+            let baseUrl = 'http://192.168.192.251:3000';
             $('#submitLiquidation').on('click', function() {
                 Swal.fire({
                     title: 'Submit Liquidation Item/s',
