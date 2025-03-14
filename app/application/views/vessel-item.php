@@ -334,14 +334,14 @@
                                                 <?php if($row->status == '4'): ?>
                                                     <tr class="total table-warning" style="font-size: 1.2rem">
                                                         <td colspan=3 class="text-end bold">Total <?= $row->currency; ?></td>
-                                                        <td><?= number_format($row->total_requested); ?></td>
-                                                        <?php foreach ($total_controlled as $controlled): ?>
-                                                            <?php if ($controlled->currency == $row->currency): ?>
-                                                                <td><?= number_format($controlled->total_received); ?></td>
+                                                        <td colspan=1><?= number_format($row->total_requested, 2); ?></td>
+                                                        <?php foreach ($total_received as $received): ?>
+                                                            <?php if($row->currency == $received->currency): ?>
+                                                                <td colspan=1><?= number_format($received->total_received, 2); ?></td>
                                                             <?php endif; ?>
                                                         <?php endforeach; ?>
-                                                        <td><?= number_format($row->total_actual); ?></td>
-                                                        <td colspan=4><?= number_format($row->total_variance); ?></td>
+                                                        <td colspan=1><?= number_format($row->total_actual, 2); ?></td>
+                                                        <td colspan=4><?= number_format($row->total_variance, 2); ?></td>
                                                     </tr>
                                                 <?php endif; ?>
                                             <?php endforeach; ?>
@@ -449,12 +449,6 @@
                                             <?php endforeach; ?>
                                             <!-- see main.js #submitLiquidation click -->
                                         </tbody>
-                                        <tfoot>
-                                            <tr class="total " style="font-size: 1.2rem">
-                                                <td colspan=3 class="text-end bold">Total</td>
-                                                <td colspan=7 id="totalRfpAmt">11,000.00</td>
-                                            </tr>
-                                        </tfoot>
                                     </table>
                                 </div>
                             </div>

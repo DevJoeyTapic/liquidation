@@ -70,7 +70,7 @@
                         <div class="accordion-item">
                             <h4 class="accordion-header">
                                 <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
-                                    <div class="btn">
+                                    <div class="btn text-start">
                                         <p class="bold">Pending Liquidation (Unliquidated)</p>
                                         <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
                                             <?php if($this->session->userdata('user_type') == 2): ?>
@@ -650,42 +650,50 @@
             chat.classList.toggle('open');
         }
         $(document).ready(function() {
-            $('#unliquidatedTable').DataTable({
+            
+            var unliquidatedTable = $('#unliquidatedTable').DataTable({
+                paging: true,
+                searching: true,
+                pageLength: 50,
+                order: [],
+                initComplete: function(settings, json) {
+                    $('#unliquidatedTable').attr('id', 'unliquidatedTableSearch'); 
+                }
+            });
+            var forValidationTable = $('#forValidationTable').DataTable({
                 paging: true,
                 searching: true,
                 pageLength: 50,
                 order: []
             });
-            $('#forValidationTable').DataTable({
+            var revalidatedTable = $('#revalidatedTable').DataTable({
                 paging: true,
                 searching: true,
                 pageLength: 50,
                 order: []
             });
-            $('#revalidatedTable').DataTable({
+            var completedTable = $('#completedTable').DataTable({
                 paging: true,
                 searching: true,
                 pageLength: 50,
                 order: []
             });
-            $('#completedTable').DataTable({
+            var forAMValidationTable = $('#forAMValidationTable').DataTable({
                 paging: true,
                 searching: true,
                 pageLength: 50,
                 order: []
             });
-            $('#forAMValidationTable').DataTable({
+            var forSettlementTable = $('#forSettlementTable').DataTable({
                 paging: true,
                 searching: true,
                 pageLength: 50,
                 order: []
             });
-            $('#forSettlementTable').DataTable({
-                paging: true,
-                searching: true,
-                pageLength: 50,
-                order: []
-            });
+
+            $('#unliquidatedTable').attr('id', 'unliquidatedTableSearch');
+
+            
             
         });
     </script>
