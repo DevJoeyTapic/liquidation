@@ -24,8 +24,8 @@ class VesselItem extends CI_Controller {
             $data['id'] = $id;
             $data['vessel_items'] = $this->Liquidation_model->get_vessel_items($data['id'], $data['vessel_data'][0]->supplier);
             $data['total_amount'] = $this->Liquidation_model->get_total_amount($id);
-            $data['total_controlled'] = $this->Liquidation_model->get_total_controlled($id);
             $data['liquidation_item'] = $this->VesselItem_model->get_liquidation_items($user_id, $id);
+            $data['total_received'] = $this->Liquidation_model->get_total_received_completed($id);
             $data['credit_breakdown'] = $this->CreditBreakdown_model->get_credit_breakdown($user_id);
             $data['total_php'] = $this->CreditBreakdown_model->get_total_php($user_id);
             $data['total_usd'] = $this->CreditBreakdown_model->get_total_usd($user_id);

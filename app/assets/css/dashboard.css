@@ -151,6 +151,7 @@ html::-webkit-scrollbar {
   top: 20px;    
   border-style: solid;
   border-width: 10px 15px 10px 0;
+  width: 0px;
   border-color: transparent #fff transparent transparent;
 }
 .breakdown-window.open {
@@ -395,7 +396,11 @@ p.from-them::after {
 }
 /* Small devices (landscape phones, less than 768px) */
 @media (max-width: 767.98px) { 
-
+  .main-container {
+    margin-top: 4rem !important;
+    padding: 0;
+    background-color: white;
+  }
   .agent-section {
     padding-bottom: 1rem;
     border-right: none;
@@ -410,8 +415,13 @@ p.from-them::after {
 /* X-Small devices (portrait phones, less than 576px) */
 @media (max-width: 575.98px) { 
   .main-container {
-    padding: 0;
-    background-color: white;
+    min-height: calc(100vh - 4rem);
+    height: fit-content;
+    width: 100%;
+    margin: 0;
+    padding: 1rem;
+    margin-top: 3.5rem;
+    background-color: #f0faff;
   }
   .cont {
     padding: 0.5rem;

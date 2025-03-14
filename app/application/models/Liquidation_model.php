@@ -95,35 +95,29 @@ class Liquidation_model extends CI_Model {
                 SUM(i.rfp_amount) AS `total_requested`,
                 CASE 
                 WHEN i.controlled = 0 THEN 0.00
-                ELSE SUM(i.actual_amount) 
+                ELSE SUM(i.rfp_amount) 
                 END AS `total_received`,
                 SUM(i.actual_amount) AS `total_actual`,
                 SUM(i.variance) AS `total_variance`
                 FROM tbl_agent_liquidation l
                 JOIN tbl_agent_liquidation_items i
                 ON l.transno = i.transno
-                WHERE l.id = 131 AND (i.status IN (2,4))
+                WHERE l.id = ? AND (i.status IN (2,4))
                 GROUP BY i.currency, i.`status`';
         $query = $this->db->query($sql, array($id));
         return $query->result();
     }
 
-    public function get_total_controlled($id) {
+    public function get_total_received_completed($id) {
         $sql = 'SELECT
                 i.`status`,
                 i.controlled,
                 i.currency,
-                SUM(i.rfp_amount) AS `total_requested`,
-                CASE 
-                WHEN i.controlled = 0 THEN 0.00
-                ELSE SUM(i.actual_amount) 
-                END AS `total_received`,
-                SUM(i.actual_amount) AS `total_actual`,
-                SUM(i.variance) AS `total_variance`
+                SUM(i.rfp_amount) AS `total_received`
                 FROM tbl_agent_liquidation l
                 JOIN tbl_agent_liquidation_items i
                 ON l.transno = i.transno
-                WHERE l.id = 131 AND (i.status IN (2,4))
+                WHERE l.id = ? AND i.controlled = 1 AND i.`status` IN (2,4)
                 GROUP BY i.currency, i.`status`';
         $query = $this->db->query($sql, array($id));
         return $query->result();

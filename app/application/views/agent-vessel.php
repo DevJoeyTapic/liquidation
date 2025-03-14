@@ -397,13 +397,13 @@
                                                         <?php if($row->status == '2'): ?>
                                                             <tr class="total table-warning" style="font-size: 1.2rem">
                                                                 <td colspan=3 class="text-end bold">Total <?= $row->currency; ?></td>
-                                                                <td><?= number_format($row->total_requested); ?></td>
-                                                                <?php foreach ($total_controlled as $controlled): ?>
-                                                                    <?php if ($controlled->currency == $row->currency && $controlled->status == 2): ?>
-                                                                        <td><?= number_format($controlled->total_received, 2); ?></td>
+                                                                <td colspan=1><?= number_format($row->total_requested, 2); ?></td>
+                                                                <?php foreach ($total_received as $received): ?>
+                                                                    <?php if($row->currency == $received->currency): ?>
+                                                                        <td colspan=1><?= number_format($received->total_received, 2); ?></td>
                                                                     <?php endif; ?>
                                                                 <?php endforeach; ?>
-                                                                <td><?= number_format($row->total_actual, 2); ?></td>
+                                                                <td colspan=1><?= number_format($row->total_actual, 2); ?></td>
                                                                 <td colspan=4><?= number_format($row->total_variance, 2); ?></td>
                                                             </tr>
                                                         <?php endif; ?>
@@ -541,13 +541,13 @@
                                                         <?php if($row->status == '4'): ?>
                                                             <tr class="total table-warning" style="font-size: 1.2rem">
                                                                 <td colspan=3 class="text-end bold">Total <?= $row->currency; ?></td>
-                                                                <td><?= number_format($row->total_requested); ?></td>
-                                                                <?php foreach ($total_controlled as $controlled): ?>
-                                                                    <?php if ($controlled->currency == $row->currency && $controlled->status == 4): ?>
-                                                                        <td><?= number_format($controlled->total_received, 2); ?></td>
+                                                                <td colspan=1><?= number_format($row->total_requested, 2); ?></td>
+                                                                <?php foreach ($total_received as $received): ?>
+                                                                    <?php if($row->currency == $received->currency): ?>
+                                                                        <td colspan=1><?= number_format($received->total_received, 2); ?></td>
                                                                     <?php endif; ?>
                                                                 <?php endforeach; ?>
-                                                                <td><?= number_format($row->total_actual, 2); ?></td>
+                                                                <td colspan=1><?= number_format($row->total_actual, 2); ?></td>
                                                                 <td colspan=4><?= number_format($row->total_variance, 2); ?></td>
                                                             </tr>
                                                         <?php endif; ?>

@@ -13,12 +13,12 @@
                     
                     <form action="<?= base_url('authenticate'); ?>" method="POST">
                         <div class="form-floating mb-3">
-                            <input type="text" class="form-control" name="username" placeholder="Enter your username" required>
-                            <label for="username" id="username">Username</label>
+                            <input type="text" id="username" class="form-control" name="username" placeholder="Enter your username" autocomplete="current-password" required>
+                            <label for="username">Username</label>
                         </div>
                         <div class="form-floating mb-3">
-                            <input type="password" class="form-control" name="password" placeholder="Enter your password" required>
-                            <label for="password" id="password">Password</label>
+                            <input type="password" id="password" class="form-control" name="password" placeholder="Enter your password" autocomplete="current-password" required>
+                            <label for="password">Password</label>
                         </div>
                         <button type="submit" class="btn btn-primary w-100">Login</button>
                     </form>
