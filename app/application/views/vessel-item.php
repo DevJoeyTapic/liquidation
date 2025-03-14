@@ -9,7 +9,7 @@
             <div class="cont mb-3">
                 <div class="row px-3 d-flex justify-content-start align-items-center">
                     <?php if (!empty($vessel_data)): ?>
-                        <div class="col p-0">
+                        <div class="col-lg-3 col-sm-6">
                             <div class="row p-0 d-flex justify-content-start align-items-center">
                                 <div class="col-2">
                                     <i class="fa-solid fa-ship fa-xl text-warning"></i>
@@ -20,18 +20,18 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="col-2 p-0">
+                        <div class="col-lg-2 col-sm-6">
                             <div class="row p-0 d-flex justify-content-start align-items-center">
-                                <div class="col-3">
+                                <div class="col-2">
                                     <i class="fa-solid fa-anchor fa-xl text-info"></i>
                                 </div>
-                                <div class="col-9">
+                                <div class="col-10">
                                     <p class="label">VOYAGE</p>
                                     <p class="title"><?= $vessel_data[0]->voyno; ?></p>
                                 </div>
                             </div>
                         </div>
-                        <div class="col p-0">
+                        <div class="col-lg-4 col-sm-12">
                             <div class="row p-0 d-flex justify-content-start align-items-center">
                                 <div class="col-2">
                                     <i class="fa-solid fa-water fa-xl text-primary"></i>
@@ -42,7 +42,7 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="col-3 p-0">
+                        <div class="col-lg-3 col-sm-12">
                             <div class="row d-flex justify-content-start align-items-center">
                                 <div class="col-2">
                                     <i class="fa-solid fa-clock fa-xl text-primary"></i>
@@ -68,10 +68,12 @@
 
             <?php $this->load->view('partials/liquidation-overview'); ?>
 
-            <div class="cont">
-                <div class="d-flex justify-content-between align-items-center mb-3">
-                    <h5 class="mb-3">Item Liquidation</h5>
-                    <div class="justify-content-end text-end mb-2">
+            <div class="cont item-liquidation">
+                <div class="row d-flex justify-content-between align-items-center mb-3">
+                    <div class="col-lg-6 col-sm-12">
+                        <h5 class="mb-3">Item Liquidation</h5>
+                    </div>
+                    <div class="col-lg-6 col-sm-12 justify-content-end text-end mb-2">
                         <button class="btn btn-primary btn-sm small" id="refreshData">
                             <i class="fa-solid fa-arrows-rotate pe-2"></i>Refresh Data
                         </button>

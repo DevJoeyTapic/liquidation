@@ -195,7 +195,7 @@
                             <div class="accordion-item">
                                 <h4 class="accordion-header">
                                     <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTwo" aria-expanded="true" aria-controls="collapseTwo">
-                                        <div class="btn">
+                                        <div class="btn text-start">
                                             <p class="bold"><?= ($this->session->userdata('user_type') == 3) ? 'For Validation / OTP' : 'For Validation / Pending OTP'; ?></p>
                                             <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
                                                 <?php if($this->session->userdata('user_type') == 2): ?>
@@ -361,7 +361,7 @@
                         <div class="accordion-item">
                             <h4 class="accordion-header">
                                 <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseFour" aria-expanded="true" aria-controls="collapseFour">
-                                    <div class="btn">
+                                    <div class="btn text-start">
                                         <p class="bold">Completed Liquidation</p>
                                         <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
                                             <?php if($this->session->userdata('user_type') == 2): ?>
@@ -484,7 +484,7 @@
                         <div class="accordion-item">
                             <h4 class="accordion-header">
                                 <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseThree" aria-expanded="true" aria-controls="collapseThree">
-                                    <div class="btn">
+                                    <div class="btn text-start">
                                         <p class="bold"><?= ($this->session->userdata('user_type') == 2) ? 'For Amendment' : 'Return To Agent'; ?></p>
                                         <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
                                             <?php if($this->session->userdata('user_type') == 2): ?>

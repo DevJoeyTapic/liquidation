@@ -2,7 +2,7 @@
     <div class="cont mb-3">
         <div class="d-flex justify-content-between">
             <div>
-                <h5 class="mb-1">Liquidation Overview</h5>
+                <h5 class="lo-title mb-1">Liquidation Overview</h5>
                 <p class="fst-italic medium mb-2">Liquidation Age: <span><?= $vessel_data[0]->age; ?></span></p>
             </div>
         </div>
