@@ -1,5 +1,5 @@
 $(document).ready(function () {
-  let baseUrl = 'https://agents.wallem.com.ph'
+  let baseUrl = 'http://192.168.192.251:3000'
 
   let row;
   function updateTotal() {
@@ -12,64 +12,6 @@ $(document).ready(function () {
     return total; 
   }
 
-
-  $('#submitLiquidation').on('click', function() {
-      Swal.fire({
-          title: 'Submit Liquidation Item/s',
-          text: 'Are you sure you want to submit item/s for liquidation?',
-          icon: 'warning',
-          showCancelButton: true,
-          confirmButtonText: 'Yes',
-          cancelButtonText: 'Cancel'
-      }).then((result) => {
-          if (result.isConfirmed) {
-              Swal.fire({
-                  title: "Item/s Submitted!",
-                  icon: "success"
-              }).then(() => {
-                  const checkedRows = $("#pendingTableAg .rowCheckbox:checked").closest("tr");
-
-                  let dataToSubmit = [];
-                  
-                  if (checkedRows.length > 0) {
-                      checkedRows.each(function () {
-                          const actualAmount = $(this).find("td:nth-child(6) input").val();
-                          const variance = $(this).find(".variance").text();
-                          const item_id = $(this).find("input[name='item_id']").val();
-
-                          dataToSubmit.push({
-                              actualAmount: actualAmount,
-                              variance: variance,
-                              item_id: item_id
-                          });
-                      });
-                      
-                      $.ajax({
-                          url: baseUrl + '/vesselitem/submit_for_validation', // Ensure baseUrl is defined
-                          method: 'POST',
-                          data: {
-                              items: dataToSubmit // Sending all items in a single request
-                          },
-                          success: function(response) {
-                              console.log(response);
-                              // location.reload(); 
-
-                          },
-                          error: function(error) {
-                              Swal.fire({
-                                  title: 'Submission Error',
-                                  text: 'An error occurred while submitting the items. Please try again later.',
-                                  icon: 'error',
-                                  confirmButtonText: 'OK'
-                              });
-                          }
-                      });
-                  }
-
-              });
-          }
-        });
-  });
 
   $(document).on("input", ".new-amount", function () {
     updateTotal();
@@ -210,12 +152,11 @@ $(document).ready(function () {
       const variance = parseFloat(
         $(this).closest("tr").find(".variance").text().replace(/,/g, '') 
       );
-
-      console.log(variance);
       
-
       const item_id = $(this).closest("tr").find("input[name='item_id']").val();
-      if (variance !== rfpAmount) {
+      if (variance === 0 || variance == rfpAmount || isNaN(variance)) {
+        // Doing nothing
+      } else {
         Swal.fire({
           title: 'Variance Remarks',
           input: 'text',
@@ -232,7 +173,7 @@ $(document).ready(function () {
               }
               return remarks;
           }
-      }).then((result) => {
+        }).then((result) => {
           if (result.isConfirmed) {
             const remarks = result.value;
 
@@ -266,9 +207,6 @@ $(document).ready(function () {
             });
           }
         });
-      }
-      elsef (variance === "" || variance === rfpAmou){
-        console.log('No variance. No need for remarks.');
       }
     });
   });
@@ -334,13 +272,6 @@ $(document).ready(function () {
     const remarks = $("#newRemarkInput").val();
     const author = $("#fullname").val();
     const timestamp = new Date(new Date().getTime() + 8 * 60 * 60 * 1000).toISOString().slice(0, 19).replace('T', ' ');
-    
-    console.log({
-      item_id: item_id,
-      remarks: remarks,
-      author: author,
-      timestamp: timestamp
-    }); 
 
     if (!remarks || remarks.trim() === '') {
       Swal.fire({
@@ -361,7 +292,6 @@ $(document).ready(function () {
         timestamp: timestamp
       },
       success: function(response) {
-        console.log(response);
         const remarksTableBody = $('#remarksTable tbody');
         
         remarksTableBody.find('tr td[colspan="3"]').parent().remove();
@@ -391,13 +321,6 @@ $(document).ready(function () {
     const sender = $("#sender").val();
     const timestamp = new Date(new Date().getTime() + 8 * 60 * 60 * 1000).toISOString().slice(0, 19).replace('T', ' ');
   
-    console.log({
-      liq_ref: liq_ref,
-      notes: notes,
-      sender: sender,
-      timestamp: timestamp
-    }); 
-  
     // Check if the notes input is empty
     if (notes === '') {
       Swal.fire({
@@ -418,9 +341,7 @@ $(document).ready(function () {
         timestamp: timestamp
       },
       success: function(response) {
-        let baseUrl = 'https://agents.wallem.com.ph';  // Fixed missing protocol
-        console.log(response);
-        
+        let baseUrl = 'http://192.168.192.251:3000';  // Fixed missing protocol        
         // Create the new note HTML
         const noteHtml = `
             <div class="sender">
@@ -492,7 +413,6 @@ $(document).ready(function () {
   
   $("#deleteItem").on("click", function () {
     const item_id = $(this).data('item');
-    console.log(item_id);
     $.ajax({
       url: baseUrl + '/vesselitem/delete_item/' + item_id,
       method: 'POST',
@@ -500,7 +420,6 @@ $(document).ready(function () {
         item_id: item_id
       },
       success: function (response) {
-        console.log(response);
         location.reload();
         
       },
