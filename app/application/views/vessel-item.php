@@ -544,9 +544,19 @@
             let baseUrl = 'https://agents.wallem.com.ph';
             $('#submitLiquidation').on('click', function() {
                 const checkedRows = $("#pendingTableAg .rowCheckbox:checked");
+                const actualAmount = $(this).find("td:nth-child(6) input").val();
+
                 if (checkedRows.length === 0) {
                     Swal.fire({
                         title: 'No items selected',
+                        icon: 'warning',
+                        confirmButtonText: 'OK'
+                    });
+                    return;
+                }
+                if (!actualAmount) {
+                    Swal.fire({
+                        title: 'Please enter a valid amount.',
                         icon: 'warning',
                         confirmButtonText: 'OK'
                     });
