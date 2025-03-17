@@ -354,7 +354,6 @@
                         </div>
                     </div>
                 <?php endif; ?>
-
                 <!-- Completed Liquidation -->
                 <div class="mt-3" style="display: <?= ($this->session->userdata('user_type') == 3 || $this->session->userdata('user_type') == 2) ? 'block' : 'none'; ?>">
                     <div class="accordion accordion-flush" id="completed">

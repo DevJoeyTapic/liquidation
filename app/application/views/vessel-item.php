@@ -88,6 +88,7 @@
                         <button class="nav-link" id="completedTab" data-bs-toggle="tab" data-bs-target="#completed" type="button" role="tab" aria-controls="completed" aria-selected="false"><i class="fa-solid fa-circle-check pe-2"></i><span class="label-status">Completed Item(s)</span></button>
                         <button class="nav-link" id="forAmendmentTab" data-bs-toggle="tab" data-bs-target="#forAmendment" type="button" role="tab" aria-controls="forAmendment" aria-selected="false"><i class="fa-solid fa-user-pen pe-2"></i></i><span class="label-status">For Amendment Item(s)</span></button>
                     </div>
+                    
                 </nav>
                 <div class="tab-content" id="nav-tabContent">
                     <div class="tab-pane fade show active" id="pending" role="tabpanel" aria-labelledby="pendingTab">
@@ -340,7 +341,7 @@
                                         <tfoot>
                                             <?php foreach ($total_amount as $row): ?>
                                                 <?php if($row->status == '4'): ?>
-                                                    <tr class="total table-warning" style="font-size: 1.2rem">
+                                                    <tr class="total table-warning">
                                                         <td colspan=3 class="text-end bold">Total <?= $row->currency; ?></td>
                                                         <td colspan=1><?= number_format($row->total_requested, 2); ?></td>
                                                         <?php foreach ($total_received as $received): ?>
@@ -415,7 +416,7 @@
                                                                 <?= number_format($item->rfp_amount, 2); ?>
                                                             <?php endif; ?>
                                                         </td>
-                                                        <td class="amountReceived">
+                                                        <td class="amountReceived" data-controlled="<?= $item->controlled; ?>">
                                                             <?php if($item->isNew == '1' && $item->controlled == '1'): ?>  
                                                                 <?php echo '0.00'; ?>
                                                             <?php elseif($item->controlled == '0' && $item->isNew == '0'): ?>  
@@ -541,7 +542,7 @@
     </script>
     <script>
         $(document).ready(function() {
-            let baseUrl = 'https://agents.wallem.com.ph';
+            let baseUrl = 'http://192.168.192.251:3000';
             $('#submitLiquidation').on('click', function() {
                 const checkedRows = $("#pendingTableAg .rowCheckbox:checked");
                 const actualAmount = $(this).find("td:nth-child(6) input").val();

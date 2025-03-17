@@ -395,7 +395,7 @@
                                                 <tfoot>
                                                     <?php foreach ($total_amount as $row): ?>
                                                         <?php if($row->status == '2'): ?>
-                                                            <tr class="total table-warning" style="font-size: 1.2rem">
+                                                            <tr class="total table-warning">
                                                                 <td colspan=3 class="text-end bold">Total <?= $row->currency; ?></td>
                                                                 <td colspan=1><?= number_format($row->total_requested, 2); ?></td>
                                                                 <?php foreach ($total_received as $received): ?>
@@ -539,7 +539,7 @@
                                                 <tfoot>
                                                     <?php foreach ($total_amount as $row): ?>
                                                         <?php if($row->status == '4'): ?>
-                                                            <tr class="total table-warning" style="font-size: 1.2rem">
+                                                            <tr class="total table-warning">
                                                                 <td colspan=3 class="text-end bold">Total <?= $row->currency; ?></td>
                                                                 <td colspan=1><?= number_format($row->total_requested, 2); ?></td>
                                                                 <?php foreach ($total_received as $received): ?>
@@ -667,7 +667,7 @@
     <!-- okay to pay by tad -->
     <script>
         $(document).ready(function() {
-            let baseUrl = 'https://agents.wallem.com.ph';
+            let baseUrl = 'http://192.168.192.251:3000';
 
             $('#otpBtn').on('click', function() {
                 Swal.fire({
@@ -726,7 +726,7 @@
     <!-- amend button for tad -->
     <script>
         $(document).ready(function() {
-            let baseUrl = 'https://agents.wallem.com.ph';
+            let baseUrl = 'http://192.168.192.251:3000';
 
             $('#amendBtn').on('click', function() {
                 Swal.fire({
@@ -785,7 +785,7 @@
     <!-- return to agent -->
     <script>
         $(document).ready(function() {
-            let baseUrl = 'https://agents.wallem.com.ph';
+            let baseUrl = 'http://192.168.192.251:3000';
 
             $('#rtaBtn').on('click', function() {
                 Swal.fire({
@@ -844,7 +844,7 @@
     <!-- submit to AM -->
     <script>
         $(document).ready(function() {
-            let baseUrl = 'https://agents.wallem.com.ph';
+            let baseUrl = 'http://192.168.192.251:3000';
 
             $('#submitToAMBtn').on('click', function() {
                 Swal.fire({
@@ -903,7 +903,7 @@
     <!-- return to agent s5 -->
     <script>
         $(document).ready(function() {
-            let baseUrl = 'https://agents.wallem.com.ph';
+            let baseUrl = 'http://192.168.192.251:3000';
 
             $('#rtaBtns5').on('click', function() {
                 Swal.fire({
