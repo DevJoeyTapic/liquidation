@@ -211,6 +211,9 @@ $(document).ready(function () {
         $(this).closest("tr").find(".variance").text().replace(/,/g, '') 
       );
 
+      console.log(variance);
+      
+
       const item_id = $(this).closest("tr").find("input[name='item_id']").val();
       if (variance !== rfpAmount) {
         Swal.fire({
@@ -263,6 +266,9 @@ $(document).ready(function () {
             });
           }
         });
+      }
+      elsef (variance === "" || variance === rfpAmou){
+        console.log('No variance. No need for remarks.');
       }
     });
   });

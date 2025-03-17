@@ -185,15 +185,15 @@ html::-webkit-scrollbar {
 /* Chat container style */
 .notes-window {
   position: fixed;
-  right: 100 !important;
-  bottom: 0;
+  right: 100px !important;
+  bottom: 10px;
   width: 30%;
   min-height: 400px;
   max-height: 400px; /* Set max height */
   background-color: #fff;
   border-radius: 10px 10px 0 0;
   box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-  transform: translateY(100%);
+  transform: translateY(105%);
   transition: transform 0.3s ease-in-out;
   /* display: flex;
   flex-direction: column; */
