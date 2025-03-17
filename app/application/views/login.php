@@ -5,7 +5,7 @@
     <div class="container">
         <div class="row justify-content-center align-items-center vh-100">
             <div class="col-12 col-md-8 col-lg-5">
-                <div class="card shadow-sm rounded-4 p-5">
+                <div class="card rounded-4 p-5">
                     <div class="text-center">
                         <img src="<?= base_url('assets/images/default_pic.png'); ?>" alt="Logo" class="mb-2" style="max-width: 80px;">
                         <h3 class="mb-3">SUPERCARGO LIQUIDATION</h3>
@@ -13,11 +13,11 @@
                     
                     <form action="<?= base_url('authenticate'); ?>" method="POST">
                         <div class="form-floating mb-3">
-                            <input type="text" id="username" class="form-control" name="username" placeholder="Enter your username" autocomplete="current-password" required>
+                            <input type="text" id="username" class="form-control login" name="username" placeholder="Enter your username" autocomplete="current-password" required>
                             <label for="username">Username</label>
                         </div>
                         <div class="form-floating mb-3">
-                            <input type="password" id="password" class="form-control" name="password" placeholder="Enter your password" autocomplete="current-password" required>
+                            <input type="password" id="password" class="form-control login" name="password" placeholder="Enter your password" autocomplete="current-password" required>
                             <label for="password">Password</label>
                         </div>
                         <button type="submit" class="btn btn-primary w-100">Login</button>

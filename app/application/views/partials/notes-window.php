@@ -5,8 +5,10 @@
     </span>
 </button>
 <div class="notes-window">
-    <div class="notes-header text-white p-3 text-center">
-        Notes
+    <div class="notes-header bg-gradient text-white p-3 text-center d-flex justify-content-between">
+        <p></p>
+        <p class="p-0">Notes</p>
+        <i class="fa-solid fa-xmark m-2" onClick="toggleChat()"></i>
     </div>
     <div class="chat-messages p-3" id="notes-list">
         <?php if (!empty($notes)): ?>

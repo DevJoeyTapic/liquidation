@@ -84,23 +84,24 @@
                 </div>
                 <nav>
                     <div class="nav nav-tabs liquidation-tabs" id="nav-tab" role="tablist">
-                        <button class="nav-link active" id="pendingTab" data-bs-toggle="tab" data-bs-target="#pending" type="button" role="tab" aria-controls="pending" aria-selected="true"><i class="fa-regular fa-clock pe-2"></i>Pending Item(s) Liquidation</button>    
-                        <button class="nav-link" id="completedTab" data-bs-toggle="tab" data-bs-target="#completed" type="button" role="tab" aria-controls="completed" aria-selected="false"><i class="fa-solid fa-circle-check pe-2"></i>Completed Item(s)</button>
-                        <button class="nav-link" id="forAmendmentTab" data-bs-toggle="tab" data-bs-target="#forAmendment" type="button" role="tab" aria-controls="forAmendment" aria-selected="false"><i class="fa-solid fa-user-pen pe-2"></i></i>For Amendment Item(s)</button>
+                        <button class="nav-link active" id="pendingTab" data-bs-toggle="tab" data-bs-target="#pending" type="button" role="tab" aria-controls="pending" aria-selected="true"><i class="fa-regular fa-clock pe-2"></i><span class="label-status">Pending Item(s) Liquidation</span></button>    
+                        <button class="nav-link" id="completedTab" data-bs-toggle="tab" data-bs-target="#completed" type="button" role="tab" aria-controls="completed" aria-selected="false"><i class="fa-solid fa-circle-check pe-2"></i><span class="label-status">Completed Item(s)</span></button>
+                        <button class="nav-link" id="forAmendmentTab" data-bs-toggle="tab" data-bs-target="#forAmendment" type="button" role="tab" aria-controls="forAmendment" aria-selected="false"><i class="fa-solid fa-user-pen pe-2"></i></i><span class="label-status">For Amendment Item(s)</span></button>
                     </div>
                 </nav>
                 <div class="tab-content" id="nav-tabContent">
                     <div class="tab-pane fade show active" id="pending" role="tabpanel" aria-labelledby="pendingTab">
                         <div class="row m-2"> 
                             <div class="data-table">
-                                <div class="d-flex justify-content-end mb-2 gap-2">
+                                <span class="label-status-sm bold">Pending Item(s) Liquidation</span>
+                                <div class="pending-button-sm d-flex justify-content-end mb-2 gap-2">
                                     <button class="btn btn-success btn-sm" data-bs-toggle="modal" data-bs-target="#itemSubmissionModal">
                                         <i class="fa-solid fa-plus"></i>
                                         Add Item
                                     </button>
-                                    <button type="button" class="btn btn-primary btn-sm" id="uploadMainBtn" data-bs-toggle="modal" data-bs-target="#uploadModal" data-id="<?= $id; ?>">
+                                    <button type="button" class="pending-button-sm btn btn-primary btn-sm" id="uploadMainBtn" data-bs-toggle="modal" data-bs-target="#uploadModal" data-id="<?= $id; ?>">
                                         <i class="fa-solid fa-upload"></i>    
-                                        upload liquidation documents
+                                        upload documents
                                     </button>
                                 </div>
                                 
@@ -224,7 +225,11 @@
                                                             </button>
                                                         </td>
                                                         <td class="text-center validate">
-                                                            <input type="checkbox" class="form-check-input rowCheckbox">
+                                                            <?php if($item->isNew == '1'): ?>
+                                                                <input type="checkbox" class="form-check-input rowCheckbox " checked>
+                                                            <?php else: ?>
+                                                                <input type="checkbox" class="form-check-input rowCheckbox">
+                                                            <?php endif; ?>
                                                             <input type="hidden" name="item_id" value="<?php echo $item->id; ?>">
                                                         </td>
                                                     </tr>
@@ -242,6 +247,7 @@
                     <div class="tab-pane fade" id="completed" role="tabpanel" aria-labelledby="completedTab">
                         <div class="row m-2"> 
                             <div class="data-table">
+                            <span class="label-status-sm bold">Completed Item(s)</span>
                                 <div class="table-reponsive">
                                     <table class="table table-hover display" id="completeTableAg">
                                         <thead>
@@ -356,10 +362,11 @@
                     <div class="tab-pane fade" id="forAmendment" role="tabpanel" aria-labelledby="forAmendmentTab">
                         <div class="row m-2"> 
                             <div class="data-table">
+                            <span class="label-status-sm bold">For Amendment Item(s)</span>
                                 <div class="d-flex justify-content-end mb-2">
                                     <button type="button" class="btn btn-primary btn-sm" id="uploadMainBtn" data-bs-toggle="modal" data-bs-target="#uploadModal" data-id="<?= $id; ?>">
                                         <i class="fa-solid fa-upload"></i>    
-                                        upload liquidation documents
+                                        upload documents
                                     </button>
                                 </div>
                                 <div class="table-reponsive">
@@ -536,6 +543,15 @@
         $(document).ready(function() {
             let baseUrl = 'http://192.168.192.251:3000';
             $('#submitLiquidation').on('click', function() {
+                const checkedRows = $("#pendingTableAg .rowCheckbox:checked");
+                if (checkedRows.length === 0) {
+                    Swal.fire({
+                        title: 'No items selected',
+                        icon: 'warning',
+                        confirmButtonText: 'OK'
+                    });
+                    return;
+                }
                 Swal.fire({
                     title: 'Submit Liquidation Item/s',
                     text: 'Are you sure you want to submit item/s for liquidation?',

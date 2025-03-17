@@ -24,6 +24,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" />
 
     <!-- CSS files -->
+    <link rel="stylesheet" href="<?= base_url('assets/css/login.css'); ?>">
     <link rel="stylesheet" href="<?= base_url('assets/css/navbar.css'); ?>">
     <link rel="stylesheet" href="<?= base_url('assets/css/global.css'); ?>">
     <link rel="stylesheet" href="<?= base_url('assets/css/dashboard.css'); ?>">
