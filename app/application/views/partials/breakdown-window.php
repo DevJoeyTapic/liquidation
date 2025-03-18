@@ -110,7 +110,10 @@
                             <td><?= $controlled->supplier; ?></td>
                             <?php endif; ?>
                             <td><?= $controlled->vessel_name . '&nbsp;' . $controlled->voyno ?></td>
-                            <td class="text-end"><?= number_format($controlled->requested, 2); ?></td>
+                            <td class="text-end">
+                                <span class="currency-content" id="requestedPHP"><?= number_format($controlled->requested_php, 2); ?></span>
+                                <span class="currency-content d-none" id="requestedUSD"><?= number_format($controlled->requested_usd, 2); ?></span>
+                            </td>
                         </tr>
                     <?php endforeach; ?>
                 </tbody>
@@ -121,7 +124,8 @@
                         <?php endif; ?>
                         <td></td>
                         <td class="bold text-end">
-                            <span><?= number_format($all_controlled_total->controlled_requested, 2); ?></span>
+                            <span id="controlledPHP"><span class="switchCur">USD</span>&nbsp;<?= number_format($controlled_total->controlled_requested_php, 2); ?></span>
+                            <span id="controlledUSD" class="d-none"><span class="switchCur">USD</span>&nbsp;<?= number_format($controlled_total->controlled_requested_usd, 2); ?></span>
                         </td>
                     </tr>
                 </tfoot>
@@ -131,62 +135,72 @@
 </div>
 <script>
     $(document).ready(function() {
-    const checkbox = document.getElementById('chk');
-    const label = document.querySelector('.breakdown-window .label');
-    const switchCurElements = document.querySelectorAll('.switchCur');
-    const totalWallemPHP = document.getElementById('totalWallemPHP');
-    const totalWallemUSD = document.getElementById('totalWallemUSD');
-    const totalAgentPHP = document.getElementById('totalAgentPHP');
-    const totalAgentUSD = document.getElementById('totalAgentUSD');
-    const dueWallemPHP = document.getElementById('dueWallemPHP');
-    const dueWallemUSD = document.getElementById('dueWallemUSD');
-    const dueAgentPHP = document.getElementById('dueAgentPHP');
-    const dueAgentUSD = document.getElementById('dueAgentUSD');
+        const checkbox = document.getElementById('chk');
+        const label = document.querySelector('.breakdown-window .label');
+        const switchCurElements = document.querySelectorAll('.switchCur');
+        const totalWallemPHP = document.getElementById('totalWallemPHP');
+        const totalWallemUSD = document.getElementById('totalWallemUSD');
+        const totalAgentPHP = document.getElementById('totalAgentPHP');
+        const totalAgentUSD = document.getElementById('totalAgentUSD');
+        const dueWallemPHP = document.getElementById('dueWallemPHP');
+        const dueWallemUSD = document.getElementById('dueWallemUSD');
+        const dueAgentPHP = document.getElementById('dueAgentPHP');
+        const dueAgentUSD = document.getElementById('dueAgentUSD');
+        const requestedPHP = document.getElementById('requestedPHP');
+        const requestedUSD = document.getElementById('requestedUSD');
+        const controlledPHP = document.getElementById('controlledPHP');
+        const controlledUSD = document.getElementById('controlledUSD');
 
-    // Function to toggle between PHP and USD
-    const toggleCurrency = (isChecked) => {
-        // Toggle label background
-        label.classList.toggle('bg-primary', isChecked);
-        label.classList.toggle('bg-success', !isChecked);
+        // Function to toggle between PHP and USD
+        const toggleCurrency = (isChecked) => {
+            // Toggle label background
+            label.classList.toggle('bg-primary', isChecked);
+            label.classList.toggle('bg-success', !isChecked);
 
-        const usdContent = document.querySelectorAll('#dueWallemUSD , #dueAgentUSD ');
-        const phpContent = document.querySelectorAll('#dueWallemPHP , #dueAgentPHP ');
+            const usdContent = document.querySelectorAll('#dueWallemUSD, #dueAgentUSD, #requestedUSD');
+            const phpContent = document.querySelectorAll('#dueWallemPHP, #dueAgentPHP, #requestedPHP');
 
-        // Toggle visibility of PHP and USD elements
-        totalWallemPHP.classList.toggle('d-block', isChecked);
-        totalWallemPHP.classList.toggle('d-none', !isChecked);
-        totalWallemUSD.classList.toggle('d-block', !isChecked);
-        totalWallemUSD.classList.toggle('d-none', isChecked);
+            // Toggle visibility of PHP and USD elements
+            totalWallemPHP.classList.toggle('d-block', isChecked);
+            totalWallemPHP.classList.toggle('d-none', !isChecked);
+            totalWallemUSD.classList.toggle('d-block', !isChecked);
+            totalWallemUSD.classList.toggle('d-none', isChecked);
 
-        totalAgentPHP.classList.toggle('d-block', isChecked);
-        totalAgentPHP.classList.toggle('d-none', !isChecked);
-        totalAgentUSD.classList.toggle('d-block', !isChecked);
-        totalAgentUSD.classList.toggle('d-none', isChecked);
+            totalAgentPHP.classList.toggle('d-block', isChecked);
+            totalAgentPHP.classList.toggle('d-none', !isChecked);
+            totalAgentUSD.classList.toggle('d-block', !isChecked);
+            totalAgentUSD.classList.toggle('d-none', isChecked);
 
-        usdContent.forEach(element => {
-            element.classList.toggle('d-none', isChecked);
-        });
+            controlledPHP.classList.toggle('d-block', isChecked);
+            controlledPHP.classList.toggle('d-none', !isChecked);
+            controlledUSD.classList.toggle('d-block', !isChecked);
+            controlledUSD.classList.toggle('d-none', isChecked);
 
-        phpContent.forEach(element => {
-            element.classList.toggle('d-none', !isChecked);
-        });
+            // Toggle the visibility of the content for USD/ PHP
+            usdContent.forEach(element => {
+                element.classList.toggle('d-none', isChecked);
+            });
 
-        // Update currency label
-        switchCurElements.forEach(element => {
-            element.textContent = isChecked ? 'PHP' : 'USD';
-        });
-    };
+            phpContent.forEach(element => {
+                element.classList.toggle('d-none', !isChecked);
+            });
 
-    // Initial state (based on checkbox checked or not)
-    toggleCurrency(checkbox.checked);
+            // Update currency label
+            switchCurElements.forEach(element => {
+                element.textContent = isChecked ? 'PHP' : 'USD';
+            });
+        };
 
-    // Event listener for checkbox change
-    checkbox.addEventListener('change', function () {
+        // Initial state (based on checkbox checked or not)
         toggleCurrency(checkbox.checked);
-    });
-});
 
+        // Event listener for checkbox change
+        checkbox.addEventListener('change', function () {
+            toggleCurrency(checkbox.checked);
+        });
+    });
 </script>
+
 <script>
     $(document).ready(function() {
         var creditBreakdown = $("#creditBreakdown").DataTable({
