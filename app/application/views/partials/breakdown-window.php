@@ -66,7 +66,15 @@
         </div>
         <hr>
         <div class="col">
-            <h4><strong>Outstanding Balance:</strong></h4>
+            <div class="d-flex justify-content-between align-items-center mb-2">
+                <h4><strong>Outstanding Balance:</strong></h4>
+                <i class="fa-solid fa-circle-info" data-toggle="collapse" data-target="#info" aria-expanded="false" aria-controls="info"></i>
+            </div>
+            <div class="collapse" id="info">
+                <div class="p-1">
+                    <p class="small text-warning">The list below shows the total amount for each vessel with controlled items that have not yet been released, which will be released once the service is completed.</p>
+                </div>
+            </div>
             <table class="table table-warning table-hover" id="dueControlled">
                 <thead>
                     <tr>
