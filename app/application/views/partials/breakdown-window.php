@@ -7,7 +7,7 @@
         Credit Breakdown
     </div>
     <div class="breakdown-content p-3">                        
-        <div class="d-flex justify-content-between align-items-end">
+        <div class="d-flex justify-content-between align-items-end mb-2">
             <h4><strong>Credit Breakdown:</strong></h4>
             
             <div class="one-quarter" id="switch">
@@ -26,20 +26,26 @@
             <caption class="small">As of <span id="currentTime"><?php echo date('Y-m-d H:i:s', strtotime('+8 hours')); ?></span></caption>
             <thead>
                 <tr>
+                    <?php if($this->session->userdata('user_type') == '3' || $this->session->userdata('user_type') == '5'): ?>
+                    <th>Agent</th>
+                    <?php endif; ?>
                     <th>Vessel/Voyage</th>
-                    <th>Balance Due Wallem</th>
-                    <th>Balance Due Agent</th>
+                    <th class="text-center">Due Wallem</th>
+                    <th class="text-center">Due Agent</th>
                 </tr>
             </thead>
             <tbody>
                 <?php foreach($credit_breakdown as $credit): ?>
                     <tr>
+                        <?php if($this->session->userdata('user_type') == '3' || $this->session->userdata('user_type') == '5'): ?>
+                        <td><?= $credit->supplier; ?></td>
+                        <?php endif; ?>
                         <td><?= $credit->vessel_name . ' ' . $credit->voyno; ?></td>
-                        <td >
+                        <td class="text-end">
                             <span class="currency-content" id="dueWallemUSD"><?= number_format($credit->due_wallem_usd, 2); ?></span>
                             <span class="currency-content d-none" id="dueWallemPHP"><?= number_format($credit->due_wallem_php, 2); ?></span>
                         </td>
-                        <td>
+                        <td class="text-end">
                             <span class="currency-content" id="dueAgentUSD"><?= number_format($credit->due_agent_usd, 2); ?></span>
                             <span class="currency-content d-none" id="dueAgentPHP"><?= number_format($credit->due_agent_php, 2); ?></span>
                         </td>
@@ -47,20 +53,29 @@
                     </tr>
                 <? endforeach; ?>
             </tbody>
+            <tfoot>
+                <tr class="table-light text-end">
+                    <td colspan=2></td>
+                    <td class="bold">
+                        <span id="totalWallemPHP" class="d-none"><span class="switchCur">USD</span>&nbsp;<?= number_format($total_php->total_due_wallem_php, 2); ?></span>
+                        <span id="totalWallemUSD"><span class="switchCur">USD</span>&nbsp;<?= number_format($total_usd->total_due_wallem_usd, 2); ?></span>
+                    </td>
+                    <td class="bold">
+                        <span id="totalAgentPHP" class="d-none"><span class="switchCur">USD</span>&nbsp;<?= number_format($total_php->total_due_agent_php, 2); ?></span>
+                        <span id="totalAgentUSD"><span class="switchCur">USD</span>&nbsp;<?= number_format($total_usd->total_due_agent_usd, 2); ?></span>
+                    </td>
+                </tr>
+            </tfoot>
         </table>
         <div class="d-flex justify-content-between">
             <div class="col">
                 <h6 class="text-end bold">
-                    <span id="totalWallemPHP" class="d-none"><span class="switchCur">USD</span>&nbsp;<?= number_format($total_php->total_due_wallem_php, 2); ?></span>
-                    <span id="totalWallemUSD"><span class="switchCur">USD</span>&nbsp;<?= number_format($total_usd->total_due_wallem_usd, 2); ?></span>
 
                 </h6>
             </div>
             <div class="col">
                 <h6 class="text-end bold">
                     
-                    <span id="totalAgentPHP" class="d-none"><span class="switchCur">USD</span>&nbsp;<?= number_format($total_php->total_due_agent_php, 2); ?></span>
-                    <span id="totalAgentUSD"><span class="switchCur">USD</span>&nbsp;<?= number_format($total_usd->total_due_agent_usd, 2); ?></span>
                 </h6>
             </div>
         </div>
@@ -72,41 +87,39 @@
             </div>
             <div class="collapse" id="info">
                 <div class="p-1">
-                    <p class="small text-warning">The list below shows the total amount for each vessel with controlled items that have not yet been released, which will be released once the service is completed.</p>
+                    <p class="text-warning">The list below shows the total amount for each vessel with controlled items that have not yet been released, which will be released once the service is completed.</p>
                 </div>
             </div>
             <table class="table table-warning table-hover" id="dueControlled">
                 <thead>
                     <tr>
+                        <?php if($this->session->userdata('user_type') == '3' || $this->session->userdata('user_type') == '5'): ?>
+                        <th>Agent</th>
+                        <?php endif; ?>
                         <th>Vessel / Voyage</th>
                         <th>Requested Amount</th>
                     </tr>
                 </thead>
                 <tbody>
-                    <tr>
-                        <?php foreach($due_agent_controlled as $controlled): ?>
-                            <tr>
-                                <td><?= $controlled->vessel_name . '&nbsp;' . $controlled->voyno ?></td>
-                                <td><?= number_format($controlled->requested, 2); ?></td>
-                            </tr>
-                        <?php endforeach; ?>
-                    </tr>
+                    <?php foreach($due_agent_controlled as $controlled): ?>
+                        <tr>
+                            <?php if($this->session->userdata('user_type') == '3' || $this->session->userdata('user_type') == '5'): ?>
+                            <td><?= $controlled->supplier; ?></td>
+                            <?php endif; ?>
+                            <td><?= $controlled->vessel_name . '&nbsp;' . $controlled->voyno ?></td>
+                            <td class="text-end"><?= number_format($controlled->requested, 2); ?></td>
+                        </tr>
+                    <?php endforeach; ?>
                 </tbody>
+                <tfoot>
+                    <tr class="table-light text-end">
+                        <td colspan=2></td>
+                        <td class="bold text-end">
+                            <span><?= number_format($all_controlled_total->controlled_requested, 2); ?></span>
+                        </td>
+                    </tr>
+                </tfoot>
             </table>
-        </div>
-        <div class="d-flex justify-content-between">
-            <div class="col">
-                <h6 class="text-end bold">
-                    <span id="totalWallemPHP" class="d-none"><span class="switchCur">USD</span>&nbsp;<?= number_format($total_php->total_due_wallem_php, 2); ?></span>
-                    <span id="totalWallemUSD"><span class="switchCur">USD</span>&nbsp;<?= number_format($total_usd->total_due_wallem_usd, 2); ?></span>
-
-                </h6>
-            </div>
-            <div class="col">
-                <h6 class="text-end bold">
-                    <span><?= number_format($total_usd->total_due_agent_usd, 2); ?></span>
-                </h6>
-            </div>
         </div>
     </div>
 </div>
@@ -167,4 +180,20 @@
     });
 });
 
+</script>
+<script>
+    $(document).ready(function() {
+        var creditBreakdown = $("#creditBreakdown").DataTable({
+            paging: true,
+            searching: true,
+            pageLength: 5,
+            order: []
+        });
+        var dueControlled = $("#dueControlled").DataTable({
+            paging: true,
+            searching: true,
+            pageLength: 5,
+            order: []
+        });
+    })
 </script>

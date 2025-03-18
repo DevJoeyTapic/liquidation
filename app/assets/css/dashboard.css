@@ -142,7 +142,7 @@ html::-webkit-scrollbar {
   position: fixed;
   right: 0;
   top: 10%;
-  width: 30%;
+  width: 35%;
   max-height: 400px; /* Set max height */
   background-color: #fff;
   border-radius: 10px 10px 0 0;
@@ -490,9 +490,7 @@ span.label-status-sm {
     min-height: 70vh;
   }
   .notes-window.open {
-    margin: 0 auto !important;
-    transform: translateY(0);
-    transform: translateX(20px);
+    transform: translateX(80px) !important;
   }
   #notesInput.form-control {
     height: 60px;
