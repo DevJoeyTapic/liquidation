@@ -55,7 +55,10 @@
             </tbody>
             <tfoot>
                 <tr class="table-light text-end">
-                    <td colspan=2></td>
+                    <?php if($this->session->userdata('user_type') == '3' || $this->session->userdata('user_type') == '5'): ?>
+                    <td></td>
+                    <?php endif; ?>
+                    <td></td>
                     <td class="bold">
                         <span id="totalWallemPHP" class="d-none"><span class="switchCur">USD</span>&nbsp;<?= number_format($total_php->total_due_wallem_php, 2); ?></span>
                         <span id="totalWallemUSD"><span class="switchCur">USD</span>&nbsp;<?= number_format($total_usd->total_due_wallem_usd, 2); ?></span>
@@ -113,7 +116,10 @@
                 </tbody>
                 <tfoot>
                     <tr class="table-light text-end">
-                        <td colspan=2></td>
+                        <?php if($this->session->userdata('user_type') == '3' || $this->session->userdata('user_type') == '5'): ?>
+                        <td></td>
+                        <?php endif; ?>
+                        <td></td>
                         <td class="bold text-end">
                             <span><?= number_format($all_controlled_total->controlled_requested, 2); ?></span>
                         </td>
