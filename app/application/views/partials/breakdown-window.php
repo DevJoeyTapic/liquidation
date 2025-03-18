@@ -100,7 +100,7 @@
                         <th>Agent</th>
                         <?php endif; ?>
                         <th>Vessel / Voyage</th>
-                        <th>Requested Amount</th>
+                        <th class="text-end">Requested Amount</th>
                     </tr>
                 </thead>
                 <tbody>
