@@ -541,7 +541,7 @@
     </script>
     <script>
         $(document).ready(function() {
-            let baseUrl = 'https://agents.wallem.com.ph';
+            let baseUrl = 'http://localhost:3000';
             $('#submitLiquidation').on('click', function() {
                 const checkedRows = $("#pendingTableAg .rowCheckbox:checked");
                 const actualAmount = $(this).find("td:nth-child(6) input").val();
