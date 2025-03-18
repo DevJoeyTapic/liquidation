@@ -33,6 +33,7 @@ class Dashboard extends CI_Controller {
                 $data['total_php'] = $this->CreditBreakdown_model->get_total_php($user_id);
                 $data['total_usd'] = $this->CreditBreakdown_model->get_total_usd($user_id);
                 $data['due_agent_controlled'] = $this->CreditBreakdown_model->total_due_controlled($user_id);
+                $data['all_controlled_total'] = $this->CreditBreakdown_model->controlled_total($user_id);
                 $this->load->view('dashboard', $data);
                 break;
             case 3: // Accounting
@@ -44,6 +45,11 @@ class Dashboard extends CI_Controller {
                 $data['credit_breakdown'] = $this->CreditBreakdown_model->get_credit_breakdown($user_id);
                 $data['total_php'] = $this->CreditBreakdown_model->get_total_php($user_id);
                 $data['total_usd'] = $this->CreditBreakdown_model->get_total_usd($user_id);
+                $data['credit_breakdown'] = $this->CreditBreakdown_model->get_all_credit_breakdown();
+                $data['total_php'] = $this->CreditBreakdown_model->get_all_total_php();
+                $data['total_usd'] = $this->CreditBreakdown_model->get_all_total_usd();
+                $data['due_agent_controlled'] = $this->CreditBreakdown_model->all_total_due_controlled();
+                $data['all_controlled_total'] = $this->CreditBreakdown_model->all_controlled_total();
                 $this->load->view('dashboard', $data);
                 break;
             case 5: // TAD

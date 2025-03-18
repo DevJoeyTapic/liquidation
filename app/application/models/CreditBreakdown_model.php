@@ -331,6 +331,18 @@ class CreditBreakdown_model extends CI_Model {
         $query = $this->db->query($sql, array());
         return $query->row();
     }
+    public function controlled_total($user_id) {
+        $sql = "SELECT
+                SUM(i.rfp_amount) AS controlled_requested
+                FROM tbl_agent_liquidation_items i
+                JOIN tbl_agent_liquidation l
+                ON l.transno = i.transno
+                WHERE controlled = 0
+                AND i.user_id = ?
+                AND i.`status` != 4";
+        $query = $this->db->query($sql, array($user_id));
+        return $query->row();
+    }
 
 
 
