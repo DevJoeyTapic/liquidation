@@ -554,6 +554,15 @@
                     });
                     return;
                 }
+
+                if (actualAmount === '') {
+                    Swal.fire({
+                        title: 'Enter a valid amount.',
+                        icon: 'warning',
+                        confirmButtonText: 'OK'
+                    });
+                    return;
+                }
                 
                 Swal.fire({
                     title: 'Submit Liquidation Item/s',
