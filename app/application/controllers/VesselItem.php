@@ -30,7 +30,8 @@ class VesselItem extends CI_Controller {
             $data['total_php'] = $this->CreditBreakdown_model->get_total_php($user_id);
             $data['total_usd'] = $this->CreditBreakdown_model->get_total_usd($user_id);
             $data['due_agent_controlled'] = $this->CreditBreakdown_model->total_due_controlled($user_id);
-            $data['notes'] = $this->Notes_model->get_notes($data['id']);
+            $data['controlled_total'] = $this->CreditBreakdown_model->controlled_total($user_id);
+             $data['notes'] = $this->Notes_model->get_notes($data['id']);
 
             $item_ids = array_column($data['liquidation_item'], 'id');  
             if (!empty($item_ids)) {

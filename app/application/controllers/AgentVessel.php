@@ -30,11 +30,13 @@ class AgentVessel extends CI_Controller {
             $data['id'] = $id;
             $data['vessel_data'] = $this->Liquidation_model->get_vessel_data($id);
             $data['vessel_items'] = $this->Liquidation_model->get_vessel_items($data['vessel_data'][0]->transno, $data['vessel_data'][0]->supplier);
-            $data['credit_breakdown'] = $this->CreditBreakdown_model->get_credit_breakdown($user_id);
             $data['total_amount'] = $this->Liquidation_model->get_total_amount($id);
             $data['total_received'] = $this->Liquidation_model->get_total_received_completed($id);
-            $data['total_php'] = $this->CreditBreakdown_model->get_total_php($user_id);
-            $data['total_usd'] = $this->CreditBreakdown_model->get_total_usd($user_id);
+            $data['credit_breakdown'] = $this->CreditBreakdown_model->get_all_credit_breakdown();
+            $data['total_php'] = $this->CreditBreakdown_model->get_all_total_php();
+            $data['total_usd'] = $this->CreditBreakdown_model->get_all_total_usd();
+            $data['due_agent_controlled'] = $this->CreditBreakdown_model->all_total_due_controlled();
+            $data['controlled_total'] = $this->CreditBreakdown_model->all_controlled_total();
             $data['notes'] = $this->Notes_model->get_notes($data['id']);
 
             $this->load->view('agent-vessel', $data);
