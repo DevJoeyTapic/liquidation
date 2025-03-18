@@ -59,11 +59,11 @@
                     <td></td>
                     <?php endif; ?>
                     <td></td>
-                    <td class="bold">
+                    <td class="bold text-end">
                         <span id="totalWallemPHP" class="d-none"><span class="switchCur">USD</span>&nbsp;<?= number_format($total_php->total_due_wallem_php, 2); ?></span>
                         <span id="totalWallemUSD"><span class="switchCur">USD</span>&nbsp;<?= number_format($total_usd->total_due_wallem_usd, 2); ?></span>
                     </td>
-                    <td class="bold">
+                    <td class="bold text-end">
                         <span id="totalAgentPHP" class="d-none"><span class="switchCur">USD</span>&nbsp;<?= number_format($total_php->total_due_agent_php, 2); ?></span>
                         <span id="totalAgentUSD"><span class="switchCur">USD</span>&nbsp;<?= number_format($total_usd->total_due_agent_usd, 2); ?></span>
                     </td>
