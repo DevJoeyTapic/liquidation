@@ -193,12 +193,12 @@
                                                                         <input type="text" class="form-control form-control-sm actualAmount" id="actualAmount" name="actualAmount" value="<?= $item->actual_amount; ?>" disabled>
                                                                     <?php else: ?>
                                                                         <?php if($allControlledStatus4): ?>
-                                                                            <input type="text" class="form-control form-control-sm actualAmount" id="actualAmount" name="actualAmount" value="<?= $item->actual_amount; ?>" required>
+                                                                            <input type="text" class="form-control form-control-sm actualAmount" id="actualAmount" name="actualAmount" required>
                                                                         <?php else: ?>
                                                                             <?php if($item->controlled == 0): ?>
-                                                                                <input type="text" class="form-control form-control-sm actualAmount" id="actualAmount" name="actualAmount" value="<?= $item->actual_amount; ?>">
+                                                                                <input type="text" class="form-control form-control-sm actualAmount" id="actualAmount" name="actualAmount">
                                                                             <?php else: ?>
-                                                                                <input type="text" class="form-control form-control-sm actualAmount" id="actualAmount" name="actualAmount" value="<?= $item->actual_amount; ?>" required>
+                                                                                <input type="text" class="form-control form-control-sm actualAmount" id="actualAmount" name="actualAmount" required>
                                                                         
                                                                             <?php endif; ?>
                                                                         <?php endif; ?>
@@ -541,7 +541,7 @@
     </script>
     <script>
         $(document).ready(function() {
-            let baseUrl = 'https://agents.wallem.com.ph';
+            let baseUrl = 'http://192.168.192.251:3000';
             $('#submitLiquidation').on('click', function() {
                 const checkedRows = $("#pendingTableAg .rowCheckbox:checked");
                 const actualAmount = $(this).find("td:nth-child(6) input").val();
@@ -593,7 +593,6 @@
                                         item_id: item_id
                                     });
                                 });
-                                console.log(dataToSubmit);
 
                                 $.ajax({
                                     url: baseUrl + '/vesselitem/submit_for_validation', // Ensure baseUrl is defined
@@ -602,7 +601,6 @@
                                         items: dataToSubmit // Sending all items in a single request
                                     },
                                     success: function(response) {
-                                        console.log(response);
                                         location.reload();
                                     },
                                     error: function(error) {
@@ -619,6 +617,8 @@
                     }
                 });
             });
+
+
             $('#submitAmended').on('click', function() {
                 Swal.fire({
                     title: 'Submit Item/s for Amendment',
@@ -657,7 +657,6 @@
                                         items: dataToSubmit // Sending all items in a single request
                                     },
                                     success: function(response) {
-                                        console.log(response);
                                         location.reload();
                                     },
                                     error: function(error) {

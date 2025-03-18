@@ -1,5 +1,5 @@
 $(document).ready(function () {
-  let baseUrl = 'https://agents.wallem.com.ph'
+  let baseUrl = 'http://192.168.192.251:3000'
 
   let row;
   function updateTotal() {
@@ -68,11 +68,9 @@ $(document).ready(function () {
             variance: variance
           },
           success: function(response) {
-            console.log(response);
             // location.reload();
           },
           error: function(error) {
-            console.error("Error occurred while submitting:", error);
           } 
         });
       });
@@ -137,7 +135,6 @@ $(document).ready(function () {
       const actualAmount = parseFloat($(this).val()) || 0; 
 
       const isControlled = $(this).closest("tr").find(".amountReceived").attr("data-controlled");
-      console.log(isControlled);
       let variance;
       let vpercent;
 
@@ -323,7 +320,6 @@ $(document).ready(function () {
       },
       
       error: function(jqXHR, textStatus, errorThrown) {
-        console.error('Error:', textStatus, errorThrown);
       }
     });
   });
@@ -354,7 +350,7 @@ $(document).ready(function () {
         timestamp: timestamp
       },
       success: function(response) {
-        let baseUrl = 'https://agents.wallem.com.ph';  // Fixed missing protocol        
+        let baseUrl = 'http://192.168.192.251:3000';  // Fixed missing protocol        
         // Create the new note HTML
         const noteHtml = `
             <div class="sender">
@@ -379,7 +375,6 @@ $(document).ready(function () {
 
       },
       error: function(jqXHR, textStatus, errorThrown) {
-        console.error('Error:', textStatus, errorThrown);
       }
     });
   });
