@@ -15,44 +15,37 @@
             <?php foreach($notes as $note): ?>
                 <?php if($note->sender == $this->session->userdata('fullname')): ?>
                     <div class="sender">
-                        <div class="d-flex justify-content-between text-secondary">
-                            <div class="d-flex justify-content-end align-items-end">
-                                <p class="small">
-                                    <?php
-                                        date_default_timezone_set('Asia/Singapore'); 
-                                        echo date('F j, Y H:i A', strtotime($note->timestamp));
-                                    ?>
-                                </p>
-                            </div>
+                        <div class="text-secondary">
                             <div>
                                 <p class="small text-end"><strong><?= $note->sender; ?></strong></p>
                             </div>
+                            <p class="small text-end">
+                                <?php
+                                    date_default_timezone_set('Asia/Singapore'); 
+                                    echo date('F j, Y H:i A', strtotime($note->timestamp));
+                                ?>
+                            </p>
                         </div>
                         <div class=""> 
                             <div class="imessage d-flex justify-content-end align-items-right">
                                 <p class="from-me">
                                 <?= $note->notes; ?>
                                 </p>
-                                <div class="profile-notes right">
-                                    <img src="<?= base_url('assets/images/bg-ship.jpg'); ?>" class="rounded-circle">
-                                </div>
                             </div>
                         </div>
                     </div>
                 <?php else: ?>
                     <div class="receiver">
-                        <div class="d-flex justify-content-between text-secondary">
+                        <div class="text-secondary">
                             <div>
                                 <p class="small"><strong><?= $note->sender; ?></strong></p>
                             </div>
-                            <div class="d-flex justify-content-end align-items-end">
-                                <p class="small">
-                                    <?php
-                                        date_default_timezone_set('Asia/Singapore'); 
-                                        echo date('F j, Y H:i A', strtotime($note->timestamp));
-                                    ?>
-                                </p>
-                            </div>
+                            <p class="small text-start">
+                                <?php
+                                    date_default_timezone_set('Asia/Singapore'); 
+                                    echo date('F j, Y H:i A', strtotime($note->timestamp));
+                                ?>
+                            </p>
                         </div>
                         <div class="d-flex">
                             <div class="imessage d-flex">

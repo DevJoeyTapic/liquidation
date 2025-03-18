@@ -134,16 +134,16 @@ $(document).ready(function () {
       const amountReceived = parseFloat(
         $(this).closest("tr").find(".amountReceived").text().replace(/,/g, '') 
       );
-      const isControlled = $(this).closest('tr').data('controlled') == 0;
       const actualAmount = parseFloat($(this).val()) || 0; 
-      
+
+      const isControlled = $(this).closest("tr").find(".amountReceived").attr("data-controlled");
       console.log(isControlled);
       let variance;
       let vpercent;
 
       if(isControlled) {
         variance = amountReceived - actualAmount;
-        vpercent = ((amountReceived - actualAmount) / amountReceived) * 100;
+        vpercent = 0;
       } else {
         variance = rfpAmount - actualAmount;
         vpercent = ((rfpAmount - actualAmount) / rfpAmount) * 100;  
@@ -358,20 +358,15 @@ $(document).ready(function () {
         // Create the new note HTML
         const noteHtml = `
             <div class="sender">
-                <div class="d-flex justify-content-between text-secondary">
-                    <div class="d-flex justify-content-end align-items-end">
-                        <p class="small">${timestamp}</p>
-                    </div>
-                    <div>
-                        <p class="small text-end"><strong>${sender}</strong></p>
-                    </div>
+                <div class="text-secondary">
+                  <div>
+                    <p class="small text-end"><strong>${sender}</strong></p>
+                  </div>
+                  <p class="small text-end">${timestamp}</p>
                 </div>
                 <div> 
                     <div class="imessage d-flex justify-content-end align-items-right">
                         <p class="from-me">${notes}</p>
-                        <div class="profile-notes right">
-                            <img src="${baseUrl}/assets/images/bg-ship.jpg" class="rounded-circle">
-                        </div>
                     </div>
                 </div>
             </div>

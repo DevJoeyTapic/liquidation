@@ -11,7 +11,7 @@
             <h4><strong>Credit Breakdown:</strong></h4>
             
             <div class="one-quarter" id="switch">
-                <input type="checkbox" class="checkbox" id="chk" />
+                <input type="checkbox" class="checkbox" id="chk" checked/>
                 <label class="label" for="chk">
                 
                 <i class="fa-solid fa-peso-sign ps-1"></i>
@@ -49,10 +49,8 @@
             </tbody>
         </table>
         <div class="d-flex justify-content-between">
-            <div class="col"></div>
             <div class="col">
                 <h6 class="text-end bold">
-                    
                     <span id="totalWallemPHP" class="d-none"><span class="switchCur">USD</span>&nbsp;<?= number_format($total_php->total_due_wallem_php, 2); ?></span>
                     <span id="totalWallemUSD"><span class="switchCur">USD</span>&nbsp;<?= number_format($total_usd->total_due_wallem_usd, 2); ?></span>
 
@@ -63,6 +61,42 @@
                     
                     <span id="totalAgentPHP" class="d-none"><span class="switchCur">USD</span>&nbsp;<?= number_format($total_php->total_due_agent_php, 2); ?></span>
                     <span id="totalAgentUSD"><span class="switchCur">USD</span>&nbsp;<?= number_format($total_usd->total_due_agent_usd, 2); ?></span>
+                </h6>
+            </div>
+        </div>
+        <hr>
+        <div class="col">
+            <h4><strong>Outstanding Balance:</strong></h4>
+            <table class="table table-warning table-hover" id="dueControlled">
+                <thead>
+                    <tr>
+                        <th>Vessel / Voyage</th>
+                        <th>Requested Amount</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <?php foreach($due_agent_controlled as $controlled): ?>
+                            <tr>
+                                <td><?= $controlled->vessel_name . '&nbsp;' . $controlled->voyno ?></td>
+                                <td><?= number_format($controlled->requested, 2); ?></td>
+                            </tr>
+                        <?php endforeach; ?>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <div class="d-flex justify-content-between">
+            <div class="col">
+                <h6 class="text-end bold">
+                    <span id="totalWallemPHP" class="d-none"><span class="switchCur">USD</span>&nbsp;<?= number_format($total_php->total_due_wallem_php, 2); ?></span>
+                    <span id="totalWallemUSD"><span class="switchCur">USD</span>&nbsp;<?= number_format($total_usd->total_due_wallem_usd, 2); ?></span>
+
+                </h6>
+            </div>
+            <div class="col">
+                <h6 class="text-end bold">
+                    <span><?= number_format($total_usd->total_due_agent_usd, 2); ?></span>
                 </h6>
             </div>
         </div>

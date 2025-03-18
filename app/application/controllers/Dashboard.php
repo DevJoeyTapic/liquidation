@@ -32,6 +32,7 @@ class Dashboard extends CI_Controller {
                 $data['credit_breakdown'] = $this->CreditBreakdown_model->get_credit_breakdown($user_id);
                 $data['total_php'] = $this->CreditBreakdown_model->get_total_php($user_id);
                 $data['total_usd'] = $this->CreditBreakdown_model->get_total_usd($user_id);
+                $data['due_agent_controlled'] = $this->CreditBreakdown_model->total_due_controlled($user_id);
                 $this->load->view('dashboard', $data);
                 break;
             case 3: // Accounting

@@ -156,7 +156,7 @@
                                                                 <?= number_format($item->rfp_amount, 2); ?>
                                                             <?php endif; ?>
                                                         </td>
-                                                        <td class="amountReceived">
+                                                        <td class="amountReceived" data-controlled="<?= $item->controlled; ?>">
                                                             <?php if($item->isNew == '1' && $item->controlled == '1'): ?>
                                                                 <?php echo('0.00'); ?>
                                                             <?php elseif($item->controlled == '0' && $item->isNew == '1' || $item->controlled == '0'): ?>
@@ -389,7 +389,6 @@
                                         <tbody>
                                             <?php foreach ($liquidation_item as $item): ?>
                                                 <?php if ($item->user_id == $this->session->userdata('user_id') && $item->status == '7' || $item->status == '8'): ?>
-                                                    
                                                     <tr id="item-<?= $item->id ?>">
                                                         <td class="item " id="item">
                                                             <?= $item->item; ?>
@@ -416,7 +415,7 @@
                                                                 <?= number_format($item->rfp_amount, 2); ?>
                                                             <?php endif; ?>
                                                         </td>
-                                                        <td class="amountReceived" data-controlled="<?= $item->controlled; ?>">
+                                                        <td class="amountReceived">
                                                             <?php if($item->isNew == '1' && $item->controlled == '1'): ?>  
                                                                 <?php echo '0.00'; ?>
                                                             <?php elseif($item->controlled == '0' && $item->isNew == '0'): ?>  
@@ -555,14 +554,7 @@
                     });
                     return;
                 }
-                if (!actualAmount) {
-                    Swal.fire({
-                        title: 'Please enter a valid amount.',
-                        icon: 'warning',
-                        confirmButtonText: 'OK'
-                    });
-                    return;
-                }
+                
                 Swal.fire({
                     title: 'Submit Liquidation Item/s',
                     text: 'Are you sure you want to submit item/s for liquidation?',
